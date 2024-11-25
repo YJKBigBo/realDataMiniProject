@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.RegisterMapper">
+    <insert id="regist" parameterType="employee">
+        insert into employees (EMP_NUM , EMP_ID, EMP_PW, EMP_NAME, EMP_ADDR,EMP_ADDR_detail,EMP_POST,
+                               EMP_HIRE_DATE,EMP_PHONE,EMP_EMAIL, EMP_jumin, emp_department)
+        values( #{empNum},#{empId} ,#{empPw} ,#{empName} ,#{empAddr}
+              ,#{empAddrDetail} ,#{empPost}
+              ,#{empHireDate} ,#{empPhone} ,#{empEmail},#{empJumin}, #{empDepartment})
+    </insert>
+</mapper>
