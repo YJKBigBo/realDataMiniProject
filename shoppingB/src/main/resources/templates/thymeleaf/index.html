@@ -27,17 +27,27 @@
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user fa-fw"></i>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
-
-                        <li><hr class="dropdown-divider" /></li>
-
-                        <li><a class="dropdown-item" href="/login">Login</a></li>
-                        <li><a class="dropdown-item" href="#!">Register</a></li>
-                        <li><a class="dropdown-item" href="#!">Forgot Password</a></li>
+                        <!-- 로그아웃 상태 -->
+                        <li th:if="${!isLoggedIn}">
+                            <a class="dropdown-item" href="/login">Login</a>
+                        </li>
+                        <li th:if="${!isLoggedIn}">
+                            <a class="dropdown-item" href="#!">Forgot Password</a>
+                        </li>
+                        <!-- 로그인 상태 -->
+                        <li th:if="${isLoggedIn}">
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </li>
+                        <li th:if="${isLoggedIn} and ${isManager}">
+                            <a class="dropdown-item" href="#!">Register</a>
+                        </li>
+                        <li th:if="${isLoggedIn}">
+                            <a class="dropdown-item" href="#!">Fix Infomation</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
