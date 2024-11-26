@@ -1,7 +1,7 @@
 package mini.shoppingb.service.employees;
 
 import mini.shoppingb.command.employees.EmployeeCommand;
-import mini.shoppingb.domain.EmployeeDTO;
+import mini.shoppingb.domain.employees.EmployeeDTO;
 import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.RegisterMapper;
 import org.springframework.beans.factory.annotation.Autowired;

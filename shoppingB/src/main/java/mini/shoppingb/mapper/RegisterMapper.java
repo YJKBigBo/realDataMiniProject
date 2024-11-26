@@ -1,6 +1,6 @@
 package mini.shoppingb.mapper;
 
-import mini.shoppingb.domain.EmployeeDTO;
+import mini.shoppingb.domain.employees.EmployeeDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
