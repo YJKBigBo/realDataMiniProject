@@ -1,4 +1,4 @@
-package mini.shoppingb.domain;
+package mini.shoppingb.domain.employees;
 import java.util.Date;
 import org.apache.ibatis.type.Alias;
 import lombok.Data;
