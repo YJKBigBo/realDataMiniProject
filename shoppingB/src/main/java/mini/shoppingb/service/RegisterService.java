@@ -29,6 +29,7 @@ public class RegisterService {
         dto.setEmpHireDate(command.getEmpHireDate());
         String empNum = autoNumMapper.autoNum("emp_num", "employees");
         dto.setEmpNum(empNum);
+        dto.setEmpPw(command.getEmpPw());
         registerMapper.regist(dto);
     }
 }
