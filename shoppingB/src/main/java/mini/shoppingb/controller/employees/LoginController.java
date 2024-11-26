@@ -14,18 +14,18 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/login")
+    @GetMapping("/employees/login")
     public String login() {
         return "thymeleaf/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/employees/login")
     public String loginPost(LoginCommand loginCommand, HttpSession session) {
         loginService.execute(loginCommand, session);
         return "redirect:/";
     }
 
-    @RequestMapping("/logout")
+    @RequestMapping("/employees/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";

@@ -12,12 +12,12 @@ public class RegisterController {
     @Autowired
     RegisterService registerService;
 
-    @GetMapping("/register")
+    @GetMapping("/employees/register")
     public String registerPage() {
         return "thymeleaf/register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/employees/register")
     public String register(EmployeeCommand employeeCommand) {
         registerService.execute(employeeCommand);
         return "redirect:/";
