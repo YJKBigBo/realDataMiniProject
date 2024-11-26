@@ -1,4 +1,4 @@
-package mini.shoppingb.command;
+package mini.shoppingb.command.employees;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

@@ -1,8 +1,7 @@
-package mini.shoppingb.service;
+package mini.shoppingb.service.employees;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.java.Log;
-import mini.shoppingb.command.LoginCommand;
+import mini.shoppingb.command.employees.LoginCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
 import mini.shoppingb.domain.EmployeeDTO;
 import mini.shoppingb.mapper.LoginMapper;
