@@ -23,7 +23,9 @@ public class ShoppingBApplication {
             model.addAttribute("isLoggedIn", true);
             if (auth.getDepartment().equals("manage")) {
                 model.addAttribute("isManager", true);
+                model.addAttribute("isProduct", false);
             } else {
+                model.addAttribute("isProduct", true);
                 model.addAttribute("isManager", false);
             }
         } else {
