@@ -20,7 +20,7 @@
             <if test="goodsDetailImage == null">
                 null,null,
             </if>
-            #{visitCount},null,null)
+            0,null,null)
     </insert>
 
     <select id="goodsList" resultType="goods">
@@ -28,6 +28,13 @@
                          ,GOODS_REGIST , GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
                          , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE
                          , visit_count ,update_Emp_Num , goods_Update_Date from goods
+    </select>
+
+    <select id="goodsDetail" parameterType="integer" resultType="goods">
+        select goods_Num , goods_name , goods_price ,goods_contents , emp_num
+             ,GOODS_REGIST , GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+             , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE
+             , visit_count ,update_Emp_Num , goods_Update_Date from goods where goods_num=#{goodsNum}
     </select>
 
 </mapper>

@@ -9,4 +9,5 @@ import java.util.List;
 public interface GoodsMapper {
     public void goodsRegist(GoodsDTO dto);
     public List<GoodsDTO> goodsList();
+    public GoodsDTO goodsDetail(int goodsNum);
 }

@@ -8,7 +8,7 @@
         <meta name="author" content="" />
         <title>Tables - SB Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="../../static/css/styles.css" rel="stylesheet" />
+        <link href="/static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -120,50 +120,116 @@
                     </div>
                 </nav>
             </div>
-            <div id="layoutSidenav_content">
+              <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">상품관리</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/">홈</a></li>
-                            <li class="breadcrumb-item active">상품관리</li>
-                        </ol>
+                  <div class="container-fluid px-4">
+                    <h1 class="mt-4">상품 상세 정보</h1>
+                    <ol class="breadcrumb mb-4">
+                      <li class="breadcrumb-item"><a href="/">홈</a></li>
+                      <li class="breadcrumb-item"><a href="/employees/product/manage">상품 관리</a></li>
+                      <li class="breadcrumb-item active">상품 상세 정보</li>
+                    </ol>
 
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-box-open me-1"></i>
-                                상품 리스트
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple" style="width: 100%; border-collapse: separate; border-spacing: 10px; text-align: center;">
-                                    <thead>
-                                    <tr style="background-color: #f9f9f9;">
-                                        <th style="padding: 10px;">상품번호</th>
-                                        <th style="padding: 10px;">상품명</th>
-                                        <th style="padding: 10px;">상품가격</th>
-                                        <th style="padding: 10px;">메인 이미지</th>
-                                        <th style="padding: 10px;">등록 직원 번호</th>
-                                        <th style="padding: 10px;">수정 직원 번호</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="dto:${dto}">
-                                        <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${dto.goodsNum}" style="text-decoration: none; color: inherit;" th:text="${dto.goodsNum}"></a></td>
-                                        <td style="padding: 10px;" th:text="${dto.goodsName}"></td>
-                                        <td style="padding: 10px;" th:text="${dto.goodsPrice}"></td>
-                                        <td style="padding: 10px;">
-                                            <img th:src="@{/static/upload/} + ${dto.goodsMainStoreImage}" alt="Main Image 1" style="width: 50px; height: 50px; border: 1px solid #ccc; border-radius: 5px;">
-                                        </td>
-                                        <td style="padding: 10px;" th:text="${dto.empNum}"></td>
-                                        <td style="padding: 10px;" th:text="${dto.updateEmpNum}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="card mb-4">
+                      <div class="card-header">
+                        <i class="fas fa-box-open me-1"></i>
+                        상품 상세 정보
+                      </div>
+                      <div class="card-body">
+                        <table style="width: 100%; border-collapse: separate; border-spacing: 10px; text-align: center;">
+                          <tbody>
+                          <tr>
+                              <th style="padding: 10px; text-align: right;">메인 이미지:</th>
+                              <td style="padding: 10px;">
+                                  <img th:src="@{/static/upload/} + ${dto.goodsMainStoreImage}"
+                                       alt="Main Image"
+                                       style="width: 100px; height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+                              </td>
+                          </tr>
+                          <tr>
+                              <th style="padding: 10px; text-align: right;">상세 이미지:</th>
+                              <td style="padding: 10px;">
+                                  <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                                      <div th:each="image : ${images}">
+                                          <img th:src="@{/static/upload/} + ${image}"
+                                               alt="Detail Image"
+                                               style="width: 100px; height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+
+                          <tr>
+                            <th style="padding: 10px; text-align: right; width: 25%;">상품번호:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsNum}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">상품명:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsName}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">상품가격:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsPrice}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">상품 설명:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsContents}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">조회수:</th>
+                            <td style="padding: 10px;" th:text="${dto.visitCount}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">등록 직원 번호:</th>
+                            <td style="padding: 10px;" th:text="${dto.empNum}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">수정 직원 번호:</th>
+                            <td style="padding: 10px;" th:text="${dto.updateEmpNum}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">등록일:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsRegist}"></td>
+                          </tr>
+                          <tr>
+                            <th style="padding: 10px; text-align: right;">수정일:</th>
+                            <td style="padding: 10px;" th:text="${dto.goodsUpdateDate}"></td>
+                          </tr>
+                          </tbody>
+                        </table>
+                          <div align="center" style="margin-top: 20px;">
+                              <button style="
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.3s;">
+                                  수정하기
+                              </button>
+                              <button style="
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.3s;">
+                                  삭제하기
+                              </button>
+                          </div>
+                      </div>
                     </div>
+                  </div>
                 </main>
-            </div>
+              </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="../../static/js/scripts.js"></script>
