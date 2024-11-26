@@ -8,13 +8,12 @@ import mini.shoppingb.service.employees.AuthService;
 import mini.shoppingb.service.employees.goods.GoodsDetailService;
 import mini.shoppingb.service.employees.goods.GoodsListService;
 import mini.shoppingb.service.employees.goods.GoodsRegistService;
+import mini.shoppingb.service.employees.goods.GoodsUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class GoodsController {
@@ -29,6 +28,9 @@ public class GoodsController {
 
     @Autowired
     GoodsDetailService goodsDetailService;
+
+    @Autowired
+    GoodsUpdateService goodsUpdateService;
 
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
@@ -59,5 +61,19 @@ public class GoodsController {
             return "thymeleaf/error/404";
         }
         return "thymeleaf/goods/goodsDetail";
+    }
+
+    @GetMapping("/employees/product/update/{goodsNum}")
+    public String productUpdate(@PathVariable int goodsNum, HttpSession session, Model model) {
+        authService.execute(session, model);
+        GoodsDTO dto = goodsDetailService.execute(goodsNum, model);
+        model.addAttribute("dto", dto);
+        return "thymeleaf/goods/goodsUpdate";
+    }
+
+    @PostMapping("/employees/product/update")
+    public String updateProduct(GoodsCommand command,Model model) {
+        goodsUpdateService.execute(command, model);
+        return "redirect:/goodsList";
     }
 }
