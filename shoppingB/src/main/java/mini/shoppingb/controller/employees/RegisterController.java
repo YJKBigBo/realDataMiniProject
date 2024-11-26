@@ -1,4 +1,4 @@
-package mini.shoppingb.controller;
+package mini.shoppingb.controller.employees;
 
 import mini.shoppingb.command.EmployeeCommand;
 import mini.shoppingb.service.RegisterService;
