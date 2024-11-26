@@ -3,7 +3,7 @@ package mini.shoppingb.service.employees;
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.LoginCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
-import mini.shoppingb.domain.EmployeeDTO;
+import mini.shoppingb.domain.employees.EmployeeDTO;
 import mini.shoppingb.mapper.LoginMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ public class LoginService {
             auth.setUserName(dto.getEmpName());
             auth.setDepartment(dto.getEmpDepartment());
             auth.setGrade("employee");
+            auth.setUserNum(dto.getEmpNum());
             session.setAttribute("auth", auth);
         }
     }
