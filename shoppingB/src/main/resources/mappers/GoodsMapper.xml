@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.GoodsMapper">
+
+    <insert id="goodsRegist" parameterType="goods">
+        insert into goods
+            (goods_Num , goods_name , goods_price ,goods_contents , emp_num
+            ,GOODS_REGIST , GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+            , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE
+            , visit_count ,update_Emp_Num , goods_Update_Date)
+        values
+            (#{goodsNum}, #{goodsName}, #{goodsPrice}, #{goodsContents}
+            ,#{empNum}, sysdate(),
+            #{goodsMainImage}, #{goodsMainStoreImage},
+            <if test="goodsDetailImage != null">
+                #{goodsDetailImage},#{goodsDetailStoreImage},
+            </if>
+            <if test="goodsDetailImage == null">
+                null,null,
+            </if>
+            #{visitCount},null,null)
+    </insert>
+
+</mapper>
