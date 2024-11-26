@@ -3,6 +3,7 @@ package mini.shoppingb.controller.employees;
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.service.employees.AuthService;
 import mini.shoppingb.service.employees.goods.GoodsRegistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,21 +16,12 @@ public class GoodsController {
     @Autowired
     GoodsRegistService goodsRegistService;
 
+    @Autowired
+    AuthService authService;
+
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
-        AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        if (auth != null) {
-            model.addAttribute("isLoggedIn", true);
-            if (auth.getDepartment().equals("manage")) {
-                model.addAttribute("isManager", true);
-                model.addAttribute("isProduct", false);
-            } else {
-                model.addAttribute("isProduct", true);
-                model.addAttribute("isManager", false);
-            }
-        } else {
-            model.addAttribute("isLoggedIn", false);
-        }
+        authService.execute(session, model);
         return "thymeleaf/productRegist";
     }
 
@@ -37,5 +29,11 @@ public class GoodsController {
     public String productRegistSubmit(HttpSession session, GoodsCommand command) {
         goodsRegistService.execute(session,command);
         return "redirect:/";
+    }
+
+    @GetMapping("/employees/product/manage")
+    public String productManage(HttpSession session, Model model) {
+        authService.execute(session, model);
+        return null;
     }
 }
