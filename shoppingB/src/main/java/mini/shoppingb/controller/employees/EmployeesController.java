@@ -50,7 +50,8 @@ public class EmployeesController {
     }
 
     @GetMapping("/employees/register")
-    public String registerPage() {
+    public String registerPage(HttpSession session, Model model) {
+        employeesAuthService.execute(session, model);
         return "thymeleaf/employees/register";
     }
 
