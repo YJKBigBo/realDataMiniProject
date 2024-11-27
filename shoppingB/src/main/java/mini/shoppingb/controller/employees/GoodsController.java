@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
 import mini.shoppingb.domain.employees.GoodsDTO;
-import mini.shoppingb.service.employees.AuthService;
+import mini.shoppingb.service.employees.employees.AuthService;
 import mini.shoppingb.service.employees.goods.GoodsDetailService;
 import mini.shoppingb.service.employees.goods.GoodsListService;
 import mini.shoppingb.service.employees.goods.GoodsRegistService;
