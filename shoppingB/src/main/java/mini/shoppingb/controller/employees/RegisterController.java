@@ -14,7 +14,7 @@ public class RegisterController {
 
     @GetMapping("/employees/register")
     public String registerPage() {
-        return "thymeleaf/register";
+        return "thymeleaf/employees/register";
     }
 
     @PostMapping("/employees/register")

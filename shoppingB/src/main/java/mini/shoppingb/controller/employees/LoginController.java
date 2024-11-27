@@ -16,7 +16,7 @@ public class LoginController {
 
     @GetMapping("/employees/login")
     public String login() {
-        return "thymeleaf/login";
+        return "thymeleaf/employees/login";
     }
 
     @PostMapping("/employees/login")
