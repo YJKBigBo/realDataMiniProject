@@ -32,5 +32,14 @@
              , emp_post, emp_phone, emp_jumin, emp_email, emp_hire_date, emp_image, emp_department, emp_image from employees
     </select>
 
+    <select id="search" resultType="employee" parameterType="string">
+        select emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail
+             , emp_post, emp_phone, emp_jumin, emp_email, emp_hire_date, emp_image, emp_department, emp_image from employees where emp_name=#{empName}
+    </select>
+
+    <select id="searchAll" resultType="employee">
+        select * from employees
+    </select>
+
 
 </mapper>

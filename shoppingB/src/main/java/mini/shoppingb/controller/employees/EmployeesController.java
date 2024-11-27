@@ -4,14 +4,15 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.EmployeeCommand;
 import mini.shoppingb.command.employees.LoginCommand;
 
+import mini.shoppingb.command.searchCommand;
+import mini.shoppingb.domain.employees.EmployeeDTO;
 import mini.shoppingb.service.employees.employees.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 public class EmployeesController {
@@ -32,6 +33,9 @@ public class EmployeesController {
 
     @Autowired
     EmployeesAuthService employeesAuthService;
+
+    @Autowired
+    EmployeesSearchService employeeSearchService;
 
     @GetMapping("/employees/login")
     public String login() {
@@ -99,6 +103,13 @@ public class EmployeesController {
     public String employeeManagerUpdate(HttpSession session,EmployeeCommand employeeCommand,@PathVariable("empNum") String empNum) {
         employeesUpdateService.execute(session, employeeCommand, empNum);
         return "redirect:/";
+    }
+
+    @PostMapping("/employees/search")
+    public String searchEmployee(HttpSession session ,searchCommand command,Model model) {
+        employeesAuthService.execute(session, model);
+        employeeSearchService.execute(command, model);
+        return "thymeleaf/employees/list";
     }
 
 }

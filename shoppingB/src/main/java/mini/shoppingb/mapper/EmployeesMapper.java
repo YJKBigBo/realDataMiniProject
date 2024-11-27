@@ -13,4 +13,6 @@ public interface EmployeesMapper {
     public EmployeeDTO detail(String empNum);
     public void update(EmployeeDTO employeeDTO);
     public List<EmployeeDTO> list();
+    public List<EmployeeDTO> search(String name);
+    public List<EmployeeDTO> searchAll();
 }
