@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 @Service
-public class AuthService {
+public class EmployeesAuthService {
 
     public void execute(HttpSession session, Model model){
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");

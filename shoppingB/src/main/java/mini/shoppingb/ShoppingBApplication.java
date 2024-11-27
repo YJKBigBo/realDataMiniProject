@@ -1,14 +1,12 @@
 package mini.shoppingb;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.AuthInfoDTO;
-import mini.shoppingb.service.employees.employees.AuthService;
+import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
@@ -20,11 +18,11 @@ public class ShoppingBApplication {
     }
 
     @Autowired
-    AuthService authService;
+    EmployeesAuthService employeesAuthService;
 
     @RequestMapping("/")
     public String home(HttpSession session, Model model) {
-        authService.execute(session, model);
+        employeesAuthService.execute(session, model);
         return "thymeleaf/index";
     }
 }
