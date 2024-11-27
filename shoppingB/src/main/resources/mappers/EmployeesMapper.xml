@@ -16,5 +16,16 @@
               ,#{empHireDate} ,#{empPhone} ,#{empEmail},#{empJumin}, #{empDepartment})
     </insert>
 
+    <select id="detail" parameterType="string" resultType="employee">
+        select emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail
+             , emp_post, emp_phone, emp_jumin, emp_email, emp_hire_date, emp_image, emp_department from employees where emp_num = #{empNum}
+    </select>
+
+    <update id="update" parameterType="employee">
+        update employees set emp_name=#{empName}, emp_addr=#{empAddr}, emp_addr_detail=#{empAddrDetail}, emp_post=#{empPost}, emp_image=#{empImage},
+                            emp_phone=#{empPhone}, emp_jumin=#{empJumin}, emp_email=#{empEmail}, emp_hire_date=#{empHireDate}, emp_department=#{empDepartment}
+        where emp_id=#{empId}
+    </update>
+
 
 </mapper>

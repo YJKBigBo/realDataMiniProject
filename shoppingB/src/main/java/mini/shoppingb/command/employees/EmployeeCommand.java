@@ -3,6 +3,7 @@ package mini.shoppingb.command.employees;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -31,5 +32,6 @@ public class EmployeeCommand {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date empHireDate;
     String empDepartment;
+    MultipartFile empImage;
 }
 
