@@ -10,4 +10,5 @@ public interface GoodsMapper {
     public void goodsRegist(GoodsDTO dto);
     public List<GoodsDTO> goodsList();
     public GoodsDTO goodsDetail(int goodsNum);
+    public void goodsUpdate(GoodsDTO dto);
 }

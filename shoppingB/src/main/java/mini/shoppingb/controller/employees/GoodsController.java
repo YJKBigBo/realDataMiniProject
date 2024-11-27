@@ -72,8 +72,8 @@ public class GoodsController {
     }
 
     @PostMapping("/employees/product/update")
-    public String updateProduct(GoodsCommand command,Model model) {
-        goodsUpdateService.execute(command, model);
-        return "redirect:/goodsList";
+    public String updateProduct(GoodsCommand command,Model model, HttpSession session) {
+        goodsUpdateService.execute(command, model, session);
+        return "redirect:/employees/product/manage";
     }
 }

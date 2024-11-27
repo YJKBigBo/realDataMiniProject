@@ -13,7 +13,7 @@
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="../index.html">Start Bootstrap</a>
+            <a class="navbar-brand ps-3" href="/">관리자 페이지</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -57,7 +57,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">공통 항목</div>
-                            <a class="nav-link" href="/static">
+                            <a class="nav-link" href="/">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 메인
                             </a>
@@ -115,10 +115,6 @@
                             </a>
                         </div>
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
@@ -137,6 +133,9 @@
                             <div class="card-body">
                                 <form id="product-form" method="post" action="/employees/product/update" enctype="multipart/form-data">
                                     <div class="mb-3">
+                                        <input type="text" class="form-control" id="goodsNum" name="goodsNum" th:value="${dto.goodsNum}" hidden="hidden">
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="goodsName" class="form-label">상품명</label>
                                         <input type="text" class="form-control" id="goodsName" name="goodsName" placeholder="상품명을 입력하세요" th:value="${dto.goodsName}" required>
                                     </div>
@@ -147,7 +146,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="visitCount" class="form-label">조회수</label>
-                                            <input type="number" class="form-control" id="visitCount" name="visitCount" placeholder="조회수를 입력하세요" value="0" th:value="${dto.visitCount}" readonly="readonly">
+                                            <input type="number" class="form-control" id="visitCount" name="visitCount" placeholder="조회수를 입력하세요" value="0" th:value="${dto.visitCount}">
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -158,7 +157,7 @@
                                         <div class="col-md-6">
                                             <label for="goodsMainImage" class="form-label">메인 이미지</label>
                                             <h6>변경이 필요없으면 파일을 업로드하지 마십시오.</h6>
-                                            <input type="file" class="form-control" id="goodsMainImage" name="goodsMainImage" accept="image/*" required>
+                                            <input type="file" class="form-control" id="goodsMainImage" name="goodsMainImage" accept="image/*">
                                             <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                                                 <img th:src="@{/static/upload/} + ${dto.goodsMainStoreImage}"
                                                      alt="Current Main Image"
@@ -168,7 +167,7 @@
                                         <div class="col-md-6">
                                             <label for="goodsDetailImage" class="form-label">상세 이미지</label>
                                             <h6>변경이 필요없으면 파일을 업로드하지 마십시오.</h6>
-                                            <input type="file" class="form-control" id="goodsDetailImage" name="goodsDetailImage" accept="image/*" multiple required>
+                                            <input type="file" class="form-control" id="goodsDetailImage" name="goodsDetailImage" accept="image/*" multiple="multiple">
                                             <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                                                 <div style="margin-top: 10px;" th:each="image : ${images}">
                                                     <img th:src="@{/static/upload/} + ${image}"
@@ -178,7 +177,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="submit" class="btn btn-primary" value="상품 등록"/>
+                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                        <input type="submit" class="btn btn-primary" value="상품 수정" />
+                                    </div>
                                 </form>
                             </div>
                         </div>

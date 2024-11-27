@@ -37,4 +37,12 @@
              , visit_count ,update_Emp_Num , goods_Update_Date from goods where goods_num=#{goodsNum}
     </select>
 
+    <update id="goodsUpdate" parameterType="goods">
+        update goods set goods_name=#{goodsName} , goods_price=#{goodsPrice} ,goods_contents=#{goodsContents} , emp_num=#{empNum}
+                       ,GOODS_REGIST=#{goodsRegist} , GOODS_MAIN_IMAGE=#{goodsMainImage} ,GOODS_MAIN_STORE_IMAGE=#{goodsMainStoreImage}
+                       , GOODS_DETAIL_IMAGE=#{goodsDetailImage} ,GOODS_DETAIL_STORE_IMAGE=#{goodsDetailStoreImage}
+                       , visit_count=#{visitCount} ,update_Emp_Num=#{updateEmpNum} , goods_Update_Date=sysdate()
+        where goods_Num=#{goodsNum}
+    </update>
+
 </mapper>
