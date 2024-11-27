@@ -12,7 +12,7 @@ public class EmployeesAuthService {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         if (auth != null) {
             model.addAttribute("isLoggedIn", true);
-            if (auth.getDepartment().equals("manage")) {
+            if (auth.getDepartment().equals("manager")) {
                 model.addAttribute("isManager", true);
                 model.addAttribute("isProduct", false);
             } else {

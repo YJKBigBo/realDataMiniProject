@@ -27,5 +27,10 @@
         where emp_id=#{empId}
     </update>
 
+    <select id="list" resultType="employee">
+        select emp_num, emp_id, emp_pw, emp_name, emp_addr, emp_addr_detail
+             , emp_post, emp_phone, emp_jumin, emp_email, emp_hire_date, emp_image, emp_department, emp_image from employees
+    </select>
+
 
 </mapper>

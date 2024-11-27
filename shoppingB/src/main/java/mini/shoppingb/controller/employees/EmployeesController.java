@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.EmployeeCommand;
 import mini.shoppingb.command.employees.LoginCommand;
 
-import mini.shoppingb.service.employees.employees.EmployeesDetailService;
-import mini.shoppingb.service.employees.employees.EmployeesLoginService;
-import mini.shoppingb.service.employees.employees.EmployeesRegisterService;
-import mini.shoppingb.service.employees.employees.EmployeesUpdateService;
+import mini.shoppingb.service.employees.employees.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +25,12 @@ public class EmployeesController {
 
     @Autowired
     EmployeesUpdateService employeesUpdateService;
+
+    @Autowired
+    EmployeeListService employeeListService;
+
+    @Autowired
+    EmployeesAuthService employeesAuthService;
 
     @GetMapping("/employees/login")
     public String login() {
@@ -67,5 +70,12 @@ public class EmployeesController {
     public String employeesUpdateSubmit(HttpSession session,EmployeeCommand employeeCommand) {
         employeesUpdateService.execute(session, employeeCommand);
         return "redirect:/";
+    }
+
+    @GetMapping("/employees/list")
+    public String employeesList(HttpSession session,Model model) {
+        employeesAuthService.execute(session, model);
+        employeeListService.execute(session, model);
+        return "thymeleaf/employees/list";
     }
 }
