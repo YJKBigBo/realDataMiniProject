@@ -1,4 +1,4 @@
-package mini.shoppingb.service.employees;
+package mini.shoppingb.service.employees.employees;
 
 import mini.shoppingb.command.employees.EmployeeCommand;
 import mini.shoppingb.domain.employees.EmployeeDTO;

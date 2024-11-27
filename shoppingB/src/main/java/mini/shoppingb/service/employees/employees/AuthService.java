@@ -1,4 +1,4 @@
-package mini.shoppingb.service.employees;
+package mini.shoppingb.service.employees.employees;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.domain.AuthInfoDTO;

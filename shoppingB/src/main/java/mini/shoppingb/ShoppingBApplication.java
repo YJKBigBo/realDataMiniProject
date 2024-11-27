@@ -2,7 +2,7 @@ package mini.shoppingb;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.domain.AuthInfoDTO;
-import mini.shoppingb.service.employees.AuthService;
+import mini.shoppingb.service.employees.employees.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
