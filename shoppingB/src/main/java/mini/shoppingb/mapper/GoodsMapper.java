@@ -11,4 +11,6 @@ public interface GoodsMapper {
     public List<GoodsDTO> goodsList();
     public GoodsDTO goodsDetail(int goodsNum);
     public void goodsUpdate(GoodsDTO dto);
+    public List<GoodsDTO> search(String name);
+    public List<GoodsDTO> searchAll();
 }

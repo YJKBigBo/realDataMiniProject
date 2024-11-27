@@ -2,12 +2,10 @@ package mini.shoppingb.controller.employees;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
+import mini.shoppingb.command.searchCommand;
 import mini.shoppingb.domain.employees.GoodsDTO;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
-import mini.shoppingb.service.employees.goods.GoodsDetailService;
-import mini.shoppingb.service.employees.goods.GoodsListService;
-import mini.shoppingb.service.employees.goods.GoodsRegistService;
-import mini.shoppingb.service.employees.goods.GoodsUpdateService;
+import mini.shoppingb.service.employees.goods.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +27,9 @@ public class GoodsController {
 
     @Autowired
     GoodsUpdateService goodsUpdateService;
+
+    @Autowired
+    GoodsSearchService goodsSearchService;
 
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
@@ -73,5 +74,12 @@ public class GoodsController {
     public String updateProduct(GoodsCommand command,Model model, HttpSession session) {
         goodsUpdateService.execute(command, model, session);
         return "redirect:/employees/product/manage";
+    }
+
+    @PostMapping("/goods/search")
+    public String searchProduct(HttpSession session, Model model, searchCommand command) {
+        employeesAuthService.execute(session, model);
+        goodsSearchService.execute(model, command);
+        return "thymeleaf/goods/goodsList";
     }
 }

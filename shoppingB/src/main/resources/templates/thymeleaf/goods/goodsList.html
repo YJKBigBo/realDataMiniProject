@@ -118,6 +118,12 @@
                                 상품 리스트
                             </div>
                             <div class="card-body">
+                                <form id="searchForm" method="post" action="/goods/search">
+                                    <div>
+                                        <input id="findName" style="width: 94%; border-collapse: separate;" name="name" placeholder="상품명을 입력해주세요." />
+                                        <input type="submit" value="검색" style="width: 5%; border-radius: 10%" />
+                                    </div>
+                                </form>
                                 <table id="datatablesSimple" style="width: 100%; border-collapse: separate; border-spacing: 10px; text-align: center;">
                                     <thead>
                                     <tr style="background-color: #f9f9f9;">
@@ -139,6 +145,16 @@
                                         </td>
                                         <td style="padding: 10px;" th:text="${dto.empNum}"></td>
                                         <td style="padding: 10px;" th:text="${dto.updateEmpNum}"></td>
+                                    </tr>
+                                    <tr th:each="findGoods:${findGoods}">
+                                        <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${findGoods.goodsNum}" style="text-decoration: none; color: inherit;" th:text="${findGoods.goodsNum}"></a></td>
+                                        <td style="padding: 10px;" th:text="${findGoods.goodsName}"></td>
+                                        <td style="padding: 10px;" th:text="${findGoods.goodsPrice}"></td>
+                                        <td style="padding: 10px;">
+                                            <img th:src="@{/static/upload/} + ${findGoods.goodsMainStoreImage}" alt="Main Image 1" style="width: 50px; height: 50px; border: 1px solid #ccc; border-radius: 5px;">
+                                        </td>
+                                        <td style="padding: 10px;" th:text="${findGoods.empNum}"></td>
+                                        <td style="padding: 10px;" th:text="${findGoods.updateEmpNum}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

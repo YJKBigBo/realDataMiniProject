@@ -45,4 +45,16 @@
         where goods_Num=#{goodsNum}
     </update>
 
+    <select id="searchAll" resultType="goods">
+        select goods_Num , goods_name , goods_price ,goods_contents , emp_num
+                         ,GOODS_REGIST , GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+                         , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE from goods
+    </select>
+
+    <select id="search" parameterType="string" resultType="goods">
+        select goods_Num , goods_name , goods_price ,goods_contents , emp_num
+             ,GOODS_REGIST , GOODS_MAIN_IMAGE ,GOODS_MAIN_STORE_IMAGE
+             , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE from goods where goods_name=#{goodsName}
+    </select>
+
 </mapper>
