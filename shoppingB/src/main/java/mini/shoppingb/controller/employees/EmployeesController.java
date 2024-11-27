@@ -70,7 +70,7 @@ public class EmployeesController {
 
     @PostMapping("/employees/update")
     public String employeesUpdateSubmit(HttpSession session,EmployeeCommand employeeCommand) {
-        employeesUpdateService.execute(session, employeeCommand);
+        employeesUpdateService.execute(session, employeeCommand, null);
         return "redirect:/";
     }
 
@@ -87,4 +87,18 @@ public class EmployeesController {
         employeesDetailService.execute(session, model, empNum);
         return "thymeleaf/employees/detail";
     }
+
+    @GetMapping("/employees/update/{empNum}")
+    public String employeesUpdate(HttpSession session,Model model,@PathVariable("empNum") String empNum) {
+        employeesAuthService.execute(session, model);
+        employeesDetailService.execute(session, model, empNum);
+        return "thymeleaf/employees/managerUpdate";
+    }
+
+    @PostMapping("/employees/update/{empNum}")
+    public String employeeManagerUpdate(HttpSession session,EmployeeCommand employeeCommand,@PathVariable("empNum") String empNum) {
+        employeesUpdateService.execute(session, employeeCommand, empNum);
+        return "redirect:/";
+    }
+
 }

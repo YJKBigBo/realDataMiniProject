@@ -18,26 +18,36 @@ public class EmployeesUpdateService {
     @Autowired
     EmployeesMapper employeesMapper;
 
-    public void execute(HttpSession session, EmployeeCommand command) {
+    public void execute(HttpSession session, EmployeeCommand command, String pathNum) {
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        String empNum = auth.getUserNum();
+        String empNum = null;
+        if(pathNum == null){
+            empNum = auth.getUserNum();
+        } else{
+            empNum = pathNum;
+        }
+
         EmployeeDTO dto = employeesMapper.detail(empNum);
         String empPw = dto.getEmpPw();
-
-        if(command.getEmpPw().equals(empPw)) {
-            dto.setEmpName(command.getEmpName());
-            System.out.println(command.getEmpAddr());
-            dto.setEmpAddr(command.getEmpAddr());
-            dto.setEmpAddrDetail(command.getEmpAddrDetail());
-            dto.setEmpPost(command.getEmpPost());
-            dto.setEmpPhone(command.getEmpPhone());
-            dto.setEmpEmail(command.getEmpEmail());
+        if(auth.getDepartment().equals("manager")){
             dto.setEmpJumin(command.getEmpJumin());
-            if(auth.getDepartment().equals("manage")) {
-                dto.setEmpDepartment(command.getEmpDepartment());
-                dto.setEmpHireDate(command.getEmpHireDate());
-            }
-
+            dto.setEmpHireDate(command.getEmpHireDate());
+            dto.setEmpDepartment(command.getEmpDepartment());
+        } else {
+            if(command.getEmpPw().equals(empPw)) {
+                dto.setEmpName(command.getEmpName());
+                System.out.println(command.getEmpAddr());
+                dto.setEmpAddr(command.getEmpAddr());
+                dto.setEmpAddrDetail(command.getEmpAddrDetail());
+                dto.setEmpPost(command.getEmpPost());
+                dto.setEmpPhone(command.getEmpPhone());
+                dto.setEmpEmail(command.getEmpEmail());
+                dto.setEmpJumin(command.getEmpJumin());
+                if(auth.getDepartment().equals("manage")) {
+                    dto.setEmpDepartment(command.getEmpDepartment());
+                    dto.setEmpHireDate(command.getEmpHireDate());
+                }
+        }
             URL resource = getClass().getClassLoader().getResource("static/upload");
             String filrDir = resource.getFile();
             MultipartFile mf = command.getEmpImage();
