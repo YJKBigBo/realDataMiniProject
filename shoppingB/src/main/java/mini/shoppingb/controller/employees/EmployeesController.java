@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -63,7 +64,7 @@ public class EmployeesController {
 
     @GetMapping("/employees/update")
     public String employeesUpdate(HttpSession session,Model model) {
-        employeesDetailService.execute(session, model);
+        employeesDetailService.execute(session, model, null);
         return "thymeleaf/employees/update";
     }
 
@@ -78,5 +79,12 @@ public class EmployeesController {
         employeesAuthService.execute(session, model);
         employeeListService.execute(session, model);
         return "thymeleaf/employees/list";
+    }
+
+    @GetMapping("/employees/detail/{empNum}")
+    public String employeesDetail(HttpSession session,Model model,@PathVariable("empNum") String empNum) {
+        employeesAuthService.execute(session, model);
+        employeesDetailService.execute(session, model, empNum);
+        return "thymeleaf/employees/detail";
     }
 }

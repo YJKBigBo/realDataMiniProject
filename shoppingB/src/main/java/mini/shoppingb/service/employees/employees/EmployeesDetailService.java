@@ -16,11 +16,16 @@ public class EmployeesDetailService {
     @Autowired
     EmployeesMapper employeesMapper;
 
-    public void execute(HttpSession session, Model model){
+    public void execute(HttpSession session, Model model, String pathNum){
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
-        String empNum = auth.getUserNum();
+        String empNum = null;
+        if(pathNum == null){
+            empNum = auth.getUserNum();
+        } else{
+            empNum = pathNum;
+        }
+
         String department = auth.getDepartment();
-        System.out.println(department);
         EmployeeDTO employeeDTO = employeesMapper.detail(empNum);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
