@@ -4,19 +4,19 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.LoginCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
 import mini.shoppingb.domain.employees.EmployeeDTO;
-import mini.shoppingb.mapper.LoginMapper;
+import mini.shoppingb.mapper.EmployeesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeesLoginService {
     @Autowired
-    LoginMapper loginMapper;
+    EmployeesMapper employeesMapper;
 
     public void execute(LoginCommand loginCommand, HttpSession session) {
         String userId = loginCommand.getUserId();
         String userPw = loginCommand.getUserPw();
-        EmployeeDTO dto = loginMapper.login(userId, userPw);
+        EmployeeDTO dto = employeesMapper.login(userId, userPw);
         if(dto !=null) {
             AuthInfoDTO auth = new AuthInfoDTO();
             auth.setUserId(dto.getEmpId());

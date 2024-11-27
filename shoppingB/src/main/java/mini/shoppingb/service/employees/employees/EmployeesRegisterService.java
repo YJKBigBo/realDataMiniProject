@@ -3,14 +3,14 @@ package mini.shoppingb.service.employees.employees;
 import mini.shoppingb.command.employees.EmployeeCommand;
 import mini.shoppingb.domain.employees.EmployeeDTO;
 import mini.shoppingb.mapper.AutoNumMapper;
-import mini.shoppingb.mapper.RegisterMapper;
+import mini.shoppingb.mapper.EmployeesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeesRegisterService {
     @Autowired
-    RegisterMapper registerMapper;
+    EmployeesMapper employeesMapper;
 
     @Autowired
     AutoNumMapper autoNumMapper;
@@ -30,6 +30,6 @@ public class EmployeesRegisterService {
         String empNum = autoNumMapper.autoNum("emp_num", "employees");
         dto.setEmpNum(empNum);
         dto.setEmpPw(command.getEmpPw());
-        registerMapper.regist(dto);
+        employeesMapper.regist(dto);
     }
 }
