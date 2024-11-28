@@ -14,20 +14,22 @@ public class MemberLoginService {
     MembersMapper membersMapper;
 
     public int execute(MembersCommand command, HttpSession session) {
-        MembersDTO dto = new MembersDTO();
-        dto.setMemberId(command.getMemberId());
-        dto.setMemberPw(command.getMemberPw());
-        int i = membersMapper.membersLogin(dto);
-        if(i>=1){
-            AuthInfoDTO auth = new AuthInfoDTO();
+        String memId = command.getMemberId();
+        String memPw = command.getMemberPw();
+        MembersDTO dto = membersMapper.membersLogin(memId,memPw);
+        AuthInfoDTO auth = new AuthInfoDTO();
+        int i = 0;
+        if(dto.getMemberNum() != null){
             auth.setUserId(dto.getMemberId());
             auth.setUserEmail(dto.getMemberEmail());
             auth.setUserName(dto.getMemberName());
             auth.setDepartment("members");
             auth.setGrade("members");
             auth.setUserNum(dto.getMemberNum());
-            session.setAttribute("auth", auth);
+            i = 1;
         }
+        session.setAttribute("auth", auth);
+        System.out.println(auth);
         return i;
     }
 }
