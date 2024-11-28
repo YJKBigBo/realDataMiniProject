@@ -1,7 +1,9 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState, Suspense, lazy, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter 임포트
 import Sidebar from "./component/SideBar";
-import Navbar from "./component/NavBar";
+import Navbar from "./component/NavBar"
 import loginApi from "./apis/LoginAPI";
 
 const Login = lazy(() => import("./pages/Login"));
