@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import loginApi from '../apis/LoginAPI';
 
 const Login = ({ onSignupClick, onLoginSuccess }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [memberId, setMemberId] = useState('');
+  const [memberPw, setMemberPw] = useState('');
   const [error, setError] = useState(null);
 
   const handleLogin = async (event) => {
@@ -11,8 +11,9 @@ const Login = ({ onSignupClick, onLoginSuccess }) => {
     setError(null);
 
     try {
-      const response = await loginApi.login({ userId: username, userPw: password });
-      if (response.data === "로그인 성공") {
+      const response = await loginApi.login({ memberId: memberId, memberPw: memberPw });
+      console.log(response);
+      if (response.data >= 1) {
         onLoginSuccess();
       } else {
         setError(response.data);
@@ -27,11 +28,11 @@ const Login = ({ onSignupClick, onLoginSuccess }) => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Username:</label>
+          <label>memberId:</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={memberId}
+            onChange={(e) => setMemberId(e.target.value)}
             required
           />
         </div>
@@ -39,8 +40,8 @@ const Login = ({ onSignupClick, onLoginSuccess }) => {
           <label>Password:</label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={memberPw}
+            onChange={(e) => setMemberPw(e.target.value)}
             required
           />
         </div>
