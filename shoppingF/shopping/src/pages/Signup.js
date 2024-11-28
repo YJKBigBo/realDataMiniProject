@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import memberApi from '../api/memberAPI';
+import loginApi from '../apis/LoginAPI';
+import memberApi from '../apis/MemberAPI';
 
 const Signup = ({ onLoginClick }) => {
   const [form, setForm] = useState({
@@ -33,7 +34,7 @@ const Signup = ({ onLoginClick }) => {
     try {
         const response = await memberApi.signup(form);
         console.log(response.data);
-        const memberCount = response.data['회원등록수'];
+        const memberCount = response.data;
       
         if (memberCount >= 1) {
           alert("회원가입이 완료되었습니다.");
@@ -139,7 +140,7 @@ const Signup = ({ onLoginClick }) => {
         <div>
           <label>성별 : </label>
           <select
-            name="memberGender"
+            name="gender"
             value={form.memberGender}
             onChange={handleChange}
           >

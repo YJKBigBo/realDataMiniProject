@@ -1,8 +1,9 @@
 import React, { useState, Suspense, lazy, useEffect } from 'react';
+import loginApi from './apis/LoginAPI';
 
 
-const Login = lazy(() => import("./Login"));
-const Signup = lazy(() => import("./SignUp"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
 const Items = lazy(() => import("./pages/Items"));
 const Mypage = lazy(() => import("./pages/Mypage"));
 const Main = lazy(() => import("./pages/Main"));
