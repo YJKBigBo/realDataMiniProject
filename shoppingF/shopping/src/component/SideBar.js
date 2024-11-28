@@ -19,12 +19,7 @@ function Sidebar() {
                         <div className="sb-sidenav-menu-heading">마이페이지</div>
                         <a className="nav-link collapsed" href="/product/regist" data-bs-toggle="collapse">
                             <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
-                            장바구니
-                            <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
-                        </a>
-                        <a className="nav-link collapsed" href="#" data-bs-toggle="collapse">
-                            <div className="sb-nav-link-icon"><i className="fas fa-book-open"></i></div>
-                            구매목록
+                            마이페이지
                             <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                         </a>
                     </div>
