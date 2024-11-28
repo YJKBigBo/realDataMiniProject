@@ -15,7 +15,8 @@ function App() {
     const checkSession = async () => {
       try {
         const response = await loginApi.sessionCheck();
-        if (response.data.authenticated) {
+        console.log(response);
+        if (response.data == true) {
           setCurrentPage("main");
         } else {
           setCurrentPage("login");
