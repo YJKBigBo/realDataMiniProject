@@ -5,8 +5,10 @@ import mini.shoppingb.command.members.MembersCommand;
 import mini.shoppingb.domain.members.MembersDTO;
 import mini.shoppingb.service.members.MemberLoginService;
 import mini.shoppingb.service.members.MemberRegistService;
+import mini.shoppingb.service.members.MemberSessionCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,9 @@ public class MembersController {
     @Autowired
     MemberLoginService memberLoginService;
 
+    @Autowired
+    MemberSessionCheckService memberSessionCheckService;
+
     @PostMapping("/members/regist")
     public int memberRegist(@RequestBody MembersCommand membersCommand) {
         int i = memberRegistService.execute(membersCommand);
@@ -29,5 +34,11 @@ public class MembersController {
     public int memberLogin(@RequestBody MembersCommand membersCommand, HttpSession session) {
         int i = memberLoginService.execute(membersCommand, session);
         return i;
+    }
+
+    @GetMapping("/members/sessionCheck")
+    public boolean memberSessionCheck(HttpSession session) {
+        boolean check = memberSessionCheckService.execute(session);
+        return check;
     }
 }
