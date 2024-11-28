@@ -2,7 +2,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import Navbar from "../component/NavBar.js";
-import Sidebar from "../component/SideBar.js";
 import GoodsCard from "../component/GoodsCard.js";
 import Carousel from "../component/Carousel.js";
 
@@ -13,7 +12,7 @@ function Main() {
     <div className="sb-nav-fixed">
       <Navbar />
       <div id="layoutSidenav">
-        <Sidebar />
+
         <div id="layoutSidenav_content">
           <Carousel />
           <div

@@ -1,6 +1,7 @@
-import React, { useState, Suspense, lazy, useEffect } from 'react';
-import loginApi from './apis/LoginAPI';
-
+import React, { useState, Suspense, lazy, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom"; // BrowserRouter 임포트
+import Sidebar from "./component/SideBar";
+import loginApi from "./apis/LoginAPI";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -15,8 +16,7 @@ function App() {
     const checkSession = async () => {
       try {
         const response = await loginApi.sessionCheck();
-        console.log(response);
-        if (response.data == true) {
+        if (response.data === true) {
           setCurrentPage("main");
         } else {
           setCurrentPage("login");
@@ -42,26 +42,33 @@ function App() {
         return <Signup onLoginClick={() => setCurrentPage("login")} />;
       case "main":
         return <Main onLogout={() => setCurrentPage("login")} />;
+      case "items":
+        return <Items onLogout={() => setCurrentPage("login")} />;
+      case "mypage":
+        return <Mypage onLogout={() => setCurrentPage("login")} />;
       default:
         return <div>Loading...</div>;
     }
   };
+
   return (
-    <div>
-      <div
-        className="main-container"
-        style={{ textAlign: "center", padding: "20px" }}
-      >
-        <Suspense fallback={<div>Loading...</div>}>{renderContent()}</Suspense>
+    <BrowserRouter>
+      {" "}
+      {/* Router로 App을 감싸기 */}
+      <div style={{ display: "flex" }}>
+        <div id="layoutSidenav">
+          <Sidebar setCurrentPage={setCurrentPage} />
+        </div>
+        <div
+          className="main-container"
+          style={{ flex: 1, textAlign: "center", padding: "20px" }}
+        >
+          <Suspense fallback={<div>Loading...</div>}>
+            {renderContent()}
+          </Suspense>
+        </div>
       </div>
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/item" element={<Items />} />
-          <Route path="/Mypage" element={<Mypage />} />
-        </Routes>
-      </BrowserRouter> */}
-    </div>
+    </BrowserRouter>
   );
 }
 
