@@ -1,23 +1,19 @@
-import'bootstrap/dist/css/bootstrap.css';
-import'bootstrap/dist/css/bootstrap.min.css';
-import React from 'react';
-import Navbar from './component/NavBar.js';
-import Sidebar from './component/SideBar.js';
-
-import './static/styles.css';
+import Main from "./pages/Main";
+import Items from "./pages/Items";
+import React, { useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
-    return (
-        <div className="sb-nav-fixed">
-            <Navbar />
-            <div id="layoutSidenav">
-                <Sidebar />
-                <div id="layoutSidenav_content">
-
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/item" element={<Items />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
