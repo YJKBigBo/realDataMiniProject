@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "../component/NavBar.js";
 import GoodsCard from "../component/GoodsCard.js";
 
 function Items() {
@@ -23,7 +22,6 @@ function Items() {
 
   return (
     <div className="sb-nav-fixed">
-      <Navbar />
       <div id="layoutSidenav">
 
         <div id="layoutSidenav_content">

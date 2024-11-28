@@ -1,6 +1,7 @@
 import React, { useState, Suspense, lazy, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom"; // BrowserRouter 임포트
 import Sidebar from "./component/SideBar";
+import Navbar from "./component/NavBar";
 import loginApi from "./apis/LoginAPI";
 
 const Login = lazy(() => import("./pages/Login"));
@@ -56,8 +57,11 @@ function App() {
       {" "}
       {/* Router로 App을 감싸기 */}
       <div style={{ display: "flex" }}>
-        <div id="layoutSidenav">
-          <Sidebar setCurrentPage={setCurrentPage} />
+        <div className="sb-nav-fixed">
+          <Navbar />
+          <div id="layoutSidenav">
+            <Sidebar setCurrentPage={setCurrentPage} />
+          </div>
         </div>
         <div
           className="main-container"
