@@ -1,4 +1,4 @@
-package mini.shoppingb.service.members;
+package mini.shoppingb.service.members.members;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.members.MembersCommand;

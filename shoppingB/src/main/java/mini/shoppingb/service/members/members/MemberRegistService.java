@@ -1,4 +1,4 @@
-package mini.shoppingb.service.members;
+package mini.shoppingb.service.members.members;
 
 import mini.shoppingb.command.members.MembersCommand;
 import mini.shoppingb.domain.members.MembersDTO;
