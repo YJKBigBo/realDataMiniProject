@@ -54,17 +54,19 @@ function App() {
     }
   };
 
+  const isLoggedIn = ["main", "items", "mypage"].includes(currentPage);
+
   return (
     <BrowserRouter>
-      {" "}
-      {/* Router로 App을 감싸기 */}
       <div style={{ display: "flex" }}>
-        <div className="sb-nav-fixed">
-          <Navbar />
-          <div id="layoutSidenav">
-            <Sidebar setCurrentPage={setCurrentPage} />
+        {isLoggedIn && ( // 로그인 상태일 때만 렌더링
+          <div className="sb-nav-fixed">
+            <Navbar />
+            <div id="layoutSidenav">
+              <Sidebar setCurrentPage={setCurrentPage} />
+            </div>
           </div>
-        </div>
+        )}
         <div
           className="main-container"
           style={{ flex: 1, textAlign: "center", padding: "20px" }}
