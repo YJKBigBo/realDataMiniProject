@@ -9,13 +9,14 @@ function Items() {
   const [goodsList, setGoodsList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedGoods, setSelectedGoods] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const itemsPerPage = 3;
 
   useEffect(() => {
     const fetchGoods = async () => {
       try {
         const response = await goodsApi.goodsList();
-        console.log(response);
         setGoodsList(response.data);
       } catch (error) {
         console.error(error);
@@ -88,8 +89,15 @@ function Items() {
                   goodsName={goods.goodsName}
                   goodsPrice={goods.goodsPrice}
                   goodsImage={goods.goodsMainImage}
-                  goodsStoreImage={goods.goodsMainStoreImage}
+                  goodsMainStoreImage={goods.goodsMainStoreImage}
+                  goodsDetailImage={goods.goodsDetailImage}
+                  goodsDetailStoreImage={goods.goodsDetailStoreImage}
+                  visitCount={goods.visitCount}
                   goodsContents={goods.goodsContents}
+                  onDetailClick={(goods) => {
+                    setSelectedGoods(goods);
+                    setShowModal(true);
+                  }}
                 />
               ))
             ) : (
@@ -126,6 +134,96 @@ function Items() {
           </div>
         </div>
       </div>
+
+      {/* 모달 정보창 */}
+      {showModal && selectedGoods && (
+        <div
+          className="modal"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="modal-content"
+            style={{
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "10px",
+              width: "1000px",
+              height: "600px",
+              textAlign: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2>상품명 : {selectedGoods.goodsName}</h2>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <img
+                src={`http://localhost:8080/image?imageName=${selectedGoods.goodsMainStoreImage}`}
+                alt={selectedGoods.goodsName}
+                style={{
+                  width: "30%",
+                  height: "auto",
+                  maxHeight: "150px",
+                  objectFit: "contain",
+                }}
+              />
+              {selectedGoods.goodsDetailStoreImage.split("/").map(
+                (imageName, index) =>
+                  imageName.trim() && (
+                    <img
+                      key={index}
+                      src={`http://localhost:8080/image?imageName=${imageName}`}
+                      alt={`Detail ${index + 1}`}
+                      style={{
+                        width: "30%",
+                        height: "auto",
+                        maxHeight: "150px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  )
+              )}
+            </div>
+            
+            <div style={{paddingTop:"5px", paddingBottom:"5px"}}></div>
+            <p>상품상세 : {selectedGoods.goodsContents}</p>
+            <div style={{paddingTop:"5px", paddingBottom:"5px"}}></div>
+            <p>가격 : {selectedGoods.goodsPrice?.toLocaleString()} ₩</p>
+            <div style={{paddingTop:"5px", paddingBottom:"5px"}}></div>
+            <p>조회수 : {selectedGoods.visitCount}</p>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowModal(false)}
+            >
+              바로구매
+            </button>
+            <div style={{paddingTop:"5px", paddingBottom:"5px"}}></div>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowModal(false)}
+            >
+              장바구니
+            </button>
+            <div style={{paddingTop:"5px", paddingBottom:"5px"}}></div>
+            <button
+              className="btn btn-secondary"
+              onClick={() => setShowModal(false)}
+            >
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import goodsApi from "../apis/GoodsAPI";
 
 function GoodsCard({
+  key,
   goodsName,
   goodsPrice,
   goodsImage,
-  goodsStoreImage,
+  goodsMainStoreImage,
+  goodsDetailImage,
+  goodsDetailStoreImage,
+  visitCount,
   goodsContents,
+  onDetailClick,
 }) {
   const [img, setImg] = useState();
 
   useEffect(() => {
-    const fetchImage = async (goodsStoreImage) => {
+    const fetchImage = async (goodsMainStoreImage) => {
       try {
-        const response = await goodsApi.goodsImage(goodsStoreImage);
+        const response = await goodsApi.goodsImage(goodsMainStoreImage);
         console.log(response);
         setImg(response.data);
       } catch (error) {
@@ -34,12 +39,8 @@ function GoodsCard({
         textAlign: "center",
       }}
     >
-      {/* <img
-        src={"http://loaclhost:8080/image?image=" + post.imageName}
-        alt="image from spring"
-      /> */}
       <img
-        src={`http://localhost:8080/image?imageName=${goodsStoreImage}`}
+        src={`http://localhost:8080/image?imageName=${goodsMainStoreImage}`}
         className="card-img-top"
         alt={goodsName}
         style={{
@@ -67,7 +68,24 @@ function GoodsCard({
         >
           ₩{goodsPrice?.toLocaleString() || "0"}
         </p>
-        <button className="btn btn-primary" style={{ marginTop: "10px" }}>
+        <button
+          className="btn btn-primary"
+          style={{ marginTop: "10px" }}
+          onClick={() =>
+            onDetailClick({
+              key,
+              goodsName,
+              goodsPrice,
+              goodsImage,
+              goodsMainStoreImage,
+              goodsContents,
+              onDetailClick,
+              goodsDetailImage,
+              goodsDetailStoreImage,
+              visitCount,
+            })
+          }
+        >
           상품 상세 보기
         </button>
       </div>
