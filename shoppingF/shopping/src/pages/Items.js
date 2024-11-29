@@ -2,20 +2,30 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import GoodsCard from "../component/GoodsCard.js";
+import goodsApi from "../apis/GoodsAPI.js";
 
 function Items() {
-  const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)"); // 기본 3열
+  const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
+  const [goodsList, setGoodsList] = useState([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setGridColumns("1fr");
-      } else {
-        setGridColumns("repeat(3, 1fr)");
+    const fetchGoods = async () => {
+      try {
+        const response = await goodsApi.goodsList();
+        setGoodsList(response.data);
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    handleResize();
+    fetchGoods();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setGridColumns(window.innerWidth <= 768 ? "1fr" : "repeat(3, 1fr)");
+    };
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -23,7 +33,6 @@ function Items() {
   return (
     <div className="sb-nav-fixed">
       <div id="layoutSidenav">
-
         <div id="layoutSidenav_content">
           <div
             className="input-group mb-3"
@@ -37,70 +46,37 @@ function Items() {
               type="text"
               className="form-control"
               placeholder="상품을 검색하세요."
-              aria-label="Recipient's username"
-              aria-describedby="button-addon2"
+              onChange={(e) => console.log("Search term:", e.target.value)}
             />
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              id="button-addon2"
-            >
+            <button className="btn btn-outline-secondary" type="button">
               검색
             </button>
           </div>
+
           <div
             style={{
               padding: "50px",
               display: "grid",
-              gridTemplateColumns: gridColumns, // 동적으로 열 수 조정
+              gridTemplateColumns: gridColumns,
               gap: "20px",
-              justifyItems: "center", // 카드 수평 중앙 정렬
+              justifyItems: "center",
             }}
           >
-            <GoodsCard />
-            <GoodsCard />
-            <GoodsCard />
-            <GoodsCard />
-            <GoodsCard />
-            <GoodsCard />
+            {goodsList.length > 0 ? (
+              goodsList.map((goods) => (
+                <GoodsCard
+                  key={goods.goodsNum}
+                  goodsName={goods.goodsName}
+                  goodsPrice={goods.goodsPrice}
+                  goodsImage={goods.goodsMainImage}
+                  goodsStoreImage={goods.goodsMainStoreImage}
+                  goodsContents={goods.goodsContents}
+                />
+              ))
+            ) : (
+              <div>상품이 없습니다.</div>
+            )}
           </div>
-          <nav
-            aria-label="Page navigation example"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "20px",
-            }}
-          >
-            <ul className="pagination">
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  1
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  2
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#">
-                  3
-                </a>
-              </li>
-              <li className="page-item">
-                <a className="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
     </div>
