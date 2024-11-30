@@ -40,6 +40,9 @@ public class GoodsController {
     @Autowired
     GoodsIpgoUpdateService goodsIpgoUpdateService;
 
+    @Autowired
+    GoodsIpgoDeleteService goodsIpgoDeleteService;
+
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
@@ -117,6 +120,13 @@ public class GoodsController {
     public String ipgoUpdateSubmit(HttpSession session, GoodsCommand command, Model model) {
         employeesAuthService.execute(session, model);
         goodsIpgoUpdateService.execute(command, model, session);
+        return "redirect:/employees/product/ipgo/list";
+    }
+
+    @GetMapping("/employees/product/goodsIpgo/delete/{ipgoNum}")
+    public String ipgoDelete(@PathVariable String ipgoNum, HttpSession session, Model model) {
+        employeesAuthService.execute(session, model);
+        goodsIpgoDeleteService.execute(ipgoNum);
         return "redirect:/employees/product/ipgo/list";
     }
 }

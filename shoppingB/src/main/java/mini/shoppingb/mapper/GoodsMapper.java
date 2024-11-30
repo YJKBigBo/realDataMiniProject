@@ -14,12 +14,14 @@ public interface GoodsMapper {
     public List<GoodsDTO> goodsList();
     public GoodsDTO goodsDetail(int goodsNum);
     public void updateGoods(GoodsWithIpgo dto);
-    public void insertGoodsIpgo(GoodsWithIpgo dto);
     public List<GoodsDTO> search(String name);
     public List<GoodsDTO> searchAll();
+
     public GoodsWithIpgo GoodsWithQty(String goodsNum);
 
+    public void insertGoodsIpgo(GoodsWithIpgo dto);
     public List<GoodsIpgoDTO> goodsIpgoList();
     public GoodsIpgoDTO goodsIpgoDetail(String ipgoNum);
     public void goodsIpgoUpdate(GoodsIpgoDTO dto);
+    public void goodsIpgoDelete(String ipgoNum);
 }
