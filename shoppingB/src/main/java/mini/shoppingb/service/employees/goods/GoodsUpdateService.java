@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
 import mini.shoppingb.domain.employees.GoodsDTO;
+import mini.shoppingb.domain.employees.GoodsWithIpgo;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GoodsUpdateService {
     GoodsMapper goodsMapper;
 
     public void execute(GoodsCommand command, Model model, HttpSession session) {
-        GoodsDTO dto = goodsDetailService.execute(Integer.parseInt(command.getGoodsNum()), model);
+        GoodsWithIpgo dto = goodsDetailService.execute(command.getGoodsNum(), model);
         dto.setGoodsName(command.getGoodsName());
         dto.setGoodsPrice(command.getGoodsPrice());
         dto.setVisitCount(command.getVisitCount());

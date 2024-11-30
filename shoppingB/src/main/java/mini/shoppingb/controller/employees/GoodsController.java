@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.command.searchCommand;
 import mini.shoppingb.domain.employees.GoodsDTO;
+import mini.shoppingb.domain.employees.GoodsWithIpgo;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import mini.shoppingb.service.employees.goods.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,10 @@ public class GoodsController {
     }
 
     @GetMapping("/employees/product/detail/{goodsNum}")
-    public String productDetail(@PathVariable int goodsNum, HttpSession session, Model model) {
+    public String productDetail(@PathVariable String goodsNum, HttpSession session, Model model) {
 
         employeesAuthService.execute(session, model);
-        GoodsDTO goods = goodsDetailService.execute(goodsNum, model);
+        GoodsWithIpgo goods = goodsDetailService.execute(goodsNum, model);
         if (goods == null) {
             model.addAttribute("errorMessage", "해당 상품 정보를 찾을 수 없습니다.");
             return "thymeleaf/error/404";
@@ -63,9 +64,9 @@ public class GoodsController {
     }
 
     @GetMapping("/employees/product/update/{goodsNum}")
-    public String productUpdate(@PathVariable int goodsNum, HttpSession session, Model model) {
+    public String productUpdate(@PathVariable String goodsNum, HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
-        GoodsDTO dto = goodsDetailService.execute(goodsNum, model);
+        GoodsWithIpgo dto = goodsDetailService.execute(goodsNum, model);
         model.addAttribute("dto", dto);
         return "thymeleaf/goods/goodsUpdate";
     }

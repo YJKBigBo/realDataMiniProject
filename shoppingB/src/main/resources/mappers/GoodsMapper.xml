@@ -57,4 +57,31 @@
              , GOODS_DETAIL_IMAGE ,GOODS_DETAIL_STORE_IMAGE from goods where goods_name=#{goodsName}
     </select>
 
+    <select id="GoodsWithQty" resultType="goodsWithIpgo" parameterType="string">
+        SELECT
+            g.goods_num,
+            g.goods_name,
+            g.goods_price,
+            g.goods_contents,
+            g.visit_count,
+            g.goods_main_image,
+            g.goods_main_store_image,
+            g.goods_detail_image,
+            g.goods_detail_store_image,
+            g.emp_num,
+            g.goods_regist,
+            g.update_emp_num,
+            g.goods_update_date,
+            SUM(i.ipgo_qty) AS total_qty
+        FROM
+            goods g
+                LEFT JOIN
+            goods_ipgo i
+            ON
+                g.goods_num = i.goods_num
+        GROUP BY
+            g.goods_num
+        having g.goods_num=#{goodsNum}
+    </select>
+
 </mapper>
