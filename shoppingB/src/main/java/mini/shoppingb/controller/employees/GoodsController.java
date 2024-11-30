@@ -3,7 +3,6 @@ package mini.shoppingb.controller.employees;
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.command.searchCommand;
-import mini.shoppingb.domain.employees.GoodsDTO;
 import mini.shoppingb.domain.employees.GoodsWithIpgo;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import mini.shoppingb.service.employees.goods.*;
@@ -34,6 +33,9 @@ public class GoodsController {
 
     @Autowired
     GoodsIpgoListService goodsIpgoListService;
+
+    @Autowired
+    GoodsIpgoDetailService goodsIpgoDetailService;
 
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
@@ -87,10 +89,17 @@ public class GoodsController {
         return "thymeleaf/goods/goodsList";
     }
 
-    @GetMapping("/employees/product/ipgo/detail")
-    public String ipgoDetail(HttpSession session, Model model) {
+    @GetMapping("/employees/product/ipgo/list")
+    public String ipgoList(HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
         goodsIpgoListService.execute(model);
+        return "thymeleaf/goods/goodsIpgoList";
+    }
+
+    @GetMapping("/employees/product/ipgo/detail/{ipgoNum}")
+    public String ipgoDetail(@PathVariable String ipgoNum, HttpSession session, Model model) {
+        employeesAuthService.execute(session, model);
+        goodsIpgoDetailService.execute(model, ipgoNum);
         return "thymeleaf/goods/goodsIpgoDetail";
     }
 }

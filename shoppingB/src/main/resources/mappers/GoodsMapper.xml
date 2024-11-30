@@ -118,4 +118,8 @@
         select * from goods_ipgo
     </select>
 
+    <select id="goodsIpgoDetail" parameterType="string">
+        select * from goods_ipgo where ipgo_num=#{ipgoNum}
+    </select>
+
 </mapper>

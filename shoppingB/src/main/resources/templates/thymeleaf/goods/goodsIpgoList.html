@@ -139,7 +139,7 @@
                             </thead>
                             <tbody>
                             <tr th:each="dto:${dto}">
-                                <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${dto.goodsNum}" style="text-decoration: none; color: inherit;" th:text="${dto.goodsNum}"></a></td>
+                                <td style="padding: 10px;"> <a th:href="'/employees/product/ipgo/detail/' + ${dto.ipgoNum}" style="text-decoration: none; color: inherit;" th:text="${dto.goodsNum}"></a></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoNum}"></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoQty}"></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoDate}"></td>
@@ -148,7 +148,7 @@
                                 <td style="padding: 10px;" th:text="${dto.empNum}"></td>
                             </tr>
                             <tr th:each="findGoods:${findGoods}">
-                                <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${findGoods.goodsNum}" style="text-decoration: none; color: inherit;" th:text="${findGoods.goodsNum}"></a></td>
+                                <td style="padding: 10px;"> <a th:href="'/employees/product/ipgo/detail/' + ${findGoods.ipgoNum}" style="text-decoration: none; color: inherit;" th:text="${findGoods.goodsNum}"></a></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoNum}"></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoQty}"></td>
                                 <td style="padding: 10px;" th:text="${dto.ipgoDate}"></td>
