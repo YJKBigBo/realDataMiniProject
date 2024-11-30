@@ -32,6 +32,9 @@ public class GoodsController {
     @Autowired
     GoodsSearchService goodsSearchService;
 
+    @Autowired
+    GoodsIpgoListService goodsIpgoListService;
+
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
@@ -82,5 +85,12 @@ public class GoodsController {
         employeesAuthService.execute(session, model);
         goodsSearchService.execute(model, command);
         return "thymeleaf/goods/goodsList";
+    }
+
+    @GetMapping("/employees/product/ipgo/detail")
+    public String ipgoDetail(HttpSession session, Model model) {
+        employeesAuthService.execute(session, model);
+        goodsIpgoListService.execute(model);
+        return "thymeleaf/goods/goodsIpgoDetail";
     }
 }

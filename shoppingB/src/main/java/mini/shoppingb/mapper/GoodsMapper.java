@@ -1,6 +1,7 @@
 package mini.shoppingb.mapper;
 
 import mini.shoppingb.domain.employees.GoodsDTO;
+import mini.shoppingb.domain.employees.GoodsIpgoDTO;
 import mini.shoppingb.domain.employees.GoodsWithIpgo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,4 +18,6 @@ public interface GoodsMapper {
     public List<GoodsDTO> search(String name);
     public List<GoodsDTO> searchAll();
     public GoodsWithIpgo GoodsWithQty(String goodsNum);
+
+    public List<GoodsIpgoDTO> goodsIpgoList();
 }

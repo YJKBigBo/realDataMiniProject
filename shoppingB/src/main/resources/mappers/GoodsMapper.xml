@@ -114,4 +114,8 @@
         having g.goods_num=#{goodsNum}
     </select>
 
+    <select id="goodsIpgoList" resultType="goodsIpgo">
+        select * from goods_ipgo
+    </select>
+
 </mapper>
