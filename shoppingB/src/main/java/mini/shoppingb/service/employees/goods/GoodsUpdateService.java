@@ -5,6 +5,7 @@ import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
 import mini.shoppingb.domain.employees.GoodsDTO;
 import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,16 @@ public class GoodsUpdateService {
     @Autowired
     GoodsMapper goodsMapper;
 
+    @Autowired
+    AutoNumMapper autoNumMapper;
+
     public void execute(GoodsCommand command, Model model, HttpSession session) {
         GoodsWithIpgo dto = goodsDetailService.execute(command.getGoodsNum(), model);
         dto.setGoodsName(command.getGoodsName());
         dto.setGoodsPrice(command.getGoodsPrice());
         dto.setVisitCount(command.getVisitCount());
         dto.setGoodsContents(command.getGoodsContents());
-
+        dto.setTotalQty(command.getTotalQty());
 
         if (!command.getGoodsMainImage().isEmpty()) {
             URL resource = getClass().getClassLoader().getResource("static/upload");
@@ -54,8 +58,6 @@ public class GoodsUpdateService {
             dto.setGoodsMainImage(originalFile);
             dto.setGoodsMainStoreImage(storeFileName);
         }
-        System.out.println(command.getGoodsDetailImage());
-        System.out.println(command.getGoodsDetailImage().length);
 
         if (!command.getGoodsDetailImage()[0].getOriginalFilename().isEmpty()) {
             URL resource = getClass().getClassLoader().getResource("static/upload");
@@ -90,9 +92,20 @@ public class GoodsUpdateService {
             dto.setGoodsDetailStoreImage(storeTotal);
         }
 
+
+
         AuthInfoDTO auth = (AuthInfoDTO) session.getAttribute("auth");
         String updateEmpNum = auth.getUserNum();
         dto.setUpdateEmpNum(updateEmpNum);
-        goodsMapper.goodsUpdate(dto);
+
+
+
+        String ipgoNum = autoNumMapper.autoNum("ipgo_num", "goods_ipgo");
+        dto.setIpgoNum(ipgoNum);
+        dto.setIpgoQty(command.getIpgoQty());
+        dto.setIpgoDate(command.getIpgoDate());
+        dto.setIpgoPrice(command.getIpgoPrice());
+        goodsMapper.updateGoods(dto);
+        goodsMapper.insertGoodsIpgo(dto);
     }
 }

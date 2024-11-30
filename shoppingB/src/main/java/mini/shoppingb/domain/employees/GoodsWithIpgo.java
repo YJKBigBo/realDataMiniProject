@@ -3,6 +3,8 @@ package mini.shoppingb.domain.employees;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 @Data
 @Alias("goodsWithIpgo")
 public class GoodsWithIpgo {
@@ -16,8 +18,15 @@ public class GoodsWithIpgo {
     String goodsDetailImage;
     String goodsDetailStoreImage;
     String empNum;
-    String goodsRegist;
+    Date goodsRegist;
     String updateEmpNum;
-    String goodsUpdateDate;
+    Date goodsUpdateDate;
+
+
     Integer totalQty;
+    String ipgoNum;
+    Integer ipgoQty;
+    String ipgoDate;
+    String madeDate;
+    Integer ipgoPrice;
 }

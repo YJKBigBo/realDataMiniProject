@@ -122,22 +122,40 @@
                                     <div class="mb-3">
                                         <input type="text" class="form-control" id="goodsNum" name="goodsNum" th:value="${dto.goodsNum}" hidden="hidden">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="goodsName" class="form-label">상품명</label>
-                                        <input type="text" class="form-control" id="goodsName" name="goodsName" placeholder="상품명을 입력하세요" th:value="${dto.goodsName}" required>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="goodsName" class="form-label">상품명</label>
+                                            <input type="text" class="form-control" id="goodsName" name="goodsName" placeholder="상품명을 입력하세요" th:value="${dto.goodsName}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="goodsPrice" class="form-label">상품가격</label>
+                                            <input type="number" class="form-control" id="goodsPrice" name="goodsPrice" placeholder="상품 가격을 입력하세요" th:value="${dto.goodsPrice}" required>
+                                        </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="goodsPrice" class="form-label">상품 가격</label>
-                                            <input type="number" class="form-control" id="goodsPrice" name="goodsPrice" placeholder="상품 가격을 입력하세요" th:value="${dto.goodsPrice}" required>
+                                            <label for="ipgoDate" class="form-label">입고날짜</label>
+                                            <input type="date" class="form-control" id="ipgoDate" name="ipgoDate" placeholder="입고 날짜를 입력하세요" th:value="${dto.ipgoDate}" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="visitCount" class="form-label">조회수</label>
-                                            <input type="number" class="form-control" id="visitCount" name="visitCount" placeholder="조회수를 입력하세요" value="0" th:value="${dto.visitCount}">
+                                            <label for="ipgoQty" class="form-label">입고상품수</label>
+                                            <input type="number" class="form-control" id="ipgoQty" name="ipgoQty" placeholder="상품수를 입력하세요" th:value="${dto.ipgoQty}">
                                         </div>
                                     </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="ipgoPrice" class="form-label">입고가격</label>
+                                            <input type="number" class="form-control" id="ipgoPrice" name="ipgoPrice" placeholder="입고 가격을 입력하세요" th:value="${dto.ipgoPrice}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="madeDate" class="form-label">만든날짜</label>
+                                            <input type="date" class="form-control" id="madeDate" name="madeDate" placeholder="만든 날짜를 입력하세요" value="0" th:value="${dto.madeDate}">
+                                        </div>
+                                    </div>
+
                                     <div class="mb-3">
-                                        <label for="goodsContents" class="form-label">상품 설명</label>
+                                        <label for="goodsContents" class="form-label">상품설명</label>
                                         <textarea class="form-control" id="goodsContents" name="goodsContents" rows="4" placeholder="상품 설명을 입력하세요" th:text="${dto.goodsContents}" required></textarea>
                                     </div>
                                     <div class="row mb-3">

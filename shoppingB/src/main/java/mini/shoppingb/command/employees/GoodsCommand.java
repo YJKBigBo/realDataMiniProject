@@ -10,12 +10,20 @@ public class GoodsCommand {
     String goodsNum;
     String goodsName;
     Integer goodsPrice;
-    Integer visitCount;
     String goodsContents;
+    Integer visitCount;
     String empNum;
     Date goodsRegist;
     String updateEmpNum;
     Date goodsUpdateDate;
+
+
+    Integer totalQty;
+    String ipgoNum;
+    Integer ipgoQty;
+    String ipgoDate;
+    String madeDate;
+    Integer ipgoPrice;
 
     MultipartFile goodsMainImage;
     MultipartFile goodsDetailImage[];
