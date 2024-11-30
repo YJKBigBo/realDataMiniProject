@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.GoodsIpgoMapper">
+    <select id="goodsIpgoList" resultType="goodsIpgo">
+        select * from goods_ipgo
+    </select>
+
+    <select id="goodsIpgoDetail" parameterType="string">
+        select * from goods_ipgo where ipgo_num=#{ipgoNum}
+    </select>
+
+    <update id="goodsIpgoUpdate" parameterType="goodsIpgo">
+        update goods_ipgo set goods_num=#{goodsNum}, ipgo_num=#{ipgoNum}, ipgo_qty=#{ipgoQty}, ipgo_date=#{ipgoDate},
+                              made_date=#{madeDate}, ipgo_price=#{ipgoPrice}, emp_num=#{empNum}
+        where goods_num=#{goodsNum} and ipgo_num=#{ipgoNum}
+    </update>
+
+    <delete id="goodsIpgoDelete" parameterType="string">
+        delete from goods_ipgo where ipgo_num=#{ipgoNum}
+    </delete>
+</mapper>

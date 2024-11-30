@@ -20,8 +20,4 @@ public interface GoodsMapper {
     public GoodsWithIpgo GoodsWithQty(String goodsNum);
 
     public void insertGoodsIpgo(GoodsWithIpgo dto);
-    public List<GoodsIpgoDTO> goodsIpgoList();
-    public GoodsIpgoDTO goodsIpgoDetail(String ipgoNum);
-    public void goodsIpgoUpdate(GoodsIpgoDTO dto);
-    public void goodsIpgoDelete(String ipgoNum);
 }

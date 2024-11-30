@@ -1,6 +1,7 @@
-package mini.shoppingb.service.employees.goods;
+package mini.shoppingb.service.employees.goodsIpgo;
 
 import mini.shoppingb.domain.employees.GoodsIpgoDTO;
+import mini.shoppingb.mapper.GoodsIpgoMapper;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,10 @@ import java.util.List;
 @Service
 public class GoodsIpgoListService {
     @Autowired
-    GoodsMapper goodsMapper;
+    GoodsIpgoMapper goodsIpgoMapper;
 
     public void execute(Model model){
-        List<GoodsIpgoDTO> dto = goodsMapper.goodsIpgoList();
+        List<GoodsIpgoDTO> dto = goodsIpgoMapper.goodsIpgoList();
         model.addAttribute("dto", dto);
     }
 

@@ -114,22 +114,4 @@
         having g.goods_num=#{goodsNum}
     </select>
 
-    <select id="goodsIpgoList" resultType="goodsIpgo">
-        select * from goods_ipgo
-    </select>
-
-    <select id="goodsIpgoDetail" parameterType="string">
-        select * from goods_ipgo where ipgo_num=#{ipgoNum}
-    </select>
-
-    <update id="goodsIpgoUpdate" parameterType="goodsIpgo">
-        update goods_ipgo set goods_num=#{goodsNum}, ipgo_num=#{ipgoNum}, ipgo_qty=#{ipgoQty}, ipgo_date=#{ipgoDate},
-                              made_date=#{madeDate}, ipgo_price=#{ipgoPrice}, emp_num=#{empNum}
-        where goods_num=#{goodsNum} and ipgo_num=#{ipgoNum}
-    </update>
-
-    <delete id="goodsIpgoDelete" parameterType="string">
-        delete from goods_ipgo where ipgo_num=#{ipgoNum}
-    </delete>
-
 </mapper>

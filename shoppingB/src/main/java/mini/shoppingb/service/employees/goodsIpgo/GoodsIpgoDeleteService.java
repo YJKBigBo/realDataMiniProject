@@ -1,5 +1,6 @@
-package mini.shoppingb.service.employees.goods;
+package mini.shoppingb.service.employees.goodsIpgo;
 
+import mini.shoppingb.mapper.GoodsIpgoMapper;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsIpgoDeleteService {
     @Autowired
-    GoodsMapper goodsMapper;
+    GoodsIpgoMapper goodsIpgoMapper;
 
     public void execute(String ipgoNum){
-        goodsMapper.goodsIpgoDelete(ipgoNum);
+        goodsIpgoMapper.goodsIpgoDelete(ipgoNum);
     }
 }
