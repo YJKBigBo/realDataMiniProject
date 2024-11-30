@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState, Suspense, lazy, useEffect } from "react";
-import { BrowserRouter } from "react-router-dom"; // BrowserRouter 임포트
+import { BrowserRouter } from "react-router-dom";
 import Sidebar from "./component/SideBar";
 import Navbar from "./component/NavBar"
 import loginApi from "./apis/LoginAPI";
@@ -59,7 +59,7 @@ function App() {
   return (
     <BrowserRouter>
       <div style={{ display: "flex" }}>
-        {isLoggedIn && ( // 로그인 상태일 때만 렌더링
+        {isLoggedIn && (
           <div className="sb-nav-fixed">
             <Navbar />
             <div id="layoutSidenav">

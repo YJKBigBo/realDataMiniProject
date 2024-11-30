@@ -17,12 +17,14 @@ function Items() {
     const fetchGoods = async () => {
       try {
         const response = await goodsApi.goodsList();
-        setGoodsList(response.data);
+        console.log(response);
+        const filteredGoods = response.data.filter((goods) => goods.totalQty >= 1);
+        setGoodsList(filteredGoods);
       } catch (error) {
         console.error(error);
       }
     };
-
+  
     fetchGoods();
   }, []);
 
