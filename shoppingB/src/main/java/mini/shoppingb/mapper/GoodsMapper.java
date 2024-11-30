@@ -21,4 +21,5 @@ public interface GoodsMapper {
 
     public List<GoodsIpgoDTO> goodsIpgoList();
     public GoodsIpgoDTO goodsIpgoDetail(String ipgoNum);
+    public void goodsIpgoUpdate(GoodsIpgoDTO dto);
 }

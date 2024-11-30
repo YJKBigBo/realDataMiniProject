@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <title>Tables - SB Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <title>Static Navigation - SB Admin</title>
   <link href="/static/css/styles.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body class="sb-nav-fixed">
+<body>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
   <a class="navbar-brand ps-3" href="/">관리자 페이지</a>
@@ -27,7 +26,9 @@
   <!-- Navbar-->
   <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user fa-fw"></i>
+      </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
         <!-- 로그아웃 상태 -->
         <li th:if="${!isLoggedIn}">
@@ -107,88 +108,58 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4">입고 상세 정보</h1>
+        <h1 class="mt-4">입고 수정</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item"><a href="/">홈</a></li>
-          <li class="breadcrumb-item"><a href="/employees/product/ipgo/list">입고 관리</a></li>
-          <li class="breadcrumb-item active">입고 상세 정보</li>
+          <li class="breadcrumb-item active">입고 수정</li>
         </ol>
-
         <div class="card mb-4">
           <div class="card-header">
             <i class="fas fa-box-open me-1"></i>
-            입고 상세 정보
+            입고 정보를 입력하세요
           </div>
           <div class="card-body">
-            <table style="width: 100%; border-collapse: separate; border-spacing: 10px; text-align: center;">
-              <tbody>
+            <form id="product-form" method="post" action="/employees/product/goodsIpgo/update" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="ipgoNum" class="form-label">입고번호</label>
+                <input type="text" class="form-control" id="ipgoNum" name="ipgoNum" th:value="${dto.ipgoNum}" hidden="hidden" readonly="readonly">
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="goodsNum" class="form-label">상품번호</label>
+                  <input type="text" class="form-control" id="goodsNum" name="goodsNum" th:value="${dto.goodsNum}" required readonly="readonly">
+                </div>
+                <div class="col-md-6">
+                  <label for="ipgoQty" class="form-label">입고갯수</label>
+                  <input type="number" class="form-control" id="ipgoQty" name="ipgoQty" th:value="${dto.ipgoQty}" required>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="ipgoDate" class="form-label">입고날짜</label>
+                  <input type="date" class="form-control" id="ipgoDate" name="ipgoDate" placeholder="입고 날짜를 입력하세요" th:value="${dto.ipgoDate}" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="madeDate" class="form-label">만든날짜</label>
+                  <input type="date" class="form-control" id="madeDate" name="madeDate" placeholder="만든 날짜를 입력하세요" th:value="${dto.madeDate}" required>
+                </div>
+              </div>
 
-              <tr>
-                <th style="padding: 10px; text-align: right; width: 25%;">입고번호:</th>
-                <td style="padding: 10px;" th:text="${dto.ipgoNum}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">상품번호:</th>
-                <td style="padding: 10px;" th:text="${dto.goodsNum}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">입고갯수:</th>
-                <td style="padding: 10px;" th:text="${dto.ipgoQty}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">입고날짜:</th>
-                <td style="padding: 10px;" th:text="${dto.ipgoDate}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">생산날짜:</th>
-                <td style="padding: 10px;" th:text="${dto.madeDate}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">입고가격:</th>
-                <td style="padding: 10px;" th:text="${dto.ipgoPrice}"></td>
-              </tr>
-              <tr>
-                <th style="padding: 10px; text-align: right;">등록 직원 번호:</th>
-                <td style="padding: 10px;" th:text="${dto.empNum}"></td>
-              </tr>
-              </tbody>
-            </table>
-            <div align="center" style="margin-top: 20px;">
-              <a th:href="'/employees/product/goodsIpgo/update/'+${dto.ipgoNum}"
-                 style="
-       display: inline-block;
-       background-color: #007bff;
-       color: white;
-       text-align: center;
-       padding: 10px 20px;
-       margin: 5px;
-       border: none;
-       border-radius: 5px;
-       font-size: 16px;
-       text-decoration: none;
-       cursor: pointer;
-       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-       transition: background-color 0.3s, transform 0.3s;">
-                수정하기
-              </a>
-              <a th:href="'/employees/product/goodsIpgo/delete/'+${dto.ipgoNum}"
-                 style="
-       display: inline-block;
-       background-color: #dc3545;
-       color: white;
-       text-align: center;
-       padding: 10px 20px;
-       margin: 5px;
-       border: none;
-       border-radius: 5px;
-       font-size: 16px;
-       text-decoration: none;
-       cursor: pointer;
-       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-       transition: background-color 0.3s, transform 0.3s;">
-                삭제하기
-              </a>
-            </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="ipgoPrice" class="form-label">입고가격</label>
+                  <input type="number" class="form-control" id="ipgoPrice" name="ipgoPrice" placeholder="입고 가격을 입력하세요" th:value="${dto.ipgoPrice}" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="empNum" class="form-label">입고 등록 혹은 수정한 직원번호</label>
+                  <input type="text" class="form-control" id="empNum" name="empNum" placeholder="직원번호를 입력하세요" th:value="${dto.empNum}" readonly="readonly">
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: center; align-items: center;">
+                <input type="submit" class="btn btn-primary" value="입고 수정" />
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -197,7 +168,5 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="/static/js/scripts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="js/datatables-simple-demo.js"></script>
 </body>
 </html>

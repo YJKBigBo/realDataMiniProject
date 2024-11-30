@@ -37,6 +37,9 @@ public class GoodsController {
     @Autowired
     GoodsIpgoDetailService goodsIpgoDetailService;
 
+    @Autowired
+    GoodsIpgoUpdateService goodsIpgoUpdateService;
+
     @GetMapping("/employees/product/regist")
     public String productRegist(HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
@@ -101,5 +104,19 @@ public class GoodsController {
         employeesAuthService.execute(session, model);
         goodsIpgoDetailService.execute(model, ipgoNum);
         return "thymeleaf/goods/goodsIpgoDetail";
+    }
+
+    @GetMapping("/employees/product/goodsIpgo/update/{ipgoNum}")
+    public String ipgoUpdate(@PathVariable String ipgoNum, HttpSession session, Model model) {
+        employeesAuthService.execute(session, model);
+        goodsIpgoDetailService.execute(model, ipgoNum);
+        return "thymeleaf/goods/goodsIpgoUpdate";
+    }
+
+    @PostMapping("/employees/product/goodsIpgo/update")
+    public String ipgoUpdateSubmit(HttpSession session, GoodsCommand command, Model model) {
+        employeesAuthService.execute(session, model);
+        goodsIpgoUpdateService.execute(command, model, session);
+        return "redirect:/employees/product/ipgo/list";
     }
 }
