@@ -18,6 +18,7 @@ public interface GoodsMapper {
     public List<GoodsDTO> searchAll();
 
     public GoodsWithIpgo GoodsWithQty(String goodsNum);
+    public List<GoodsWithIpgo> GoodsWithQtyList();
 
     public void insertGoodsIpgo(GoodsWithIpgo dto);
 }

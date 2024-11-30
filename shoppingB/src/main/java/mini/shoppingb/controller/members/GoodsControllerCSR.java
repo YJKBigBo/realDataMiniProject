@@ -2,6 +2,7 @@ package mini.shoppingb.controller.members;
 
 
 import mini.shoppingb.domain.employees.GoodsDTO;
+import mini.shoppingb.domain.employees.GoodsWithIpgo;
 import mini.shoppingb.service.members.goods.GoodsDetailServiceCSR;
 import mini.shoppingb.service.members.goods.GoodsListServiceCSR;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class GoodsControllerCSR {
     GoodsDetailServiceCSR goodsDetailServiceCSR;
 
     @GetMapping("/members/goods/List")
-    public ResponseEntity<List<GoodsDTO>> getGoodsList() {
-        List<GoodsDTO> goodsList = goodsListServiceCSR.execute();
+    public ResponseEntity<List<GoodsWithIpgo>> getGoodsList() {
+        List<GoodsWithIpgo> goodsList = goodsListServiceCSR.execute();
         return ResponseEntity.ok(goodsList);
     }
 
