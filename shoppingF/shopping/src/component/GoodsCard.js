@@ -12,6 +12,7 @@ function GoodsCard({
   visitCount,
   goodsContents,
   onDetailClick,
+  goodsNum,
 }) {
   const [img, setImg] = useState();
 
@@ -83,6 +84,7 @@ function GoodsCard({
               goodsDetailImage,
               goodsDetailStoreImage,
               visitCount,
+              goodsNum,
             })
           }
         >

@@ -8,14 +8,14 @@ const goodsApi = {
       params: data,
       withCredentials: true,
     }),
-  goodsImage: (imageName) =>
+  goodsImage: (data) =>
     axios.get(`${API_URL}/image`, {
-      params: { imageName },
+      params: { data },
       withCredentials: true,
     }),
-  goodsDetail: (goodsNum) =>
+  goodsDetail: (data) =>
     axios.get(`${API_URL}/members/goods/detail`, {
-      params: { goodsNum },
+      params: { data },
       withCredentials: true,
     }),
 };
