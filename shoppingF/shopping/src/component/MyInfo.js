@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartInfo from "./CartInfo";
 import testImg from "../static/images/testImg01.png";
+import CartAPI from "../apis/CartAPI";
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);

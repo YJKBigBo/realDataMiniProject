@@ -66,5 +66,9 @@
             c.member_Num = #{memberNum}
     </select>
 
+    <update id="cartUpdate">
+        update cart set CART_QTY=#{newQty} where goods_num=#{goodsNum} and member_num=#{memberNum}
+    </update>
+
 
 </mapper>
