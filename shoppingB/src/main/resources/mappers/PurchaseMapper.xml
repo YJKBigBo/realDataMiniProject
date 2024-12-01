@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.PurchaseMapper">
+    <insert id="purchaseInsert" parameterType="purchase">
+        insert into purchase (
+            PURCHASE_NUM, PURCHASE_DATE, PURCHASE_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL,
+            DELIVERY_POST, DELIVERY_PHONE, MESSAGE, PURCHASE_STATUS, MEMBER_NUM)
+        values
+            (#{purchaseNum}, sysdate(), #{purchasePrice}, #{deliveryAddr}, #{deliveryAddrDetail},
+             #{deliveryPost}, #{deliveryPhone}, #{message}, "결제완료", #{memberNum})
+    </insert>
+</mapper>

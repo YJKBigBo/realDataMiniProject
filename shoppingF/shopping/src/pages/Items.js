@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import GoodsCard from "../component/GoodsCard.js";
 import goodsApi from "../apis/GoodsAPI.js";
 import CartAPI from "../apis/CartAPI.js";
+import PurchaseAPI from "../apis/PurchaseAPI.js";
 
 function Items() {
   const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
@@ -62,6 +63,28 @@ function Items() {
   );
 
   const totalPages = Math.ceil(filteredGoods.length / itemsPerPage);
+
+  const deliverySubmit = async (e) => {
+    e.preventDefault();
+  
+    const purchaseData = {
+      purchasePrice: selectedGoods.goodsPrice,
+      deliveryAddr: e.target.deliveryAddr.value,
+      deliveryAddrDetail: e.target.deliveryAddrDetail.value,
+      deliveryPost: e.target.deliveryPost.value,
+      deliveryPhone: e.target.deliveryPhone.value,
+      message: e.target.message.value,
+    };
+  
+    try {
+      await PurchaseAPI.deliveryInfo(purchaseData);
+      alert("주문이 완료되었습니다.");
+      setShowAddressModal(false);
+    } catch (error) {
+      console.error(error);
+      alert("주문 처리 중 문제가 발생했습니다.");
+    }
+  };
 
   return (
     <div className="sb-nav-fixed">
@@ -273,21 +296,47 @@ function Items() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2>배송지 입력</h2>
-            <form>
+            <form onSubmit={deliverySubmit}>
               <input
                 type="text"
                 placeholder="배송지를 입력하세요"
+                name="deliveryAddr"
                 className="form-control"
                 style={{ marginBottom: "10px" }}
               />
-              <button
-                className="btn btn-primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("주문이 완료되었습니다.");
-                  setShowAddressModal(false);
-                }}
-              >
+
+              <input
+                type="text"
+                placeholder="배송지 상세를 입력하세요"
+                name="deliveryAddrDetail"
+                className="form-control"
+                style={{ marginBottom: "10px" }}
+              />
+
+              <input
+                type="text"
+                placeholder="우편번호를 입력하세요"
+                name="deliveryPost"
+                className="form-control"
+                style={{ marginBottom: "10px" }}
+              />
+
+              <input
+                type="text"
+                placeholder="전화번호를 입력하세요"
+                name="deliveryPhone"
+                className="form-control"
+                style={{ marginBottom: "10px" }}
+              />
+
+              <input
+                type="text"
+                placeholder="기타 정보를 입력하세요"
+                name="message"
+                className="form-control"
+                style={{ marginBottom: "10px" }}
+              />
+              <button type="submit" className="btn btn-primary">
                 주문하기
               </button>
             </form>
