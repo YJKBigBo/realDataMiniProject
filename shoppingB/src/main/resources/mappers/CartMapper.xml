@@ -6,4 +6,65 @@
     <insert id="cartInsert" parameterType="string">
         insert into cart (MEMBER_NUM, goods_num, CART_DATE, CART_QTY) values (#{memberNum}, #{goodsNum}, sysdate(), 1)
     </insert>
+
+    <resultMap type="goods" id="goodsResultMap">
+        <id column="goods_Num" 						jdbcType="VARCHAR" 	property="goodsNum"/>
+        <result column="goods_Name" 				jdbcType="VARCHAR" 	property="goodsName" />
+        <result column="GOODS_PRICE" 				jdbcType="BIGINT" 	property="goodsPrice" />
+        <result column="goods_Contents"  			jdbcType="VARCHAR" 	property="goodsContents" />
+        <result column="emp_Num"  					jdbcType="VARCHAR"  property="empNum" />
+        <result column="visit_Count" 				jdbcType="BIGINT" 	property="visitCount" />
+        <result column="GOODS_REGIST" 				jdbcType="DATE"  	property="goodsRegist" />
+        <result column="update_Emp_Num"  			jdbcType="VARCHAR"  property="updateEmpNum" />
+        <result column="goods_Update_Date" 			jdbcType="DATE"  	property="goodsUpdateDate" />
+        <result column="GOODS_MAIN_IMAGE"  			jdbcType="VARCHAR"  property="goodsMainImage" />
+        <result column="GOODS_MAIN_STORE_IMAGE"  	jdbcType="VARCHAR"  property="goodsMainStoreImage" />
+        <result column="GOODS_DETAIL_IMAGE"  		jdbcType="VARCHAR"  property="goodsDetailImage" />
+        <result column="GOODS_DETAIL_STORE_IMAGE"  	jdbcType="VARCHAR"  property="goodsDetailStoreImage" />
+    </resultMap>
+
+    <resultMap type="cart" id="cartResultMap">
+        <id column="goods_num" jdbcType="VARCHAR" property="goodsNum"/>
+        <id column="member_num" jdbcType="VARCHAR" property="memberNum"/>
+        <result column="cart_date" jdbcType="DATE" property="cartDate"/>
+        <result column="cart_qty" jdbcType="BIGINT" property="cartQty"/>
+    </resultMap>
+
+    <resultMap type="goodsCart" id="cartGoodsResultMap">
+        <association property="goodsDTO" javaType="Goods">
+            <id column="goods_Num" jdbcType="VARCHAR" property="goodsNum"/>
+            <result column="goods_Name" jdbcType="VARCHAR" property="goodsName"/>
+            <result column="goods_Price" jdbcType="BIGINT" property="goodsPrice"/>
+            <result column="goods_Main_Image" jdbcType="VARCHAR" property="goodsMainImage"/>
+            <result column="GOODS_MAIN_STORE_IMAGE"  jdbcType="VARCHAR"  property="goodsMainStoreImage" />
+        </association>
+        <association property="cartDTO" javaType="Cart">
+            <id column="goods_Num" jdbcType="VARCHAR" property="goodsNum"/>
+            <id column="member_Num" jdbcType="VARCHAR" property="memberNum"/>
+            <result column="cart_Qty" jdbcType="BIGINT" property="cartQty"/>
+            <result column="cart_Date" jdbcType="DATE" property="cartDate"/>
+        </association>
+    </resultMap>
+
+    <select id="cartList" resultMap="cartGoodsResultMap">
+        SELECT
+            c.goods_Num,
+            c.member_Num,
+            c.cart_Qty,
+            c.cart_Date,
+            g.goods_Name,
+            g.goods_Price,
+            g.goods_Main_Image,
+            g.goods_main_store_image
+        FROM
+            Cart c
+                JOIN
+            Goods g
+            ON
+                c.goods_Num = g.goods_Num
+        WHERE
+            c.member_Num = #{memberNum}
+    </select>
+
+
 </mapper>
