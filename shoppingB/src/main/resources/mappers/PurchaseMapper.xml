@@ -11,4 +11,24 @@
             (#{purchaseNum}, sysdate(), #{purchasePrice}, #{deliveryAddr}, #{deliveryAddrDetail},
              #{deliveryPost}, #{deliveryPhone}, #{message}, "결제완료", #{memberNum})
     </insert>
+
+    <insert id="purchaseListInsert" parameterType="purchaseList">
+        insert into purchase_list
+            (goods_num, PURCHASE_NUM, PURCHASE_QTY, GOODS_UNIT_PRICE)
+        values
+            (#{goodsNum}, #{purchaseNum}, #{purchaseQty}, #{goodsUnitPrice})
+    </insert>
+
+    <update id="purchaseGoodsIpgoUpdate" parameterType="purchaseList">
+        UPDATE goods_ipgo
+            JOIN (
+            SELECT goods_num, MIN(made_date) AS oldest_date
+            FROM goods_ipgo
+            WHERE goods_num = #{goodsNum}
+            ) AS subquery
+        ON goods_ipgo.goods_num = subquery.goods_num
+            AND goods_ipgo.made_date = subquery.oldest_date
+            SET goods_ipgo.ipgo_qty = goods_ipgo.ipgo_qty - #{purchaseQty}
+        WHERE goods_ipgo.ipgo_qty >= #{purchaseQty};
+    </update>
 </mapper>
