@@ -2,19 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartInfo from "./CartInfo";
 import testImg from "../static/images/testImg01.png";
-import CartAPI from "../apis/CartAPI";
+import MypageAPI from "../apis/MypageAPI";
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  const [mypageInfo, setMypageInfo] = useState([]);
   const navigate = useNavigate();
-
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
   const handleShowMore = () => {
     setShowMore(true);
   };
+
+  const fetchMypageInfo = async () => {
+    try {
+      const response = await MypageAPI.mypageInfo();
+      setMypageInfo(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMypageInfo();
+  }, []);
 
   const renderOrderStatus = (status) => {
     const statusMap = {
@@ -27,40 +40,23 @@ const MyInfo = () => {
   };
 
   useEffect(() => {
-    const dummyData = [
-      {
-        id: 1,
-        orderDate: [2023, 11, 25],
-        imgUrl: testImg,
-        orderStatus: "pending",
-        productName: "무선 이어폰",
-        quantity: 1,
-        price: 120000,
-        state: "배송 준비 중",
-      },
-      {
-        id: 2,
-        orderDate: [2023, 11, 26],
-        imgUrl: testImg,
-        orderStatus: "shipped",
-        productName: "게이밍 키보드",
-        quantity: 1,
-        price: 80000,
-        state: "배송 중",
-      },
-      {
-        id: 3,
-        orderDate: [2023, 11, 27],
-        imgUrl: testImg,
-        orderStatus: "delivered",
-        productName: "스마트 워치",
-        quantity: 1,
-        price: 250000,
-        state: "배송 완료",
-      },
-    ];
-    setPurchaserOrderProducts(dummyData);
-  }, []);
+    if (mypageInfo.length > 0) {
+      const transformedData = mypageInfo.map((item) => ({
+        imgUrl: item.goodsDTO.goodsMainStoreImage,
+        productName: item.goodsDTO.goodsName,
+        deliveryAddr: item.purchaseDTO.deliveryAddr,
+        deliveryAddrDetail: item.purchaseDTO.deliveryAddrDetail,
+        orderDate: new Date(item.purchaseDTO.purchaseDate)
+          .toISOString()
+          .split("T")[0]
+          .split("-"),
+        orderStatus: item.purchaseDTO.purchaseStatus,
+        quantity: item.purchaseListDTO.purchaseQty,
+        price: item.purchaseListDTO.goodsUnitPrice,
+      }));
+      setPurchaserOrderProducts(transformedData);
+    }
+  }, [mypageInfo]);
 
   return (
     <div
@@ -121,14 +117,14 @@ const MyInfo = () => {
                 .slice(0, showMore ? undefined : 2)
                 .map((product, index) => (
                   <div
-                    key={product.id}
+                    key={index}
                     style={{
                       marginBottom: "20px",
                       padding: "10px 0",
                       borderBottom: "1px solid #eee",
                       width: "100%",
                       maxWidth: "800px",
-                      textAlign: "center", 
+                      textAlign: "center",
                     }}
                   >
                     <h5 style={{ color: "#555", fontSize: "14px" }}>
@@ -136,7 +132,7 @@ const MyInfo = () => {
                       {product.orderDate[2]} 일
                     </h5>
                     <img
-                      src={product.imgUrl}
+                      src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
                       alt={product.productName}
                       style={{
                         width: "100px",
@@ -162,10 +158,11 @@ const MyInfo = () => {
                       가격 : {product.price.toLocaleString()}원
                     </p>
                     <p style={{ margin: "5px 0", color: "#666" }}>
-                      주문상태 : {renderOrderStatus(product.orderStatus)}
+                      주문상태 : {product.orderStatus}
                     </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      배송현황 : {product.state}{" "}
+                    {/* <p style={{ margin: "5px 0", color: "#666" }}>
+                      배송현황 : {product.deliveryAddr}{" "}
+                      {product.deliveryAddrDetail}
                       <button
                         onClick={() => navigate(`/mypage/delivery/${index}`)}
                         style={{
@@ -180,7 +177,7 @@ const MyInfo = () => {
                       >
                         자세히
                       </button>
-                    </p>
+                    </p> */}
                   </div>
                 ))}
               {!showMore && (
