@@ -66,7 +66,7 @@ function Items() {
 
   const deliverySubmit = async (e) => {
     e.preventDefault();
-  
+
     const purchaseData = {
       purchasePrice: selectedGoods.goodsPrice,
       deliveryAddr: e.target.deliveryAddr.value,
@@ -74,8 +74,11 @@ function Items() {
       deliveryPost: e.target.deliveryPost.value,
       deliveryPhone: e.target.deliveryPhone.value,
       message: e.target.message.value,
+      goodsNum : selectedGoods.goodsNum,
+      goodsUnitPrice : selectedGoods.goodsPrice,
+      purchaseQty : e.target.purchaseQty.value,
     };
-  
+
     try {
       await PurchaseAPI.deliveryInfo(purchaseData);
       alert("주문이 완료되었습니다.");
@@ -297,6 +300,15 @@ function Items() {
           >
             <h2>배송지 입력</h2>
             <form onSubmit={deliverySubmit}>
+
+              <input
+                type="text"
+                placeholder="상품 갯수를 입력하세요"
+                name="purchaseQty"
+                className="form-control"
+                style={{ marginBottom: "10px" }}
+              />
+
               <input
                 type="text"
                 placeholder="배송지를 입력하세요"
