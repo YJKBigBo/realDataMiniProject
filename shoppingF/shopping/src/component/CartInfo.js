@@ -1,23 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { CSSTransition } from "react-transition-group";
 import CartAPI from "../apis/CartAPI";
+import PurchaseAPI from "../apis/PurchaseAPI";
 
 const CartInfo = ({ isOpen, toggleCart }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+
+  const fetchCart = async () => {
+    try {
+      const response = await CartAPI.cartList();
+      console.log(response.data);
+      setCartItems(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await CartAPI.cartList();
-        console.log(response.data);
-        setCartItems(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchCart();
   }, []);
+
+  const handleCheckboxChange = (cartDTO) => {
+    setCheckedItems((prevCheckedItems) =>
+      prevCheckedItems.includes(cartDTO)
+        ? prevCheckedItems.filter((item) => item !== cartDTO)
+        : [...prevCheckedItems, cartDTO]
+    );
+  };
+
+  const handlePurchase = async () => {
+    if (checkedItems.length === 0) {
+      alert("구매할 상품을 선택하세요.");
+      return;
+    }
+    setShowAddressModal(true);
+  };
 
   const cartStyle = {
     position: "fixed",
@@ -83,6 +102,45 @@ const CartInfo = ({ isOpen, toggleCart }) => {
     } catch (error) {
       console.error(error);
       alert("수량 감소에 실패했습니다.");
+    }
+  };
+
+  const deliverySubmit = async (e) => {
+    e.preventDefault();
+
+    const purchaseData = {
+      deliveryAddr: e.target.deliveryAddr.value,
+      deliveryAddrDetail: e.target.deliveryAddrDetail.value,
+      deliveryPost: e.target.deliveryPost.value,
+      deliveryPhone: e.target.deliveryPhone.value,
+      message: e.target.message.value,
+    };
+
+    try {
+      const goodsCartDTO = cartItems
+        .filter((item) => checkedItems.includes(item.cartDTO))
+        .map((item) => ({
+          goodsDTO: item.goodsDTO,
+          cartDTO: item.cartDTO,
+        }));
+
+      const purchaseCartDTO = {
+        goodsCartDTO,
+        purchaseDTO: purchaseData,
+      };
+
+      console.log(purchaseCartDTO);
+
+      await PurchaseAPI.cartPurchase(purchaseCartDTO);
+
+      setCheckedItems([]);
+      fetchCart();
+      setShowAddressModal(false);
+
+      alert("주문이 완료되었습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("주문이 실패했습니다.");
     }
   };
 
@@ -168,11 +226,104 @@ const CartInfo = ({ isOpen, toggleCart }) => {
                 >
                   -
                 </button>
+
+                <input
+                  type="checkbox"
+                  name="checkItem"
+                  checked={checkedItems.includes(item.cartDTO)}
+                  onChange={() => handleCheckboxChange(item.cartDTO)}
+                  style={{ marginLeft: "10px" }}
+                />
               </div>
             </li>
           ))}
         </ul>
         {cartItems.length === 0 && <p>장바구니가 비어 있습니다.</p>}
+        <button onClick={handlePurchase}>구매하기</button>
+
+        {/* 주소 입력 모달 */}
+        {showAddressModal && (
+          <div
+            className="modal"
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => setShowAddressModal(false)}
+          >
+            <div
+              className="modal-content"
+              style={{
+                backgroundColor: "#fff",
+                padding: "20px",
+                borderRadius: "10px",
+                width: "600px",
+                textAlign: "center",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2>배송지 입력</h2>
+              <form onSubmit={deliverySubmit}>
+
+                <input
+                  type="text"
+                  placeholder="배송지를 입력하세요"
+                  name="deliveryAddr"
+                  className="form-control"
+                  style={{ marginBottom: "10px" }}
+                />
+
+                <input
+                  type="text"
+                  placeholder="배송지 상세를 입력하세요"
+                  name="deliveryAddrDetail"
+                  className="form-control"
+                  style={{ marginBottom: "10px" }}
+                />
+
+                <input
+                  type="text"
+                  placeholder="우편번호를 입력하세요"
+                  name="deliveryPost"
+                  className="form-control"
+                  style={{ marginBottom: "10px" }}
+                />
+
+                <input
+                  type="text"
+                  placeholder="전화번호를 입력하세요"
+                  name="deliveryPhone"
+                  className="form-control"
+                  style={{ marginBottom: "10px" }}
+                />
+
+                <input
+                  type="text"
+                  placeholder="기타 정보를 입력하세요"
+                  name="message"
+                  className="form-control"
+                  style={{ marginBottom: "10px" }}
+                />
+                <button type="submit" className="btn btn-primary">
+                  주문하기
+                </button>
+              </form>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowAddressModal(false)}
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </CSSTransition>
   );

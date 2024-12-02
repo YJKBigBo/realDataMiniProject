@@ -60,10 +60,13 @@
             Cart c
                 JOIN
             Goods g
-            ON
-                c.goods_Num = g.goods_Num
+            ON c.goods_Num = g.goods_Num
+                JOIN
+            goods_ipgo gi
+            ON g.goods_Num = gi.goods_Num
         WHERE
             c.member_Num = #{memberNum}
+          AND gi.ipgo_qty >= 1
     </select>
 
     <update id="cartUpdate">

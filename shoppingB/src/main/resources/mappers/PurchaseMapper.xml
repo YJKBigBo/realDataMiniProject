@@ -31,4 +31,17 @@
             SET goods_ipgo.ipgo_qty = goods_ipgo.ipgo_qty - #{purchaseQty}
         WHERE goods_ipgo.ipgo_qty >= #{purchaseQty};
     </update>
+
+    <insert id="purchaseCart">
+        insert into purchase (
+            PURCHASE_NUM, PURCHASE_DATE, PURCHASE_PRICE, DELIVERY_ADDR, DELIVERY_ADDR_DETAIL,
+            DELIVERY_POST, DELIVERY_PHONE, MESSAGE, PURCHASE_STATUS, MEMBER_NUM)
+        values
+            (#{purchaseNum}, sysdate(), #{purchasePrice}, #{deliveryAddr}, #{deliveryAddrDetail},
+             #{deliveryPost}, #{deliveryPhone}, #{message}, "결제완료", #{memberNum})
+    </insert>
+
+    <delete id="purchaseCartDelete" parameterType="string">
+        delete from cart where member_num=#{memberNum} and goods_num=#{goodsNum}
+    </delete>
 </mapper>
