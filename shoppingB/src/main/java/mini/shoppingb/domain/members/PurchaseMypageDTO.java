@@ -10,4 +10,5 @@ public class PurchaseMypageDTO {
     PurchaseDTO purchaseDTO;
     PurchaseListDTO purchaseListDTO;
     GoodsDTO goodsDTO;
+    ReviewDTO reviewDTO;
 }

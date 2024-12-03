@@ -1,16 +1,135 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartInfo from "./CartInfo";
-import testImg from "../static/images/testImg01.png";
 import MypageAPI from "../apis/MypageAPI";
+import ReviewAPI from "../apis/ReviewAPI";
+
+const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
+  if (!isOpen) return null;
+
+  const reviewRegist = async (reviewData) =>{
+    try{
+      await ReviewAPI.reviewRegist(reviewData);
+      alert("리뷰 등록을 완료했습니다.");
+      onClose();
+      fetchMypageInfo();
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  const reviewSubmit = async(e) => {
+    e.preventDefault();
+    const reviewData = {
+      rating: e.target.rating.value,
+      reviewContents: e.target.reviewContents.value,
+      goodsNum: product.goodsNum,
+      purchaseNum: product.purchaseNum,
+    };
+    reviewRegist(reviewData);
+
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "20px",
+          borderRadius: "10px",
+          width: "400px",
+          textAlign: "center",
+        }}
+      >
+        <h4>리뷰 작성</h4>
+        <form onSubmit={reviewSubmit}>
+          <div style={{ marginBottom: "10px" }}>
+            <label>
+              평점:
+              <select name="rating" style={{ marginLeft: "10px" }}>
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <option key={rating} value={rating}>
+                    {rating}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div style={{ marginBottom: "10px" }}>
+            <textarea
+              name="reviewContents"
+              placeholder="리뷰를 작성하세요"
+              rows="5"
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+          </div>
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            제출
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            style={{
+              marginLeft: "10px",
+              backgroundColor: "gray",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            취소
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [mypageInfo, setMypageInfo] = useState([]);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
   const toggleCart = () => setIsCartOpen((prev) => !prev);
+
+  const toggleReviewModal = (product) => {
+    setSelectedProduct(product);
+    setIsReviewModalOpen((prev) => !prev);
+  };
 
   const handleShowMore = () => {
     setShowMore(true);
@@ -20,6 +139,7 @@ const MyInfo = () => {
     try {
       const response = await MypageAPI.mypageInfo();
       setMypageInfo(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -28,16 +148,6 @@ const MyInfo = () => {
   useEffect(() => {
     fetchMypageInfo();
   }, []);
-
-  const renderOrderStatus = (status) => {
-    const statusMap = {
-      pending: "대기 중",
-      shipped: "배송 중",
-      delivered: "배송 완료",
-      canceled: "취소됨",
-    };
-    return statusMap[status] || "알 수 없음";
-  };
 
   useEffect(() => {
     if (mypageInfo.length > 0) {
@@ -53,6 +163,9 @@ const MyInfo = () => {
         orderStatus: item.purchaseDTO.purchaseStatus,
         quantity: item.purchaseListDTO.purchaseQty,
         price: item.purchaseListDTO.goodsUnitPrice,
+        purchaseNum: item.purchaseDTO.purchaseNum,
+        goodsNum: item.goodsDTO.goodsNum,
+        hasReview: item.reviewDTO?.reviewNum !== null,
       }));
       setPurchaserOrderProducts(transformedData);
     }
@@ -114,72 +227,99 @@ const MyInfo = () => {
               }}
             >
               {purchaserOrderProducts
-                .slice(0, showMore ? undefined : 2)
-                .map((product, index) => (
-                  <div
-                    key={index}
+              .slice(0, showMore ? purchaserOrderProducts.length : 3)
+              .map((product, index) => (
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: "20px",
+                    padding: "10px 0",
+                    borderBottom: "1px solid #eee",
+                    width: "100%",
+                    maxWidth: "800px",
+                    textAlign: "center",
+                  }}
+                >
+                  <h5 style={{ color: "#555", fontSize: "14px" }}>
+                    {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
+                    {product.orderDate[2]} 일
+                  </h5>
+                  <img
+                    src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
+                    alt={product.productName}
                     style={{
-                      marginBottom: "20px",
-                      padding: "10px 0",
-                      borderBottom: "1px solid #eee",
-                      width: "100%",
-                      maxWidth: "800px",
-                      textAlign: "center",
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "5px",
+                      objectFit: "cover",
+                      margin: "10px 0",
+                    }}
+                  />
+                  <p
+                    style={{
+                      margin: "5px 0",
+                      fontWeight: "bold",
+                      color: "#333",
                     }}
                   >
-                    <h5 style={{ color: "#555", fontSize: "14px" }}>
-                      {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
-                      {product.orderDate[2]} 일
-                    </h5>
-                    <img
-                      src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
-                      alt={product.productName}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        borderRadius: "5px",
-                        objectFit: "cover",
-                        margin: "10px 0",
-                      }}
-                    />
-                    <p
-                      style={{
-                        margin: "5px 0",
-                        fontWeight: "bold",
-                        color: "#333",
-                      }}
-                    >
-                      제품명 : {product.productName}
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      수량 : {product.quantity}
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      가격 : {product.price.toLocaleString()}원
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      주문상태 : {product.orderStatus}
-                    </p>
-                    {/* <p style={{ margin: "5px 0", color: "#666" }}>
-                      배송현황 : {product.deliveryAddr}{" "}
-                      {product.deliveryAddrDetail}
+                    제품명 : {product.productName}
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    수량 : {product.quantity}
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    가격 : {product.price.toLocaleString()}원
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    주문상태 : {product.orderStatus}
+                  </p>
+                  {product.hasReview ? (
+                    <>
                       <button
-                        onClick={() => navigate(`/mypage/delivery/${index}`)}
+                        onClick={() => alert("리뷰 수정")}
                         style={{
-                          padding: "5px 10px",
-                          backgroundColor: "black",
+                          padding: "10px",
+                          backgroundColor: "#007BFF",
                           color: "#fff",
                           border: "none",
                           borderRadius: "5px",
                           cursor: "pointer",
-                          fontSize: "12px",
                         }}
                       >
-                        자세히
+                        리뷰 수정
                       </button>
-                    </p> */}
-                  </div>
-                ))}
+                      <button
+                        onClick={() => alert("리뷰 삭제")}
+                        style={{
+                          marginLeft: "10px",
+                          padding: "10px",
+                          backgroundColor: "#DC3545",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        리뷰 삭제
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => toggleReviewModal(product)}
+                      style={{
+                        padding: "10px",
+                        backgroundColor: "#333",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      리뷰 작성
+                    </button>
+                  )}
+                </div>
+              ))}
               {!showMore && (
                 <button
                   onClick={handleShowMore}
@@ -200,23 +340,14 @@ const MyInfo = () => {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <h4 style={{ borderBottom: "2px solid #ddd", paddingBottom: "10px" }}>
-            배송현황
-          </h4>
-          <p style={{ color: "#666", marginTop: "10px" }}>
-            배송 정보가 여기에 표시됩니다.
-          </p>
-        </div>
       </main>
       <CartInfo isOpen={isCartOpen} toggleCart={toggleCart} />
+      <ReviewModal
+        isOpen={isReviewModalOpen}
+        product={selectedProduct}
+        onClose={() => setIsReviewModalOpen(false)}
+        fetchMypageInfo={fetchMypageInfo}
+      />
     </div>
   );
 };

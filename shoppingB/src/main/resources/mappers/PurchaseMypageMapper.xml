@@ -29,10 +29,18 @@
             <result property="goodsMainImage" column="GOODS_MAIN_IMAGE"/>
             <result property="goodsMainStoreImage" column="GOODS_MAIN_STORE_IMAGE"/>
         </association>
+        <association property="reviewDTO" javaType="review">
+            <result property="reviewNum" column="review_num"/>
+            <result property="goodsNum" column="GOODS_NUM"/>
+            <result property="purchaseNum" column="purchase_num"/>
+            <result property="reviewDate" column="review_date"/>
+            <result property="reviewContents" column="review_Contents"/>
+            <result property="memberId" column="member_Id"/>
+        </association>
     </resultMap>
 
     <select id="purchaseMypageInfo" parameterType="string" resultMap="PurchaseMypageResultMap">
-        select
+        SELECT
             p.PURCHASE_NUM,
             p.PURCHASE_DATE,
             p.PURCHASE_PRICE,
@@ -44,13 +52,16 @@
             p.PURCHASE_STATUS,
             pl.PURCHASE_QTY,
             pl.GOODS_UNIT_PRICE,
-            g.goods_num,
-            g.goods_name,
-            g.goods_main_image,
-            g.goods_main_store_image
-        from purchase p
-                 join purchase_list pl ON p.purchase_num = pl.purchase_num
-                 join goods g ON g.goods_Num = pl.goods_Num
-        where p.MEMBER_NUM = #{memberNum}
+            g.GOODS_NUM,
+            g.GOODS_NAME,
+            g.GOODS_MAIN_IMAGE,
+            g.GOODS_MAIN_STORE_IMAGE,
+            r.REVIEW_NUM
+        FROM PURCHASE p
+                 JOIN PURCHASE_LIST pl ON p.PURCHASE_NUM = pl.PURCHASE_NUM
+                 JOIN GOODS g ON g.GOODS_NUM = pl.GOODS_NUM
+                 LEFT JOIN REVIEWs r ON r.PURCHASE_NUM = p.PURCHASE_NUM
+            AND r.GOODS_NUM = g.GOODS_NUM
+        WHERE p.MEMBER_NUM = #{memberNum}
     </select>
 </mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.ReviewMapper">
+    <insert id="reviewRegist" parameterType="review">
+        insert into reviews (REVIEW_NUM, goods_num, PURCHASE_NUM, REVIEW_DATE, REVIEW_CONTENTS, MEMBER_ID, rating)
+        values (#{reviewNum}, #{goodsNum}, #{purchaseNum}, sysdate(), #{reviewContents}, #{memberId}, #{rating})
+    </insert>
+</mapper>
