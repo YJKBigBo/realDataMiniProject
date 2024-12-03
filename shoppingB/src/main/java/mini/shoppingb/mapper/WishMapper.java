@@ -8,4 +8,6 @@ public interface WishMapper {
     public Integer wishData(@Param("goodsNum") String goodsNum, @Param("memberNum") String memberNum);
 
     public void wishRegist(@Param("goodsNum") String goodsNum, @Param("memberNum") String memberNum);
+
+    public void wishDelete(@Param("goodsNum") String goodsNum, @Param("memberNum") String memberNum);
 }

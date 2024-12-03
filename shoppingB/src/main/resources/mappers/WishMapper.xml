@@ -10,4 +10,8 @@
     <insert id="wishRegist" parameterType="string">
         insert into wish (MEMBER_NUM, goods_num, WISH_DATE) values (#{memberNum}, #{goodsNum}, sysdate())
     </insert>
+
+    <delete id="wishDelete" parameterType="string">
+        delete from wish where goods_num=#{goodsNum} and member_num=#{memberNum}
+    </delete>
 </mapper>
