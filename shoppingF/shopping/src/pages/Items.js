@@ -5,6 +5,8 @@ import GoodsCard from "../component/GoodsCard.js";
 import goodsApi from "../apis/GoodsAPI.js";
 import CartAPI from "../apis/CartAPI.js";
 import PurchaseAPI from "../apis/PurchaseAPI.js";
+import WishAPI from "../apis/WishAPI.js";
+import { FaHeart } from "react-icons/fa";
 
 function Items() {
   const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
@@ -14,6 +16,8 @@ function Items() {
   const [selectedGoods, setSelectedGoods] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
+  const [isFavorited, setIsFavorited] = useState();
+  const [goodsNumber, setGoodsNumber] = useState();
   const itemsPerPage = 3;
 
   useEffect(() => {
@@ -74,9 +78,9 @@ function Items() {
       deliveryPost: e.target.deliveryPost.value,
       deliveryPhone: e.target.deliveryPhone.value,
       message: e.target.message.value,
-      goodsNum : selectedGoods.goodsNum,
-      goodsUnitPrice : selectedGoods.goodsPrice,
-      purchaseQty : e.target.purchaseQty.value,
+      goodsNum: selectedGoods.goodsNum,
+      goodsUnitPrice: selectedGoods.goodsPrice,
+      purchaseQty: e.target.purchaseQty.value,
     };
 
     try {
@@ -86,6 +90,20 @@ function Items() {
     } catch (error) {
       console.error(error);
       alert("주문 처리 중 문제가 발생했습니다.");
+    }
+  };
+
+  const wishForItem = async (goodsNum) => {
+    try {
+      const response = await WishAPI.fetchWish(goodsNum);
+      console.log(response.data);
+      if (response.data >= 1) {
+        setIsFavorited(true);
+      } else {
+        setIsFavorited(false);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -142,6 +160,10 @@ function Items() {
                     setShowModal(true);
                   }}
                   goodsNum={goods.goodsNum}
+                  wishForItem={() => {
+                    wishForItem(goods.goodsNum);
+                    setSelectedGoods(goods);
+                  }}
                 />
               ))
             ) : (
@@ -208,7 +230,17 @@ function Items() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2>상품명 : {selectedGoods.goodsName}</h2>
+            <h2>
+              상품명: {selectedGoods.goodsName}
+              <FaHeart
+                //onClick={}
+                style={{
+                  marginLeft: "10px",
+                  color: isFavorited ? "red" : "gray",
+                  cursor: "pointer",
+                }}
+              />
+            </h2>
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <img
                 src={`http://localhost:8080/image?imageName=${selectedGoods.goodsMainStoreImage}`}
@@ -237,9 +269,9 @@ function Items() {
                   )
               )}
             </div>
-            <p>상품상세 : {selectedGoods.goodsContents}</p>
-            <p>가격 : {selectedGoods.goodsPrice?.toLocaleString()} ₩</p>
-            <p>조회수 : {selectedGoods.visitCount}</p>
+            <p>상품상세: {selectedGoods.goodsContents}</p>
+            <p>가격: {selectedGoods.goodsPrice?.toLocaleString()} ₩</p>
+            <p>조회수: {selectedGoods.visitCount}</p>
             <div style={{ paddingTop: "5px", paddingBottom: "5px" }}></div>
             <button
               className="btn btn-secondary"
@@ -300,7 +332,6 @@ function Items() {
           >
             <h2>배송지 입력</h2>
             <form onSubmit={deliverySubmit}>
-
               <input
                 type="text"
                 placeholder="상품 갯수를 입력하세요"

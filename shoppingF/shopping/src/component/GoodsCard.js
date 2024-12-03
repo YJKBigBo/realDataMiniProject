@@ -13,6 +13,7 @@ function GoodsCard({
   goodsContents,
   onDetailClick,
   goodsNum,
+  wishForItem,
 }) {
   const [img, setImg] = useState();
 
@@ -72,7 +73,7 @@ function GoodsCard({
         <button
           className="btn btn-primary"
           style={{ marginTop: "10px" }}
-          onClick={() =>
+          onClick={() => {
             onDetailClick({
               key,
               goodsName,
@@ -85,8 +86,9 @@ function GoodsCard({
               goodsDetailStoreImage,
               visitCount,
               goodsNum,
-            })
-          }
+            });
+            wishForItem(goodsNum);
+          }}
         >
           상품 상세 보기
         </button>
