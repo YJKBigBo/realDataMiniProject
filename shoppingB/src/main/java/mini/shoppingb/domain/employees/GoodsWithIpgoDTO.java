@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @Alias("goodsWithIpgo")
-public class GoodsWithIpgo {
+public class GoodsWithIpgoDTO {
     String goodsNum;
     String goodsName;
     Integer goodsPrice;

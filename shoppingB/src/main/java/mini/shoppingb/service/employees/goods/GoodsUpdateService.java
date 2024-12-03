@@ -3,8 +3,7 @@ package mini.shoppingb.service.employees.goods;
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.domain.AuthInfoDTO;
-import mini.shoppingb.domain.employees.GoodsDTO;
-import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class GoodsUpdateService {
     AutoNumMapper autoNumMapper;
 
     public void execute(GoodsCommand command, Model model, HttpSession session) {
-        GoodsWithIpgo dto = goodsDetailService.execute(command.getGoodsNum(), model);
+        GoodsWithIpgoDTO dto = goodsDetailService.execute(command.getGoodsNum(), model);
         dto.setGoodsName(command.getGoodsName());
         dto.setGoodsPrice(command.getGoodsPrice());
         dto.setVisitCount(command.getVisitCount());

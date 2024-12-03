@@ -1,7 +1,6 @@
 package mini.shoppingb.service.members.goods;
 
-import mini.shoppingb.domain.employees.GoodsDTO;
-import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,8 @@ public class GoodsListServiceCSR {
     @Autowired
     GoodsMapper goodsMapper;
 
-    public List<GoodsWithIpgo> execute(){
-        List<GoodsWithIpgo> dto = goodsMapper.GoodsWithQtyList();
+    public List<GoodsWithIpgoDTO> execute(){
+        List<GoodsWithIpgoDTO> dto = goodsMapper.GoodsWithQtyList();
         return dto;
     }
 }

@@ -1,7 +1,6 @@
 package mini.shoppingb.service.employees.goods;
 
-import mini.shoppingb.domain.employees.GoodsDTO;
-import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,8 @@ public class GoodsDetailService {
     @Autowired
     GoodsMapper goodsMapper;
 
-    public GoodsWithIpgo execute(String goodsNum, Model model) {
-        GoodsWithIpgo dto = goodsMapper.GoodsWithQty(goodsNum);
+    public GoodsWithIpgoDTO execute(String goodsNum, Model model) {
+        GoodsWithIpgoDTO dto = goodsMapper.GoodsWithQty(goodsNum);
         if(dto == null){
             return null;
         } else{

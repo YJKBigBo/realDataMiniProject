@@ -1,7 +1,7 @@
 package mini.shoppingb.controller.members;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.domain.members.CartDTO;
 import mini.shoppingb.domain.members.GoodsCartDTO;
 import mini.shoppingb.service.employees.goods.GoodsDetailService;
@@ -45,7 +45,7 @@ public class CartController {
 
     @GetMapping("/members/goods/totalQty")
     public ResponseEntity<Integer> totalQty(@RequestParam String goodsNum, Model model) {
-        GoodsWithIpgo goods = goodsDetailService.execute(goodsNum, model);
+        GoodsWithIpgoDTO goods = goodsDetailService.execute(goodsNum, model);
         Integer qty = goods.getTotalQty();
         return ResponseEntity.ok(qty);
     }

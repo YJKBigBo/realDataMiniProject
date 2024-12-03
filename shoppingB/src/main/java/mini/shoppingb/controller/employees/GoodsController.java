@@ -3,7 +3,7 @@ package mini.shoppingb.controller.employees;
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
 import mini.shoppingb.command.searchCommand;
-import mini.shoppingb.domain.employees.GoodsWithIpgo;
+import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import mini.shoppingb.service.employees.goods.*;
 import mini.shoppingb.service.employees.goodsIpgo.GoodsIpgoDeleteService;
@@ -70,7 +70,7 @@ public class GoodsController {
     public String productDetail(@PathVariable String goodsNum, HttpSession session, Model model) {
 
         employeesAuthService.execute(session, model);
-        GoodsWithIpgo goods = goodsDetailService.execute(goodsNum, model);
+        GoodsWithIpgoDTO goods = goodsDetailService.execute(goodsNum, model);
         if (goods == null) {
             model.addAttribute("errorMessage", "해당 상품 정보를 찾을 수 없습니다.");
             return "thymeleaf/error/404";
@@ -81,7 +81,7 @@ public class GoodsController {
     @GetMapping("/employees/product/update/{goodsNum}")
     public String productUpdate(@PathVariable String goodsNum, HttpSession session, Model model) {
         employeesAuthService.execute(session, model);
-        GoodsWithIpgo dto = goodsDetailService.execute(goodsNum, model);
+        GoodsWithIpgoDTO dto = goodsDetailService.execute(goodsNum, model);
         model.addAttribute("dto", dto);
         return "thymeleaf/goods/goodsUpdate";
     }
