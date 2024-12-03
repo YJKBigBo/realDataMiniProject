@@ -4,22 +4,40 @@ import CartInfo from "./CartInfo";
 import MypageAPI from "../apis/MypageAPI";
 import ReviewAPI from "../apis/ReviewAPI";
 
-const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
+const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
   if (!isOpen) return null;
 
-  const reviewRegist = async (reviewData) =>{
-    try{
+  const reviewRegist = async (reviewData) => {
+    try {
       await ReviewAPI.reviewRegist(reviewData);
-      alert("리뷰 등록을 완료했습니다.");
+      alert("리뷰 등록 혹은 수정을 완료했습니다.");
       onClose();
       fetchMypageInfo();
-    } catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const reviewSubmit = async(e) => {
+  const reviewDelete = async () => {
+    console.log(product);
+    const reviewData = {
+      goodsNum: product.goodsNum,
+      purchaseNum: product.purchaseNum,
+      reviewNum: product.reviewNum
+    };
+    try {
+      await ReviewAPI.reviewDelete(reviewData);
+      alert("리뷰 삭제를 완료했습니다.");
+      onClose();
+      fetchMypageInfo();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const reviewSubmit = async (e) => {
     e.preventDefault();
+    console.log(product);
     const reviewData = {
       rating: e.target.rating.value,
       reviewContents: e.target.reviewContents.value,
@@ -27,7 +45,6 @@ const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
       purchaseNum: product.purchaseNum,
     };
     reviewRegist(reviewData);
-
   };
 
   return (
@@ -54,12 +71,16 @@ const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
           textAlign: "center",
         }}
       >
-        <h4>리뷰 작성</h4>
+        <h4>리뷰</h4>
         <form onSubmit={reviewSubmit}>
           <div style={{ marginBottom: "10px" }}>
             <label>
               평점:
-              <select name="rating" style={{ marginLeft: "10px" }}>
+              <select
+                name="rating"
+                defaultValue={product.rating}
+                style={{ marginLeft: "10px" }}
+              >
                 {[1, 2, 3, 4, 5].map((rating) => (
                   <option key={rating} value={rating}>
                     {rating}
@@ -73,6 +94,7 @@ const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
             <textarea
               name="reviewContents"
               placeholder="리뷰를 작성하세요"
+              defaultValue={product.reviewContents}
               rows="5"
               style={{
                 width: "100%",
@@ -82,19 +104,55 @@ const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo}) => {
               }}
             />
           </div>
-          <button
-            type="submit"
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            제출
-          </button>
+
+          {product.reviewContents ? (
+            <>
+              <button
+              type="submit"
+              style={{
+                backgroundColor: "blue",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+            >
+              수정
+            </button>
+
+              <button
+                type="button"
+                onClick={() => reviewDelete()}
+                style={{
+                  backgroundColor: "red",
+                  color: "white",
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                삭제
+              </button>
+            </>
+          ) : (
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              제출
+            </button>
+          )}
+
           <button
             type="button"
             onClick={onClose}
@@ -166,6 +224,9 @@ const MyInfo = () => {
         purchaseNum: item.purchaseDTO.purchaseNum,
         goodsNum: item.goodsDTO.goodsNum,
         hasReview: item.reviewDTO?.reviewNum !== null,
+        reviewContents: item.reviewDTO.reviewContents,
+        rating: item.reviewDTO.rating,
+        reviewNum: item.reviewDTO.reviewNum,
       }));
       setPurchaserOrderProducts(transformedData);
     }
@@ -227,99 +288,85 @@ const MyInfo = () => {
               }}
             >
               {purchaserOrderProducts
-              .slice(0, showMore ? purchaserOrderProducts.length : 3)
-              .map((product, index) => (
-                <div
-                  key={index}
-                  style={{
-                    marginBottom: "20px",
-                    padding: "10px 0",
-                    borderBottom: "1px solid #eee",
-                    width: "100%",
-                    maxWidth: "800px",
-                    textAlign: "center",
-                  }}
-                >
-                  <h5 style={{ color: "#555", fontSize: "14px" }}>
-                    {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
-                    {product.orderDate[2]} 일
-                  </h5>
-                  <img
-                    src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
-                    alt={product.productName}
+                .slice(0, showMore ? purchaserOrderProducts.length : 3)
+                .map((product, index) => (
+                  <div
+                    key={index}
                     style={{
-                      width: "100px",
-                      height: "100px",
-                      borderRadius: "5px",
-                      objectFit: "cover",
-                      margin: "10px 0",
-                    }}
-                  />
-                  <p
-                    style={{
-                      margin: "5px 0",
-                      fontWeight: "bold",
-                      color: "#333",
+                      marginBottom: "20px",
+                      padding: "10px 0",
+                      borderBottom: "1px solid #eee",
+                      width: "100%",
+                      maxWidth: "800px",
+                      textAlign: "center",
                     }}
                   >
-                    제품명 : {product.productName}
-                  </p>
-                  <p style={{ margin: "5px 0", color: "#666" }}>
-                    수량 : {product.quantity}
-                  </p>
-                  <p style={{ margin: "5px 0", color: "#666" }}>
-                    가격 : {product.price.toLocaleString()}원
-                  </p>
-                  <p style={{ margin: "5px 0", color: "#666" }}>
-                    주문상태 : {product.orderStatus}
-                  </p>
-                  {product.hasReview ? (
-                    <>
-                      <button
-                        onClick={() => alert("리뷰 수정")}
-                        style={{
-                          padding: "10px",
-                          backgroundColor: "#007BFF",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        리뷰 수정
-                      </button>
-                      <button
-                        onClick={() => alert("리뷰 삭제")}
-                        style={{
-                          marginLeft: "10px",
-                          padding: "10px",
-                          backgroundColor: "#DC3545",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        리뷰 삭제
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      onClick={() => toggleReviewModal(product)}
+                    <h5 style={{ color: "#555", fontSize: "14px" }}>
+                      {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
+                      {product.orderDate[2]} 일
+                    </h5>
+                    <img
+                      src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
+                      alt={product.productName}
                       style={{
-                        padding: "10px",
-                        backgroundColor: "#333",
-                        color: "#fff",
-                        border: "none",
+                        width: "100px",
+                        height: "100px",
                         borderRadius: "5px",
-                        cursor: "pointer",
+                        objectFit: "cover",
+                        margin: "10px 0",
+                      }}
+                    />
+                    <p
+                      style={{
+                        margin: "5px 0",
+                        fontWeight: "bold",
+                        color: "#333",
                       }}
                     >
-                      리뷰 작성
-                    </button>
-                  )}
-                </div>
-              ))}
+                      제품명 : {product.productName}
+                    </p>
+                    <p style={{ margin: "5px 0", color: "#666" }}>
+                      수량 : {product.quantity}
+                    </p>
+                    <p style={{ margin: "5px 0", color: "#666" }}>
+                      가격 : {product.price.toLocaleString()}원
+                    </p>
+                    <p style={{ margin: "5px 0", color: "#666" }}>
+                      주문상태 : {product.orderStatus}
+                    </p>
+                    {product.hasReview ? (
+                      <>
+                        <button
+                          onClick={() => toggleReviewModal(product)}
+                          style={{
+                            padding: "10px",
+                            backgroundColor: "#007BFF",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          리뷰 수정
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => toggleReviewModal(product)}
+                        style={{
+                          padding: "10px",
+                          backgroundColor: "#333",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        리뷰 작성
+                      </button>
+                    )}
+                  </div>
+                ))}
               {!showMore && (
                 <button
                   onClick={handleShowMore}

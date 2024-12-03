@@ -36,6 +36,7 @@
             <result property="reviewDate" column="review_date"/>
             <result property="reviewContents" column="review_Contents"/>
             <result property="memberId" column="member_Id"/>
+            <result property="rating" column="rating"/>
         </association>
     </resultMap>
 
@@ -56,7 +57,9 @@
             g.GOODS_NAME,
             g.GOODS_MAIN_IMAGE,
             g.GOODS_MAIN_STORE_IMAGE,
-            r.REVIEW_NUM
+            r.REVIEW_NUM,
+            r.review_contents,
+            r.rating
         FROM PURCHASE p
                  JOIN PURCHASE_LIST pl ON p.PURCHASE_NUM = pl.PURCHASE_NUM
                  JOIN GOODS g ON g.GOODS_NUM = pl.GOODS_NUM
