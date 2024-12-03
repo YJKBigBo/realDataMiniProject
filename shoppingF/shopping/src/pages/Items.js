@@ -107,6 +107,22 @@ function Items() {
     }
   };
 
+  const registWish = async (goodsNum) => {
+    try {
+      await WishAPI.registWish(goodsNum);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteWish = async (goodsNum) => {
+    try {
+      await WishAPI.deleteWish(goodsNum);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="sb-nav-fixed">
       <div id="layoutSidenav">
@@ -233,7 +249,14 @@ function Items() {
             <h2>
               상품명: {selectedGoods.goodsName}
               <FaHeart
-                //onClick={}
+                onClick={() => {
+                  if (isFavorited) {
+                    deleteWish(selectedGoods.goodsNum);
+                  } else {
+                    registWish(selectedGoods.goodsNum);
+                  }
+                  setIsFavorited(!isFavorited);
+                }}
                 style={{
                   marginLeft: "10px",
                   color: isFavorited ? "red" : "gray",

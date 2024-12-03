@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface WishMapper {
     public Integer wishData(@Param("goodsNum") String goodsNum, @Param("memberNum") String memberNum);
+
+    public void wishRegist(@Param("goodsNum") String goodsNum, @Param("memberNum") String memberNum);
 }
