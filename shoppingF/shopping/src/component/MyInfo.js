@@ -2,191 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartInfo from "./CartInfo";
 import MypageAPI from "../apis/MypageAPI";
-import ReviewAPI from "../apis/ReviewAPI";
-
-const ReviewModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
-  if (!isOpen) return null;
-
-  const reviewRegist = async (reviewData) => {
-    try {
-      await ReviewAPI.reviewRegist(reviewData);
-      alert("리뷰 등록 혹은 수정을 완료했습니다.");
-      onClose();
-      fetchMypageInfo();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const reviewDelete = async () => {
-    console.log(product);
-    const reviewData = {
-      goodsNum: product.goodsNum,
-      purchaseNum: product.purchaseNum,
-      reviewNum: product.reviewNum
-    };
-    try {
-      await ReviewAPI.reviewDelete(reviewData);
-      alert("리뷰 삭제를 완료했습니다.");
-      onClose();
-      fetchMypageInfo();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const reviewSubmit = async (e) => {
-    e.preventDefault();
-    console.log(product);
-    const reviewData = {
-      rating: e.target.rating.value,
-      reviewContents: e.target.reviewContents.value,
-      goodsNum: product.goodsNum,
-      purchaseNum: product.purchaseNum,
-    };
-    reviewRegist(reviewData);
-  };
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 1000,
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "20px",
-          borderRadius: "10px",
-          width: "400px",
-          textAlign: "center",
-        }}
-      >
-        <h4>리뷰</h4>
-        <form onSubmit={reviewSubmit}>
-          <div style={{ marginBottom: "10px" }}>
-            <label>
-              평점:
-              <select
-                name="rating"
-                defaultValue={product.rating}
-                style={{ marginLeft: "10px" }}
-              >
-                {[1, 2, 3, 4, 5].map((rating) => (
-                  <option key={rating} value={rating}>
-                    {rating}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div style={{ marginBottom: "10px" }}>
-            <textarea
-              name="reviewContents"
-              placeholder="리뷰를 작성하세요"
-              defaultValue={product.reviewContents}
-              rows="5"
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-            />
-          </div>
-
-          {product.reviewContents ? (
-            <>
-              <button
-              type="submit"
-              style={{
-                backgroundColor: "blue",
-                color: "white",
-                padding: "10px 20px",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
-            >
-              수정
-            </button>
-
-              <button
-                type="button"
-                onClick={() => reviewDelete()}
-                style={{
-                  backgroundColor: "red",
-                  color: "white",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                삭제
-              </button>
-            </>
-          ) : (
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "black",
-                color: "white",
-                padding: "10px 20px",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              제출
-            </button>
-          )}
-
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              marginLeft: "10px",
-              backgroundColor: "gray",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            취소
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
+import ReviewModal from "../component/ReviewModal";
+import InquireModal from "../component/InquireModal";
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [purchaserOrderProducts, setPurchaserOrderProducts] = useState([]);
   const [showMore, setShowMore] = useState(false);
   const [mypageInfo, setMypageInfo] = useState([]);
-  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [reviewModal, setReviewModal] = useState(false);
+  const [inquireModal, setInquireModal] = useState(false);
+  const [inquireProducts, setInquireProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const navigate = useNavigate();
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
   const toggleReviewModal = (product) => {
     setSelectedProduct(product);
-    setIsReviewModalOpen((prev) => !prev);
+    setReviewModal((prev) => !prev);
+  };
+
+  const toggleInquireModal = (product) => {
+    setSelectedProduct(product);
+    setInquireModal((prev) => !prev);
   };
 
   const handleShowMore = () => {
@@ -203,13 +40,23 @@ const MyInfo = () => {
     }
   };
 
+  const fetchInquireInfo = async () => {
+    try {
+      const response = await MypageAPI.myInquireInfo();
+      setInquireProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchMypageInfo();
+    fetchInquireInfo();
   }, []);
 
   useEffect(() => {
     if (mypageInfo.length > 0) {
-      const transformedData = mypageInfo.map((item) => ({
+      const info = mypageInfo.map((item) => ({
         imgUrl: item.goodsDTO.goodsMainStoreImage,
         productName: item.goodsDTO.goodsName,
         deliveryAddr: item.purchaseDTO.deliveryAddr,
@@ -228,7 +75,7 @@ const MyInfo = () => {
         rating: item.reviewDTO.rating,
         reviewNum: item.reviewDTO.reviewNum,
       }));
-      setPurchaserOrderProducts(transformedData);
+      setPurchaserOrderProducts(info);
     }
   }, [mypageInfo]);
 
@@ -334,6 +181,7 @@ const MyInfo = () => {
                     <p style={{ margin: "5px 0", color: "#666" }}>
                       주문상태 : {product.orderStatus}
                     </p>
+
                     {product.hasReview ? (
                       <>
                         <button
@@ -387,12 +235,148 @@ const MyInfo = () => {
             </div>
           </div>
         </div>
+        <div
+          style={{
+            backgroundColor: "#fff",
+            padding: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <h4 style={{ borderBottom: "2px solid #ddd", paddingBottom: "10px" }}>
+            문의 현황
+          </h4>
+          {inquireProducts
+            .slice(0, showMore ? inquireProducts.length : 3)
+            .map((product, index) => (
+              <div
+                key={index}
+                style={{
+                  marginBottom: "20px",
+                  padding: "10px 0",
+                  borderBottom: "1px solid #eee",
+                  width: "100%",
+                  maxWidth: "800px",
+                  textAlign: "center",
+                }}
+              >
+                <h5
+                  style={{
+                    color: "#555",
+                    fontSize: "14px",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  {
+                    new Date(product.inquireDTO.inquireDate)
+                      .toISOString()
+                      .split("T")[0]
+                      .split("-")[0]
+                  }
+                  <p>년</p>
+                  {
+                    new Date(product.inquireDTO.inquireDate)
+                      .toISOString()
+                      .split("T")[0]
+                      .split("-")[1]
+                  }
+                  <p>월</p>
+                  {
+                    new Date(product.inquireDTO.inquireDate)
+                      .toISOString()
+                      .split("T")[0]
+                      .split("-")[2]
+                  }
+                  <p>일</p>
+                </h5>
+                <img
+                  src={`http://localhost:8080/image?imageName=${product.goodsDTO.goodsMainStoreImage}`}
+                  alt={product.productName}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                    margin: "10px 0",
+                  }}
+                />
+                <p
+                  style={{
+                    margin: "5px 0",
+                    fontWeight: "bold",
+                    color: "#333",
+                  }}
+                >
+                  제품명 : {product.goodsDTO.goodsName}
+                </p>
+                <p style={{ margin: "5px 0", color: "#666" }}>
+                  문의제목 : {product.inquireDTO.inquireContents}
+                </p>
+                <p
+                  style={{
+                    margin: "5px 0",
+                    color: "#666",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  문의상태 :{" "}
+                  {product.inquireDTO.inquireAnswer !== null && (
+                    <>
+                      <button
+                        onClick={() => toggleInquireModal(product)}
+                        style={{
+                          marginLeft:"5px",
+                          padding: "1px",
+                          backgroundColor: "#333",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                          
+                        }}
+                      >
+                        답변보기
+                      </button>
+                    </>
+                  )}
+                  {product.inquireDTO.inquireAnswer === null && (
+                    <p>답변대기중</p>
+                  )}
+                </p>
+              </div>
+            ))}
+          {!showMore && (
+            <button
+              onClick={handleShowMore}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "black",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                fontSize: "14px",
+                marginTop: "10px",
+              }}
+            >
+              더보기
+            </button>
+          )}
+        </div>
       </main>
       <CartInfo isOpen={isCartOpen} toggleCart={toggleCart} />
       <ReviewModal
-        isOpen={isReviewModalOpen}
+        isOpen={reviewModal}
         product={selectedProduct}
-        onClose={() => setIsReviewModalOpen(false)}
+        onClose={() => setReviewModal(false)}
+        fetchMypageInfo={fetchMypageInfo}
+      />
+      <InquireModal
+        isOpen={inquireModal}
+        product={selectedProduct}
+        onClose={() => setInquireModal(false)}
         fetchMypageInfo={fetchMypageInfo}
       />
     </div>

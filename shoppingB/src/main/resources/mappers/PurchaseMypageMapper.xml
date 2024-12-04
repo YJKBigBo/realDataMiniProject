@@ -67,4 +67,36 @@
             AND r.GOODS_NUM = g.GOODS_NUM
         WHERE p.MEMBER_NUM = #{memberNum}
     </select>
+
+    <resultMap id="PurchaseMypageInquireResultMap" type="inquireGoods">
+        <association property="inquireDTO" javaType="inquire">
+            <id property="inquireNum" column="INQUIRE_NUM"/>
+            <id property="memberNum" column="MEMBER_NUM"/>
+            <id property="goodsNum" column="goods_num"/>
+            <result property="inquireSubject" column="INQUIRE_SUBJECT"/>
+            <result property="inquireContents" column="INQUIRE_CONTENTS"/>
+            <result property="inquireKind" column="INQUIRE_KIND"/>
+            <result property="inquireDate" column="INQUIRE_DATE"/>
+            <result property="inquireAnswer" column="INQUIRE_ANSWER"/>
+            <result property="inquireAnswerDate" column="INQUIRE_ANSWER_DATE"/>
+            <result property="empNum" column="emp_num"/>
+        </association>
+
+        <association property="goodsDTO" javaType="goods">
+            <result property="goodsNum" column="GOODS_NUM"/>
+            <result property="goodsName" column="GOODS_NAME"/>
+            <result property="goodsMainImage" column="GOODS_MAIN_IMAGE"/>
+            <result property="goodsMainStoreImage" column="GOODS_MAIN_STORE_IMAGE"/>
+        </association>
+    </resultMap>
+
+    <select id="purchaseMypageInquireInfo" parameterType="string" resultMap="PurchaseMypageInquireResultMap">
+        SELECT
+            i.INQUIRE_NUM, i.MEMBER_NUM, i.GOODS_NUM, i.INQUIRE_SUBJECT, i.INQUIRE_CONTENTS,
+            i.INQUIRE_KIND, i.INQUIRE_DATE, i.INQUIRE_ANSWER, i.INQUIRE_ANSWER_DATE, i.EMP_NUM,
+            g.GOODS_NUM AS GOODS_NUM, g.GOODS_NAME, g.GOODS_MAIN_IMAGE, g.GOODS_MAIN_STORE_IMAGE
+        FROM inquire i
+                 JOIN goods g ON i.GOODS_NUM = g.GOODS_NUM
+        where member_num = #{memberNum}
+    </select>
 </mapper>
