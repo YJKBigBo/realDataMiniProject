@@ -7,6 +7,7 @@ import CartAPI from "../apis/CartAPI.js";
 import PurchaseAPI from "../apis/PurchaseAPI.js";
 import WishAPI from "../apis/WishAPI.js";
 import { FaHeart } from "react-icons/fa";
+import ReviewAPI from "../apis/ReviewAPI.js";
 
 function Items() {
   const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
@@ -17,8 +18,9 @@ function Items() {
   const [showModal, setShowModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [isFavorited, setIsFavorited] = useState();
-  const [goodsNumber, setGoodsNumber] = useState();
   const itemsPerPage = 3;
+  const [reviews, setReviews] = useState([]);
+  const [reviewsView, setReviewsView] = useState(false);
 
   useEffect(() => {
     const fetchGoods = async () => {
@@ -118,6 +120,16 @@ function Items() {
   const deleteWish = async (goodsNum) => {
     try {
       await WishAPI.deleteWish(goodsNum);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchReviews = async (goodsNum) => {
+    try {
+      const response = await ReviewAPI.reviewList(goodsNum);
+      setReviews(response.data);
+      setReviewsView(true);
     } catch (error) {
       console.log(error);
     }
@@ -242,85 +254,157 @@ function Items() {
               borderRadius: "10px",
               width: "1000px",
               height: "600px",
-              textAlign: "center",
+              overflow: "hidden",
+              position: "relative",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2>
-              상품명: {selectedGoods.goodsName}
-              <FaHeart
-                onClick={() => {
-                  if (isFavorited) {
-                    deleteWish(selectedGoods.goodsNum);
-                  } else {
-                    registWish(selectedGoods.goodsNum);
-                  }
-                  setIsFavorited(!isFavorited);
-                }}
-                style={{
-                  marginLeft: "10px",
-                  color: isFavorited ? "red" : "gray",
-                  cursor: "pointer",
-                }}
-              />
-            </h2>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <img
-                src={`http://localhost:8080/image?imageName=${selectedGoods.goodsMainStoreImage}`}
-                alt={selectedGoods.goodsName}
-                style={{
-                  width: "30%",
-                  height: "auto",
-                  maxHeight: "150px",
-                  objectFit: "contain",
-                }}
-              />
-              {selectedGoods.goodsDetailStoreImage.split("/").map(
-                (imageName, index) =>
-                  imageName.trim() && (
-                    <img
-                      key={index}
-                      src={`http://localhost:8080/image?imageName=${imageName}`}
-                      alt={`Detail ${index + 1}`}
-                      style={{
-                        width: "30%",
-                        height: "auto",
-                        maxHeight: "150px",
-                        objectFit: "contain",
-                      }}
-                    />
-                  )
+            <div
+              style={{
+                height: "100%",
+                overflowY: "auto",
+                paddingRight: "10px",
+              }}
+            >
+              <h2>
+                상품명: {selectedGoods.goodsName}
+                <FaHeart
+                  onClick={() => {
+                    if (isFavorited) {
+                      deleteWish(selectedGoods.goodsNum);
+                    } else {
+                      registWish(selectedGoods.goodsNum);
+                    }
+                    setIsFavorited(!isFavorited);
+                  }}
+                  style={{
+                    marginLeft: "10px",
+                    color: isFavorited ? "red" : "gray",
+                    cursor: "pointer",
+                  }}
+                />
+              </h2>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <img
+                  src={`http://localhost:8080/image?imageName=${selectedGoods.goodsMainStoreImage}`}
+                  alt={selectedGoods.goodsName}
+                  style={{
+                    width: "30%",
+                    height: "auto",
+                    maxHeight: "150px",
+                    objectFit: "contain",
+                  }}
+                />
+                {selectedGoods.goodsDetailStoreImage.split("/").map(
+                  (imageName, index) =>
+                    imageName.trim() && (
+                      <img
+                        key={index}
+                        src={`http://localhost:8080/image?imageName=${imageName}`}
+                        alt={`Detail ${index + 1}`}
+                        style={{
+                          width: "30%",
+                          height: "auto",
+                          maxHeight: "150px",
+                          objectFit: "contain",
+                        }}
+                      />
+                    )
+                )}
+              </div>
+              <p>상품상세: {selectedGoods.goodsContents}</p>
+              <p>가격: {selectedGoods.goodsPrice?.toLocaleString()} ₩</p>
+              <p>조회수: {selectedGoods.visitCount}</p>
+              {reviews.length > 0 && reviewsView === true && (
+                <div style={{ marginTop: "20px", textAlign: "center" }}>
+                  <h3>리뷰 목록</h3>
+                  <table
+                    className="table table-bordered"
+                    style={{
+                      marginTop: "10px",
+                      width: "80%",
+                      margin: "0 auto",
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>내용</th>
+                        <th>평점</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reviews.map((review, index) => (
+                        <tr key={index}>
+                          <td>{review.reviewContents}</td>
+                          <td>{review.rating}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {reviewsView === false && (
+                <>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      fetchReviews(selectedGoods.goodsNum);
+                    }}
+                  >
+                    리뷰보기
+                  </button>
+                  <div
+                    style={{ paddingTop: "5px", paddingBottom: "5px" }}
+                  ></div>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      addCart(selectedGoods.goodsNum);
+                    }}
+                  >
+                    장바구니
+                  </button>
+                  <div
+                    style={{ paddingTop: "5px", paddingBottom: "5px" }}
+                  ></div>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      setShowModal(false);
+                      setShowAddressModal(true);
+                    }}
+                  >
+                    바로구매
+                  </button>
+                  <div
+                    style={{ paddingTop: "5px", paddingBottom: "5px" }}
+                  ></div>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => setShowModal(false)}
+                  >
+                    닫기
+                  </button>
+                </>
+              )}
+              {reviewsView === true && (
+                <>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => setReviewsView(false)}
+                  >
+                    리뷰 닫기
+                  </button>
+                </>
               )}
             </div>
-            <p>상품상세: {selectedGoods.goodsContents}</p>
-            <p>가격: {selectedGoods.goodsPrice?.toLocaleString()} ₩</p>
-            <p>조회수: {selectedGoods.visitCount}</p>
-            <div style={{ paddingTop: "5px", paddingBottom: "5px" }}></div>
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                addCart(selectedGoods.goodsNum);
-              }}
-            >
-              장바구니
-            </button>
-            <div style={{ paddingTop: "5px", paddingBottom: "5px" }}></div>
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                setShowModal(false);
-                setShowAddressModal(true);
-              }}
-            >
-              바로구매
-            </button>
-            <div style={{ paddingTop: "5px", paddingBottom: "5px" }}></div>
-            <button
-              className="btn btn-secondary"
-              onClick={() => setShowModal(false)}
-            >
-              닫기
-            </button>
           </div>
         </div>
       )}

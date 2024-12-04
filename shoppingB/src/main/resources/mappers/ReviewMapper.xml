@@ -16,4 +16,8 @@
     <delete id="reviewDelete" parameterType="review">
         delete from reviews where REVIEW_NUM=#{reviewNum} and goods_num=#{goodsNum} and PURCHASE_NUM=#{purchaseNum}
     </delete>
+
+    <select id="reviewList" parameterType="string" resultType="review">
+        select review_contents, rating from reviews where goods_num=#{goodsNum}
+    </select>
 </mapper>
