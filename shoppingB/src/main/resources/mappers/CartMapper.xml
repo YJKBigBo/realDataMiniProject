@@ -73,5 +73,8 @@
         update cart set CART_QTY=#{newQty} where goods_num=#{goodsNum} and member_num=#{memberNum}
     </update>
 
+    <delete id="cartDelete" parameterType="string">
+        delete from cart where goods_num=#{goodsNum} and member_num=#{memberNum}
+    </delete>
 
 </mapper>

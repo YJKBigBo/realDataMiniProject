@@ -31,6 +31,11 @@ const CartAPI = {
       params: { goodsNum },
       withCredentials: true,
     }),
+
+  deleteCart: (data) =>
+    axios.post(`${API_URL}/members/cart/delete`, data, {
+      withCredentials: true,
+    }),
 };
 
 export default CartAPI;

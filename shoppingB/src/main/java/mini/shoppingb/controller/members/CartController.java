@@ -5,6 +5,7 @@ import mini.shoppingb.domain.employees.GoodsWithIpgoDTO;
 import mini.shoppingb.domain.members.CartDTO;
 import mini.shoppingb.domain.members.GoodsCartDTO;
 import mini.shoppingb.service.employees.goods.GoodsDetailService;
+import mini.shoppingb.service.members.cart.CartDeleteService;
 import mini.shoppingb.service.members.cart.CartListService;
 import mini.shoppingb.service.members.cart.CartRegistService;
 import mini.shoppingb.service.members.cart.CartUpdateService;
@@ -30,6 +31,9 @@ public class CartController {
     @Autowired
     CartUpdateService cartUpdateService;
 
+    @Autowired
+    CartDeleteService cartDeleteService;
+
     @PostMapping("/members/cart/regist")
     public void cartRegist(@RequestBody CartDTO cartDTO, HttpSession session) {
         String goodsNum = cartDTO.getGoodsNum();
@@ -53,6 +57,11 @@ public class CartController {
     @PostMapping("/members/cart/updateQty")
     public void updateCartQuantity(@RequestBody CartDTO cartDTO) {
         cartUpdateService.execute(cartDTO.getGoodsNum(), cartDTO.getMemberNum(), cartDTO.getCartQty());
+    }
+
+    @PostMapping("/members/cart/delete")
+    public void cartDelete(@RequestBody List<GoodsCartDTO> goodsCartDTO ) {
+        cartDeleteService.execute(goodsCartDTO);
     }
 
 }

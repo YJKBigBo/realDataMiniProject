@@ -38,6 +38,31 @@ const CartInfo = ({ isOpen, toggleCart }) => {
     setShowAddressModal(true);
   };
 
+  const handleDelete = async () => {
+    if (checkedItems.length === 0) {
+      alert("삭제할 상품을 선택하세요.");
+      return;
+    }
+    try {
+      const goodsCartDTO = cartItems
+        .filter((item) => checkedItems.includes(item.cartDTO))
+        .map((item) => ({
+          goodsDTO: item.goodsDTO,
+          cartDTO: item.cartDTO,
+        }));
+
+      await CartAPI.deleteCart(goodsCartDTO);
+
+      setCheckedItems([]);
+      fetchCart();
+
+      alert("삭제가 완료되었습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("삭제가 실패했습니다.");
+    }
+  };
+
   const cartStyle = {
     position: "fixed",
     top: 50,
@@ -239,7 +264,55 @@ const CartInfo = ({ isOpen, toggleCart }) => {
           ))}
         </ul>
         {cartItems.length === 0 && <p>장바구니가 비어 있습니다.</p>}
-        <button onClick={handlePurchase}>구매하기</button>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "20px",
+          }}
+        >
+          <button
+            onClick={handlePurchase}
+            style={{
+              flex: 1,
+              backgroundColor: "#28a745",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              fontSize: "16px",
+              cursor: "pointer",
+              marginRight: "10px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#218838")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#28a745")}
+          >
+            구매하기
+          </button>
+
+          <button
+            onClick={handleDelete}
+            style={{
+              flex: 1,
+              backgroundColor: "#dc3545",
+              color: "white",
+              padding: "10px 20px",
+              border: "none",
+              borderRadius: "5px",
+              fontSize: "16px",
+              cursor: "pointer",
+              marginLeft: "10px",
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.target.style.backgroundColor = "#c82333")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#dc3545")}
+          >
+            삭제하기
+          </button>
+        </div>
 
         {/* 주소 입력 모달 */}
         {showAddressModal && (
@@ -271,7 +344,6 @@ const CartInfo = ({ isOpen, toggleCart }) => {
             >
               <h2>배송지 입력</h2>
               <form onSubmit={deliverySubmit}>
-
                 <input
                   type="text"
                   placeholder="배송지를 입력하세요"
