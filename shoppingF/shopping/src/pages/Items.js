@@ -8,6 +8,7 @@ import PurchaseAPI from "../apis/PurchaseAPI.js";
 import WishAPI from "../apis/WishAPI.js";
 import { FaHeart } from "react-icons/fa";
 import ReviewAPI from "../apis/ReviewAPI.js";
+import InquireAPI from "../apis/InquireAPI.js";
 
 function Items() {
   const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
@@ -21,6 +22,7 @@ function Items() {
   const itemsPerPage = 3;
   const [reviews, setReviews] = useState([]);
   const [reviewsView, setReviewsView] = useState(false);
+  const [inquireView, setInquireView] = useState(false);
 
   useEffect(() => {
     const fetchGoods = async () => {
@@ -132,6 +134,35 @@ function Items() {
       setReviewsView(true);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const inquireRegist = async (goodsNum) => {
+    try {
+      await ReviewAPI.reviewList(goodsNum);
+      setInquireView(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const inquireRegistSubmit = async (e, selectedGoods) => {
+    e.preventDefault();
+
+    const inquireUpdateData = {
+      goodsNum: selectedGoods.goodsNum,
+      inquireSubject: e.target.inquireSubject.value,
+      inquireContents: e.target.inquireContents.value,
+      inquireKind: e.target.inquireKind.value,
+    };
+
+    try {
+      await InquireAPI.inquireRegist(inquireUpdateData);
+      alert("문의가 등록되었습니다.");
+      setInquireView(false);
+    } catch (error) {
+      console.error(error);
+      alert("문의 등록에 실패했습니다.");
     }
   };
 
@@ -345,7 +376,7 @@ function Items() {
                   </table>
                 </div>
               )}
-              {reviewsView === false && (
+              {reviewsView === false && inquireView === false && (
                 <>
                   <button
                     style={{ width: "100%" }}
@@ -355,6 +386,18 @@ function Items() {
                     }}
                   >
                     리뷰보기
+                  </button>
+                  <div
+                    style={{ paddingTop: "5px", paddingBottom: "5px" }}
+                  ></div>
+                  <button
+                    style={{ width: "100%" }}
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      setInquireView(true);
+                    }}
+                  >
+                    문의하기
                   </button>
                   <div
                     style={{ paddingTop: "5px", paddingBottom: "5px" }}
@@ -402,6 +445,85 @@ function Items() {
                   >
                     리뷰 닫기
                   </button>
+                </>
+              )}
+              {inquireView === true && (
+                <>
+                  <form onSubmit={(e) => inquireRegistSubmit(e, selectedGoods)}>
+                    <div style={{ marginBottom: "10px" }}>
+                      제목
+                      <input
+                        type="text"
+                        required="required"
+                        name="inquireSubject"
+                        placeholder="제목을 입력해주세요."
+                        rows="5"
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          border: "1px solid #ccc",
+                        }}
+                      />
+                      종류
+                      <input
+                        type="text"
+                        required="required"
+                        name="inquireKind"
+                        placeholder="종류를 입력해주세요."
+                        rows="5"
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          border: "1px solid #ccc",
+                        }}
+                      />
+                      내용
+                      <textarea
+                        required="required"
+                        name="inquireContents"
+                        placeholder="문의글을 입력해주세요."
+                        rows="5"
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          border: "1px solid #ccc",
+                        }}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      style={{
+                        marginLeft: "10px",
+                        backgroundColor: "gray",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      문의등록
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setInquireView(false)}
+                      style={{
+                        marginLeft: "10px",
+                        backgroundColor: "gray",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      취소
+                    </button>
+                  </form>
                 </>
               )}
             </div>

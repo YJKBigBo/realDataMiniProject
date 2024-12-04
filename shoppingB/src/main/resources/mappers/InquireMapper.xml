@@ -13,4 +13,10 @@
           AND inquire_num = #{inquireNum}
           AND goods_num = #{goodsNum};
     </update>
+
+    <insert id="inquireRegist" parameterType="inquire">
+        insert into inquire (INQUIRE_NUM, MEMBER_NUM, goods_num, INQUIRE_SUBJECT, INQUIRE_CONTENTS, INQUIRE_KIND, INQUIRE_DATE)
+                    values
+                            (#{inquireNum}, #{memberNum}, #{goodsNum}, #{inquireSubject}, #{inquireContents}, #{inquireKind}, sysdate())
+    </insert>
 </mapper>

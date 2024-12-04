@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface InquireMapper {
 
     public void inquireUpdate(InquireDTO inquireDTO);
+
+    public void inquireRegist(InquireDTO inquireDTO);
 }

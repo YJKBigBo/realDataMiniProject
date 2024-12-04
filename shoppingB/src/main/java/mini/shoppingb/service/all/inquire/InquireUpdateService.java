@@ -1,4 +1,4 @@
-package mini.shoppingb.service.all;
+package mini.shoppingb.service.all.inquire;
 
 import mini.shoppingb.domain.all.InquireDTO;
 import mini.shoppingb.mapper.InquireMapper;
