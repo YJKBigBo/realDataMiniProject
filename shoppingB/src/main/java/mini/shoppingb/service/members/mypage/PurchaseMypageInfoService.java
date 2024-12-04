@@ -1,7 +1,7 @@
 package mini.shoppingb.service.members.mypage;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.members.PurchaseMypageDTO;
 import mini.shoppingb.mapper.PurchaseMypageMapper;
 import org.springframework.beans.factory.annotation.Autowired;

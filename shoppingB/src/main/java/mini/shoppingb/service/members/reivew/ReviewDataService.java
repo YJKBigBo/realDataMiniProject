@@ -1,7 +1,7 @@
 package mini.shoppingb.service.members.reivew;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.members.ReviewDTO;
 import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.ReviewMapper;

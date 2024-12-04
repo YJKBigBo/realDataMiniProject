@@ -1,8 +1,7 @@
 package mini.shoppingb.controller.members;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.InquireDTO;
-import mini.shoppingb.domain.InquireGoodsDTO;
+import mini.shoppingb.domain.all.InquireGoodsDTO;
 import mini.shoppingb.domain.members.PurchaseMypageDTO;
 import mini.shoppingb.service.members.mypage.PurchaseMypageInfoService;
 import mini.shoppingb.service.members.mypage.PurchaseMypageInquireListService;

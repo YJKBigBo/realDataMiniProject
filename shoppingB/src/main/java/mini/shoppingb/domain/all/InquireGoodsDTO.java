@@ -1,4 +1,4 @@
-package mini.shoppingb.domain;
+package mini.shoppingb.domain.all;
 
 import lombok.Data;
 import mini.shoppingb.domain.employees.GoodsDTO;

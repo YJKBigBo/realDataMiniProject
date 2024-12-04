@@ -2,7 +2,7 @@ package mini.shoppingb.service.employees.goods;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.GoodsCommand;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.employees.GoodsDTO;
 import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.GoodsMapper;

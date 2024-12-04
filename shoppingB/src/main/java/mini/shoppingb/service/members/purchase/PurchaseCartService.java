@@ -1,7 +1,7 @@
 package mini.shoppingb.service.members.purchase;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.employees.GoodsDTO;
 import mini.shoppingb.domain.members.*;
 import mini.shoppingb.mapper.PurchaseMapper;

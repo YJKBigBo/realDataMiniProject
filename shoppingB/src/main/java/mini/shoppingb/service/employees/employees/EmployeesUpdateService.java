@@ -2,7 +2,7 @@ package mini.shoppingb.service.employees.employees;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.employees.EmployeeCommand;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.employees.EmployeeDTO;
 import mini.shoppingb.mapper.EmployeesMapper;
 import org.springframework.beans.factory.annotation.Autowired;

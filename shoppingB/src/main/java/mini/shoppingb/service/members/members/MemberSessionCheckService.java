@@ -1,7 +1,7 @@
 package mini.shoppingb.service.members.members;
 
 import jakarta.servlet.http.HttpSession;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import org.springframework.stereotype.Service;
 
 @Service

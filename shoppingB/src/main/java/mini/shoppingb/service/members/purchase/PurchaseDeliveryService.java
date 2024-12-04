@@ -2,10 +2,9 @@ package mini.shoppingb.service.members.purchase;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.command.members.PurchaseCommand;
-import mini.shoppingb.domain.AuthInfoDTO;
+import mini.shoppingb.domain.all.AuthInfoDTO;
 import mini.shoppingb.domain.members.PurchaseDTO;
 import mini.shoppingb.domain.members.PurchaseListDTO;
-import mini.shoppingb.mapper.AutoNumMapper;
 import mini.shoppingb.mapper.PurchaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

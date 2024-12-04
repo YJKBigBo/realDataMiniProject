@@ -1,7 +1,6 @@
 package mini.shoppingb.mapper;
 
-import mini.shoppingb.domain.InquireDTO;
-import mini.shoppingb.domain.InquireGoodsDTO;
+import mini.shoppingb.domain.all.InquireGoodsDTO;
 import mini.shoppingb.domain.members.PurchaseMypageDTO;
 import org.apache.ibatis.annotations.Mapper;
 
