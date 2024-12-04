@@ -342,7 +342,23 @@ const MyInfo = () => {
                     </>
                   )}
                   {product.inquireDTO.inquireAnswer === null && (
-                    <p>답변대기중</p>
+                    <>
+                    <button
+                      onClick={() => toggleInquireModal(product)}
+                      style={{
+                        marginLeft:"5px",
+                        padding: "1px",
+                        backgroundColor: "#333",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        
+                      }}
+                    >
+                      문의수정
+                    </button>
+                  </>
                   )}
                 </p>
               </div>
@@ -377,7 +393,7 @@ const MyInfo = () => {
         isOpen={inquireModal}
         product={selectedProduct}
         onClose={() => setInquireModal(false)}
-        fetchMypageInfo={fetchMypageInfo}
+        fetchInquireInfo={fetchInquireInfo}
       />
     </div>
   );

@@ -1,47 +1,32 @@
-import React from "react";
-import ReviewAPI from "../apis/ReviewAPI";
+import React, { useState, useEffect } from "react";
+import InquireAPI from "../apis/InquireAPI";
 
-const InquireModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
+const InquireModal = ({ isOpen, product, onClose, fetchInquireInfo }) => {
   if (!isOpen) return null;
 
-  const reviewRegist = async (reviewData) => {
+  const inquireUpdate = async (data) => {
     try {
-      await ReviewAPI.reviewRegist(reviewData);
-      alert("리뷰 등록 혹은 수정을 완료했습니다.");
+      await InquireAPI.updateInquire(data);
+      alert("문의 수정이 완료되었습니다.");
       onClose();
-      fetchMypageInfo();
+      fetchInquireInfo();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const reviewDelete = async () => {
-    console.log(product);
-    const reviewData = {
-      goodsNum: product.goodsNum,
-      purchaseNum: product.purchaseNum,
-      reviewNum: product.reviewNum,
-    };
-    try {
-      await ReviewAPI.reviewDelete(reviewData);
-      alert("리뷰 삭제를 완료했습니다.");
-      onClose();
-      fetchMypageInfo();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const reviewSubmit = async (e) => {
+  const inquireUpdateSubmit = async (e) => {
     e.preventDefault();
-    console.log(product);
-    const reviewData = {
-      rating: e.target.rating.value,
-      reviewContents: e.target.reviewContents.value,
-      goodsNum: product.goodsNum,
-      purchaseNum: product.purchaseNum,
+    const inquireUpdateData = {
+      inquireNum: product.inquireDTO.inquireNum,
+      memberNum: product.inquireDTO.memberNum,
+      goodsNum: product.inquireDTO.goodsNum,
+      inquireSubject: e.target.inquireSubject.value,
+      inquireContents: e.target.inquireContents.value,
+      inquireKind: e.target.inquireKind.value,
+      inquireDate: product.inquireDTO.inquireDate,
     };
-    reviewRegist(reviewData);
+    inquireUpdate(inquireUpdateData);
   };
 
   return (
@@ -69,29 +54,13 @@ const InquireModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
         }}
       >
         <h4>문의</h4>
-        <form onSubmit={reviewSubmit}>
-          <div style={{ marginBottom: "10px" }}>
-            <label>
-              문의:
-              <select
-                name="rating"
-                defaultValue={product.rating}
-                style={{ marginLeft: "10px" }}
-              >
-                {[1, 2, 3, 4, 5].map((rating) => (
-                  <option key={rating} value={rating}>
-                    {rating}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
+        {product.inquireDTO.inquireAnswer !== null && (
           <div style={{ marginBottom: "10px" }}>
             <textarea
+              readOnly="readonly"
               name="reviewContents"
-              placeholder="리뷰를 작성하세요"
-              defaultValue={product.reviewContents}
+              placeholder="답변을 기다려주세요."
+              defaultValue={product.inquireDTO.inquireAnswer}
               rows="5"
               style={{
                 width: "100%",
@@ -100,45 +69,12 @@ const InquireModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
                 border: "1px solid #ccc",
               }}
             />
-          </div>
-
-          {product.reviewContents ? (
-            <>
-              <button
-                type="submit"
-                style={{
-                  backgroundColor: "blue",
-                  color: "white",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  marginRight: "10px",
-                }}
-              >
-                수정
-              </button>
-
-              <button
-                type="button"
-                onClick={() => reviewDelete()}
-                style={{
-                  backgroundColor: "red",
-                  color: "white",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                삭제
-              </button>
-            </>
-          ) : (
             <button
-              type="submit"
+              type="button"
+              onClick={onClose}
               style={{
-                backgroundColor: "black",
+                marginLeft: "10px",
+                backgroundColor: "gray",
                 color: "white",
                 padding: "10px 20px",
                 border: "none",
@@ -146,26 +82,92 @@ const InquireModal = ({ isOpen, product, onClose, fetchMypageInfo }) => {
                 cursor: "pointer",
               }}
             >
-              제출
+              취소
             </button>
-          )}
+          </div>
+        )}
 
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              marginLeft: "10px",
-              backgroundColor: "gray",
-              color: "white",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            취소
-          </button>
-        </form>
+        {product.inquireDTO.inquireAnswer === null && (
+          <>
+            <form onSubmit={inquireUpdateSubmit}>
+              <div style={{ marginBottom: "10px" }}>
+                제목<input
+                  type="text"
+                  required="required"
+                  name="inquireSubject"
+                  placeholder="제목을 입력해주세요."
+                  defaultValue={product.inquireDTO.inquireSubject}
+                  rows="5"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                종류<input
+                  type="text"
+                  required="required"
+                  name="inquireKind"
+                  placeholder="종류를 입력해주세요."
+                  defaultValue={product.inquireDTO.inquireKind}
+                  rows="5"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+
+                내용<textarea
+                  required="required"
+                  name="inquireContents"
+                  placeholder="문의글을 입력해주세요."
+                  defaultValue={product.inquireDTO.inquireContents}
+                  rows="5"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                style={{
+                  marginLeft: "10px",
+                  backgroundColor: "gray",
+                  color: "white",
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                style={{
+                  marginLeft: "10px",
+                  backgroundColor: "gray",
+                  color: "white",
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                취소
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
