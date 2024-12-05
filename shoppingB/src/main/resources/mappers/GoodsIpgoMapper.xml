@@ -20,4 +20,13 @@
     <delete id="goodsIpgoDelete" parameterType="string">
         delete from goods_ipgo where ipgo_num=#{ipgoNum}
     </delete>
+
+    <select id="goodsIpgoCount" resultType="goodsIpgoCount">
+        select DATE(ipgo_date) as ipgoDay,
+            SUM(ipgo_qty) AS ipgoQty
+        from goods_ipgo
+        WHERE ipgo_date >= CURDATE() - INTERVAL 10 DAY
+        GROUP BY ipgoDay
+        ORDER BY ipgoDay;
+    </select>
 </mapper>

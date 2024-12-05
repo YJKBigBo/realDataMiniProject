@@ -1,5 +1,6 @@
 package mini.shoppingb.mapper;
 
+import mini.shoppingb.domain.employees.GoodsIpgoCountDTO;
 import mini.shoppingb.domain.employees.GoodsIpgoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,4 +12,5 @@ public interface GoodsIpgoMapper {
     public GoodsIpgoDTO goodsIpgoDetail(String ipgoNum);
     public void goodsIpgoUpdate(GoodsIpgoDTO dto);
     public void goodsIpgoDelete(String ipgoNum);
+    List<GoodsIpgoCountDTO> goodsIpgoCount();
 }
