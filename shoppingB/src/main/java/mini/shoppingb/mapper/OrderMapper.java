@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
     List<OrderListDTO> orderList();
+
+    List<OrderDTO> orderDetail(String purchaseNum);
 }

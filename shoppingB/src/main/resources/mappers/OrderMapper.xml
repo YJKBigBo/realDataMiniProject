@@ -42,6 +42,44 @@
                 LEFT JOIN
             PURCHASE_LIST pl ON p.PURCHASE_NUM = pl.PURCHASE_NUM
         GROUP BY
-            p.PURCHASE_NUM;
+            p.PURCHASE_NUM, p.PURCHASE_STATUS
+        ORDER BY
+            CASE
+                WHEN p.PURCHASE_STATUS = '결제완료' THEN 1
+                ELSE 2
+                END,
+            p.PURCHASE_NUM
+    </select>
+
+    <select id="orderDetail" resultMap="OrderResultMap" parameterType="string">
+        SELECT
+            p.PURCHASE_NUM,
+            p.PURCHASE_DATE,
+            p.PURCHASE_PRICE,
+            p.DELIVERY_ADDR,
+            p.DELIVERY_ADDR_DETAIL,
+            p.DELIVERY_POST,
+            p.DELIVERY_PHONE,
+            p.MESSAGE,
+            p.PURCHASE_STATUS,
+            p.MEMBER_NUM,
+            pl.GOODS_NUM AS PL_GOODS_NUM,
+            pl.PURCHASE_NUM AS PL_PURCHASE_NUM,
+            pl.PURCHASE_QTY,
+            pl.GOODS_UNIT_PRICE,
+            g.GOODS_NUM AS G_GOODS_NUM,
+            g.GOODS_NAME,
+            g.GOODS_MAIN_IMAGE,
+            g.GOODS_MAIN_STORE_IMAGE
+        FROM
+            PURCHASE p
+                LEFT JOIN
+            PURCHASE_LIST pl
+            ON
+                p.PURCHASE_NUM = pl.PURCHASE_NUM
+                LEFT JOIN
+            GOODS g
+            ON
+                pl.GOODS_NUM = g.GOODS_NUM where p.purchase_num = #{purchaseNum}
     </select>
 </mapper>

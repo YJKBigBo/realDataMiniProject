@@ -49,13 +49,13 @@
                             </thead>
                             <tbody>
                             <tr th:each="orderList:${orderList}">
-                                <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${orderList.purchaseNum}" style="text-decoration: none; color: inherit;" th:text="${orderList.purchaseNum}"></a></td>
+                                <td style="padding: 10px;"> <a th:href="'/employees/order/detail/' + ${orderList.purchaseNum}" style="text-decoration: none; color: inherit;" th:text="${orderList.purchaseNum}"></a></td>
                                 <td style="padding: 10px;" th:text="${orderList.totalItems}"></td>
                                 <td style="padding: 10px;" th:text="${orderList.totalAmount}"></td>
                                 <td style="padding: 10px;" th:text="${orderList.purchaseStatus}"></td>
                             </tr>
                             <tr th:each="findOrdeers:${findOrdeers}">
-                                <td style="padding: 10px;"> <a th:href="'/employees/product/detail/' + ${findOrdeers.purchaseNum}" style="text-decoration: none; color: inherit;" th:text="${findOrdeers.purchaseNum}"></a></td>
+                                <td style="padding: 10px;"> <a th:href="'/employees/order/detail/' + ${findOrdeers.purchaseNum}" style="text-decoration: none; color: inherit;" th:text="${findOrdeers.purchaseNum}"></a></td>
                                 <td style="padding: 10px;" th:text="${findOrdeers.totalItems}"></td>
                                 <td style="padding: 10px;" th:text="${findOrdeers.totalAmount}"></td>
                                 <td style="padding: 10px;" th:text="${findOrdeers.purchaseStatus}"></td>
