@@ -18,5 +18,6 @@ public class OrderDetailService {
         List<OrderDTO> orderDTO = orderMapper.orderDetail(purchaseNum);
         model.addAttribute("order", orderDTO);
         model.addAttribute("purchaseNum", purchaseNum);
+        model.addAttribute("purchaseStatus", orderDTO.get(0).getPurchaseDTO().getPurchaseStatus());
     }
 }

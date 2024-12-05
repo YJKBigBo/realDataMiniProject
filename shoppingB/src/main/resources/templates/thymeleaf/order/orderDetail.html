@@ -70,21 +70,22 @@
                         <div align="center" style="margin-top: 20px;">
                             <a th:href="'/employees/order/confirm/'+${purchaseNum}"
                                style="
-       display: inline-block;
-       background-color: #007bff;
-       color: white;
-       text-align: center;
-       padding: 10px 20px;
-       margin: 5px;
-       border: none;
-       border-radius: 5px;
-       font-size: 16px;
-       text-decoration: none;
-       cursor: pointer;
-       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-       transition: background-color 0.3s, transform 0.3s;">
-                                배송시작
+                                   display: inline-block;
+                                   background-color: #007bff;
+                                   color: white;
+                                   text-align: center;
+                                   padding: 10px 20px;
+                                   margin: 5px;
+                                   border: none;
+                                   border-radius: 5px;
+                                   font-size: 16px;
+                                   text-decoration: none;
+                                   cursor: pointer;
+                                   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                   transition: background-color 0.3s, transform 0.3s;">
+                                <span th:text="${purchaseStatus == '결제완료' ? '주문승인' : '주문취소'}"></span>
                             </a>
+
                         </div>
                     </div>
                 </div>

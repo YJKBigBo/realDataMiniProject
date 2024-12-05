@@ -11,4 +11,6 @@ public interface OrderMapper {
     List<OrderListDTO> orderList();
 
     List<OrderDTO> orderDetail(String purchaseNum);
+
+    int orderConfirm(String purchaseNum);
 }

@@ -82,4 +82,14 @@
             ON
                 pl.GOODS_NUM = g.GOODS_NUM where p.purchase_num = #{purchaseNum}
     </select>
+
+    <update id="orderConfirm" parameterType="string">
+        UPDATE PURCHASE
+        SET PURCHASE_STATUS =
+                CASE
+                    WHEN PURCHASE_STATUS = '결제완료' THEN '주문승인'
+                    ELSE '결제완료'
+                    END
+        WHERE PURCHASE_NUM = #{purchaseNum};
+    </update>
 </mapper>
