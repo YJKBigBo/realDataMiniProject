@@ -1,5 +1,6 @@
 package mini.shoppingb.mapper;
 
+import mini.shoppingb.domain.employees.OrderCountDTO;
 import mini.shoppingb.domain.employees.OrderDTO;
 import mini.shoppingb.domain.employees.OrderListDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,4 +14,6 @@ public interface OrderMapper {
     List<OrderDTO> orderDetail(String purchaseNum);
 
     int orderConfirm(String purchaseNum);
+
+    List<OrderCountDTO> orderCount();
 }

@@ -1,8 +1,10 @@
 package mini.shoppingb.controller.employees;
 
 import jakarta.servlet.http.HttpSession;
+import mini.shoppingb.domain.employees.OrderCountDTO;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import mini.shoppingb.service.employees.order.OrderConfirmService;
+import mini.shoppingb.service.employees.order.OrderCountService;
 import mini.shoppingb.service.employees.order.OrderDetailService;
 import mini.shoppingb.service.employees.order.OrderListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class OrderController {
@@ -26,6 +31,9 @@ public class OrderController {
 
     @Autowired
     OrderConfirmService orderConfirmService;
+
+    @Autowired
+    OrderCountService orderCountService;
 
     @GetMapping("/employees/order/list")
     public String orderList(HttpSession session, Model model) {
@@ -51,6 +59,13 @@ public class OrderController {
     public String orderCancel(@PathVariable String purchaseNum) {
         orderConfirmService.execute(purchaseNum);
         return "redirect:/employees/order/list";
+    }
+
+    @GetMapping("/employees/order/count")
+    @ResponseBody
+    public List<OrderCountDTO> orderCount() {
+        List<OrderCountDTO> i = orderCountService.execute();
+        return i;
     }
 
 }

@@ -92,4 +92,14 @@
                     END
         WHERE PURCHASE_NUM = #{purchaseNum};
     </update>
+
+    <select id="orderCount" resultType="orderCount">
+        SELECT
+            DATE(PURCHASE_DATE) AS orderDay,
+            COUNT(*) AS orderCount
+        FROM purchase
+        WHERE PURCHASE_DATE >= CURDATE() - INTERVAL 5 DAY
+        GROUP BY orderDay
+        ORDER BY orderDay
+    </select>
 </mapper>
