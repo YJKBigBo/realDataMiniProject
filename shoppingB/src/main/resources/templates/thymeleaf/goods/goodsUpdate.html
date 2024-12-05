@@ -10,101 +10,12 @@
         <link href="../../../static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
-    <body>
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/">관리자 페이지</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user fa-fw"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <!-- 로그아웃 상태 -->
-                        <li th:if="${!isLoggedIn}">
-                            <a class="dropdown-item" href="/employees/login">Login</a>
-                        </li>
-                        <li th:if="${!isLoggedIn}">
-                            <a class="dropdown-item" href="#!">Forgot Password</a>
-                        </li>
-                        <!-- 로그인 상태 -->
-                        <li th:if="${isLoggedIn}">
-                            <a class="dropdown-item" href="/employees/logout">Logout</a>
-                        </li>
-                        <li th:if="${isLoggedIn} and ${isManager}">
-                            <a class="dropdown-item" href="/employees/register">Register</a>
-                        </li>
-                        <li th:if="${isLoggedIn}">
-                            <a class="dropdown-item" href="/employees/update">정보 수정</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">공통 항목</div>
-                            <a class="nav-link" href="/">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                메인
-                            </a>
-                            <div class="sb-sidenav-menu-heading">부서 항목</div>
-
-                            <block th:if="${isProduct}">
-                                <a class="nav-link collapsed" href="/product/regist" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    상품
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="/employees/product/regist">상품 등록</a>
-                                        <a class="nav-link" href="/employees/product/manage">상품 관리</a>
-                                        <a class="nav-link" href="/employees/product/ipgo/list">입고 관리</a>
-                                    </nav>
-                                </div>
-                            </block>
-
-                            <block th:if="${isManager}">
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    직원 관리
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                    <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                        <a class="nav-link" href="/employees/register">직원 등록</a>
-                                        <a class="nav-link" href="/employees/list">직원 목록</a>
-                                    </nav>
-                                </div>
-                            </block>
-
-                            <div class="sb-sidenav-menu-heading">현황</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="goodsList.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+    <body class="sb-nav-fixed">
+        <th:block th:insert="~{thymeleaf/component/topbar  :: topbar}"></th:block>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <th:block th:insert="~{thymeleaf/component/sidebar  :: sidebar}"></th:block>
+        </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
