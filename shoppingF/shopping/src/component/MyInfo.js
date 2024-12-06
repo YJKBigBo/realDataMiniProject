@@ -4,6 +4,8 @@ import CartInfo from "./CartInfo";
 import MypageAPI from "../apis/MypageAPI";
 import ReviewModal from "../component/ReviewModal";
 import InquireModal from "../component/InquireModal";
+import DeliveryModal from "./DeliveryModal";
+import DeliveryAPI from "../apis/DeliveryAPI";
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -14,6 +16,10 @@ const MyInfo = () => {
   const [inquireModal, setInquireModal] = useState(false);
   const [inquireProducts, setInquireProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deliveryDetail, setDeliveryDetail] = useState(null);
+  const [deliveryModal, setDeliveryModal] = useState(false);
+  const [selectedDelivery, setSelectedDelivery] = useState(null);
+
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
   const toggleReviewModal = (product) => {
@@ -24,6 +30,12 @@ const MyInfo = () => {
   const toggleInquireModal = (product) => {
     setSelectedProduct(product);
     setInquireModal((prev) => !prev);
+  };
+
+  const toggleDeliveryModal = (deliveryInfo) => {
+    deliveryDetailInfo(deliveryInfo.purchaseNum);
+    setSelectedDelivery(deliveryInfo);
+    setDeliveryModal((prev) => !prev);
   };
 
   const handleShowMore = () => {
@@ -44,6 +56,15 @@ const MyInfo = () => {
     try {
       const response = await MypageAPI.myInquireInfo();
       setInquireProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deliveryDetailInfo = async (purchaseNum) => {
+    try {
+      const response = await DeliveryAPI.fetchDelivery(purchaseNum);
+      setDeliveryDetail(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -120,266 +141,129 @@ const MyInfo = () => {
             marginBottom: "20px",
           }}
         >
-          <div style={{ marginBottom: "20px" }}>
-            <h4
-              style={{ borderBottom: "2px solid #ddd", paddingBottom: "10px" }}
-            >
-              구매목록
-            </h4>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              {purchaserOrderProducts
-                .slice(0, showMore ? purchaserOrderProducts.length : 3)
-                .map((product, index) => (
-                  <div
-                    key={index}
+          <h4 style={{ borderBottom: "2px solid #ddd", paddingBottom: "10px" }}>
+            구매목록
+          </h4>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            {purchaserOrderProducts
+              .slice(0, showMore ? purchaserOrderProducts.length : 3)
+              .map((product, index) => (
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: "20px",
+                    padding: "10px 0",
+                    borderBottom: "1px solid #eee",
+                    width: "100%",
+                    maxWidth: "800px",
+                    textAlign: "center",
+                  }}
+                >
+                  <h5 style={{ color: "#555", fontSize: "14px" }}>
+                    {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
+                    {product.orderDate[2]} 일
+                  </h5>
+                  <img
+                    src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
+                    alt={product.productName}
                     style={{
-                      marginBottom: "20px",
-                      padding: "10px 0",
-                      borderBottom: "1px solid #eee",
-                      width: "100%",
-                      maxWidth: "800px",
-                      textAlign: "center",
+                      width: "100px",
+                      height: "100px",
+                      borderRadius: "5px",
+                      objectFit: "cover",
+                      margin: "10px 0",
+                    }}
+                  />
+                  <p
+                    style={{
+                      margin: "5px 0",
+                      fontWeight: "bold",
+                      color: "#333",
                     }}
                   >
-                    <h5 style={{ color: "#555", fontSize: "14px" }}>
-                      {product.orderDate[0]}년 {product.orderDate[1]}월{" "}
-                      {product.orderDate[2]} 일
-                    </h5>
-                    <img
-                      src={`http://localhost:8080/image?imageName=${product.imgUrl}`}
-                      alt={product.productName}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        borderRadius: "5px",
-                        objectFit: "cover",
-                        margin: "10px 0",
-                      }}
-                    />
-                    <p
-                      style={{
-                        margin: "5px 0",
-                        fontWeight: "bold",
-                        color: "#333",
-                      }}
-                    >
-                      제품명 : {product.productName}
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      수량 : {product.quantity}
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      가격 : {product.price.toLocaleString()}원
-                    </p>
-                    <p style={{ margin: "5px 0", color: "#666" }}>
-                      주문상태 : {product.orderStatus}
-                    </p>
-
-                    {product.hasReview ? (
-                      <>
-                        <button
-                          onClick={() => toggleReviewModal(product)}
-                          style={{
-                            padding: "10px",
-                            backgroundColor: "#007BFF",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          리뷰 수정
-                        </button>
-                      </>
-                    ) : (
+                    제품명 : {product.productName}
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    수량 : {product.quantity}
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    가격 : {product.price.toLocaleString()}원
+                  </p>
+                  <p style={{ margin: "5px 0", color: "#666" }}>
+                    주문상태 : {product.orderStatus}
+                    {product.orderStatus === "주문승인" && (
                       <button
-                        onClick={() => toggleReviewModal(product)}
+                        onClick={() => toggleDeliveryModal(product)}
                         style={{
-                          padding: "10px",
-                          backgroundColor: "#333",
+                          marginLeft: "10px",
+                          backgroundColor: "#4CAF50",
                           color: "#fff",
                           border: "none",
                           borderRadius: "5px",
                           cursor: "pointer",
                         }}
                       >
-                        리뷰 작성
+                        배송조회
                       </button>
                     )}
-                  </div>
-                ))}
-              {!showMore && (
-                <button
-                  onClick={handleShowMore}
-                  style={{
-                    padding: "10px 20px",
-                    backgroundColor: "black",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "14px",
-                    marginTop: "10px",
-                  }}
-                >
-                  더보기
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-        <div
-          style={{
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-          }}
-        >
-          <h4 style={{ borderBottom: "2px solid #ddd", paddingBottom: "10px" }}>
-            문의 현황
-          </h4>
-          {inquireProducts
-            .slice(0, showMore ? inquireProducts.length : 3)
-            .map((product, index) => (
-              <div
-                key={index}
-                style={{
-                  marginBottom: "20px",
-                  padding: "10px 0",
-                  borderBottom: "1px solid #eee",
-                  width: "100%",
-                  maxWidth: "800px",
-                  textAlign: "center",
-                }}
-              >
-                <h5
-                  style={{
-                    color: "#555",
-                    fontSize: "14px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  {
-                    new Date(product.inquireDTO.inquireDate)
-                      .toISOString()
-                      .split("T")[0]
-                      .split("-")[0]
-                  }
-                  <p>년</p>
-                  {
-                    new Date(product.inquireDTO.inquireDate)
-                      .toISOString()
-                      .split("T")[0]
-                      .split("-")[1]
-                  }
-                  <p>월</p>
-                  {
-                    new Date(product.inquireDTO.inquireDate)
-                      .toISOString()
-                      .split("T")[0]
-                      .split("-")[2]
-                  }
-                  <p>일</p>
-                </h5>
-                <img
-                  src={`http://localhost:8080/image?imageName=${product.goodsDTO.goodsMainStoreImage}`}
-                  alt={product.productName}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "5px",
-                    objectFit: "cover",
-                    margin: "10px 0",
-                  }}
-                />
-                <p
-                  style={{
-                    margin: "5px 0",
-                    fontWeight: "bold",
-                    color: "#333",
-                  }}
-                >
-                  제품명 : {product.goodsDTO.goodsName}
-                </p>
-                <p style={{ margin: "5px 0", color: "#666" }}>
-                  문의제목 : {product.inquireDTO.inquireContents}
-                </p>
-                <p
-                  style={{
-                    margin: "5px 0",
-                    color: "#666",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  문의상태 :{" "}
-                  {product.inquireDTO.inquireAnswer !== null && (
-                    <>
-                      <button
-                        onClick={() => toggleInquireModal(product)}
-                        style={{
-                          marginLeft:"5px",
-                          padding: "1px",
-                          backgroundColor: "#333",
-                          color: "#fff",
-                          border: "none",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                          
-                        }}
-                      >
-                        답변보기
-                      </button>
-                    </>
-                  )}
-                  {product.inquireDTO.inquireAnswer === null && (
-                    <>
+                  </p>
+
+                  {product.hasReview ? (
                     <button
-                      onClick={() => toggleInquireModal(product)}
+                      onClick={() => toggleReviewModal(product)}
                       style={{
-                        marginLeft:"5px",
-                        padding: "1px",
+                        padding: "10px",
+                        backgroundColor: "#007BFF",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      리뷰 수정
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => toggleReviewModal(product)}
+                      style={{
+                        padding: "10px",
                         backgroundColor: "#333",
                         color: "#fff",
                         border: "none",
                         borderRadius: "5px",
                         cursor: "pointer",
-                        
                       }}
                     >
-                      문의수정
+                      리뷰 작성
                     </button>
-                  </>
                   )}
-                </p>
-              </div>
-            ))}
-          {!showMore && (
-            <button
-              onClick={handleShowMore}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "black",
-                color: "#fff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontSize: "14px",
-                marginTop: "10px",
-              }}
-            >
-              더보기
-            </button>
-          )}
+                </div>
+              ))}
+            {!showMore && (
+              <button
+                onClick={handleShowMore}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  marginTop: "10px",
+                }}
+              >
+                더보기
+              </button>
+            )}
+          </div>
         </div>
       </main>
       <CartInfo isOpen={isCartOpen} toggleCart={toggleCart} />
@@ -394,6 +278,12 @@ const MyInfo = () => {
         product={selectedProduct}
         onClose={() => setInquireModal(false)}
         fetchInquireInfo={fetchInquireInfo}
+      />
+      <DeliveryModal
+        isOpen={deliveryModal}
+        deliveryInfo={selectedDelivery}
+        deliveryDetailInfo={deliveryDetail}
+        onClose={() => setDeliveryModal(false)}
       />
     </div>
   );

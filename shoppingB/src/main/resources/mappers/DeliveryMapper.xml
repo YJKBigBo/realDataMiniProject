@@ -12,4 +12,8 @@
     <delete id="deliveryDelete" parameterType="string">
         delete from delivery where delivery_num=#{purchaseNum}
     </delete>
+
+    <select id="deliveryDetail" parameterType="string" resultType="delivery">
+        select * from delivery where purchase_num = #{purchaseNum}
+    </select>
 </mapper>
