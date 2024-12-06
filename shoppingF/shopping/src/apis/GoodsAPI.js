@@ -18,6 +18,10 @@ const goodsApi = {
       params: { data },
       withCredentials: true,
     }),
+  goodsCount: () =>
+    axios.get(`${API_URL}/members/goods/count`, {
+      withCredentials: true,
+    }),
 };
 
 export default goodsApi;

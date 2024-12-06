@@ -19,4 +19,6 @@ public interface GoodsMapper {
     public List<GoodsWithIpgoDTO> GoodsWithQtyList();
 
     public void insertGoodsIpgo(GoodsWithIpgoDTO dto);
+
+    public List<GoodsDTO> goodsCount();
 }

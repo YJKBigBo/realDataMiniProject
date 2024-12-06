@@ -140,4 +140,33 @@
             g.goods_num
     </select>
 
+    <select id="goodsCount" resultType="goods">
+        SELECT
+            g.goods_num,
+            g.goods_name,
+            g.goods_price,
+            g.goods_contents,
+            g.visit_count,
+            g.goods_main_image,
+            g.goods_main_store_image,
+            g.goods_detail_image,
+            g.goods_detail_store_image,
+            g.emp_num,
+            g.goods_regist,
+            g.update_emp_num,
+            g.goods_update_date,
+            SUM(p.PURCHASE_QTY) AS total_sales
+        FROM
+            goods g
+                JOIN
+            purchase_list p
+            ON
+                g.goods_num = p.goods_num
+        GROUP BY
+            g.goods_num
+        ORDER BY
+            total_sales DESC
+            LIMIT 3;
+    </select>
+
 </mapper>
