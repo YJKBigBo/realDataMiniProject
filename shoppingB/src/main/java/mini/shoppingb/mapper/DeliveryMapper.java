@@ -8,4 +8,5 @@ public interface DeliveryMapper {
     void deliveryDelete(String purchaseNum);
     void deliveryRegist(String purchaseNum);
     DeliveryDTO deliveryDetail(String purchaseNum);
+    void deliveryUpdate(String purchaseNum);
 }

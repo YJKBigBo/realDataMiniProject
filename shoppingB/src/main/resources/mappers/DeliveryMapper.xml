@@ -16,4 +16,16 @@
     <select id="deliveryDetail" parameterType="string" resultType="delivery">
         select * from delivery where purchase_num = #{purchaseNum}
     </select>
+
+    <update id="deliveryUpdate" parameterType="string">
+        UPDATE delivery
+        SET delivery_status =
+        CASE
+        WHEN DATEDIFF(CURRENT_DATE(), delivery_date) >= 2 THEN '배송완료'
+        WHEN DATEDIFF(CURRENT_DATE(), delivery_date) >= 1 THEN '배송중'
+        ELSE delivery_status
+        END
+        WHERE (delivery_status IN ('배송중', '배송완료') OR CURRENT_DATE() >= delivery_date)
+        AND purchase_num = #{purchaseNum};
+    </update>
 </mapper>

@@ -34,6 +34,7 @@ const MyInfo = () => {
 
   const toggleDeliveryModal = (deliveryInfo) => {
     deliveryDetailInfo(deliveryInfo.purchaseNum);
+    deliveryFakeAPI(deliveryInfo.purchaseNum);
     setSelectedDelivery(deliveryInfo);
     setDeliveryModal((prev) => !prev);
   };
@@ -46,7 +47,6 @@ const MyInfo = () => {
     try {
       const response = await MypageAPI.mypageInfo();
       setMypageInfo(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -65,6 +65,14 @@ const MyInfo = () => {
     try {
       const response = await DeliveryAPI.fetchDelivery(purchaseNum);
       setDeliveryDetail(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deliveryFakeAPI = async (purchaseNum) => {
+    try {
+      const response = await DeliveryAPI.updateDelivery(purchaseNum);
     } catch (error) {
       console.log(error);
     }
@@ -280,7 +288,7 @@ const MyInfo = () => {
         fetchInquireInfo={fetchInquireInfo}
       />
       <DeliveryModal
-        isOpen={deliveryModal}
+        isOpen={deliveryModal && deliveryDetail !== null}
         deliveryInfo={selectedDelivery}
         deliveryDetailInfo={deliveryDetail}
         onClose={() => setDeliveryModal(false)}

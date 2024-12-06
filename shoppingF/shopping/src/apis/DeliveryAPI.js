@@ -8,6 +8,11 @@ const DeliveryAPI = {
       params: { purchaseNum: data },
       withCredentials: true,
     }),
+
+  updateDelivery: (data) =>
+   axios.post(`${API_URL}/delivery/update`, { purchaseNum: data }, {
+      withCredentials: true,
+    }),
 };
 
 export default DeliveryAPI;
