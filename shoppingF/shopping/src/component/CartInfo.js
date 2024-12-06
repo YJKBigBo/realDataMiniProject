@@ -154,12 +154,15 @@ const CartInfo = ({ isOpen, toggleCart }) => {
         purchaseDTO: purchaseData,
       };
 
-      console.log(purchaseCartDTO);
-
       await PurchaseAPI.cartPurchase(purchaseCartDTO);
 
+      setCartItems((prevItems) =>
+        prevItems.filter(
+          (item) => !checkedItems.some((checked) => checked === item.cartDTO)
+        )
+      );
+
       setCheckedItems([]);
-      fetchCart();
       setShowAddressModal(false);
 
       alert("주문이 완료되었습니다.");
