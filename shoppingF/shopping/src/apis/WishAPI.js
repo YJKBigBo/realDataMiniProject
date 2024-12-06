@@ -16,12 +16,15 @@ const WishAPI = {
       { withCredentials: true }
     ),
 
-    deleteWish: (goodsNum) =>
-      axios.post(
-        `${API_URL}/members/goods/wish/delete`,
-        {goodsNum},
-        {withCredentials: true}
-      ),
+  deleteWish: (goodsNum) =>
+    axios.post(
+      `${API_URL}/members/goods/wish/delete`,
+      { goodsNum },
+      { withCredentials: true }
+    ),
+
+  fetchMyWish: () =>
+    axios.get(`${API_URL}/members/wish/home`, { withCredentials: true }),
 };
 
 export default WishAPI;

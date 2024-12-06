@@ -2,12 +2,16 @@ package mini.shoppingb.controller.members;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.domain.members.WishDTO;
+import mini.shoppingb.domain.members.WishGoodsDTO;
 import mini.shoppingb.service.members.wish.WishDataService;
 import mini.shoppingb.service.members.wish.WishDeleteService;
+import mini.shoppingb.service.members.wish.WishMyHomeService;
 import mini.shoppingb.service.members.wish.WishRegistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class WishController {
@@ -20,6 +24,9 @@ public class WishController {
 
     @Autowired
     WishDeleteService wishDeleteService;
+
+    @Autowired
+    WishMyHomeService wishMyHomeService;
 
     @GetMapping("/members/goods/wish")
     public ResponseEntity<Integer> goodsWish (@RequestParam String goodsNum, HttpSession session) {
@@ -37,5 +44,11 @@ public class WishController {
     public void goodsWishDelete(@RequestBody WishDTO wishDTO, HttpSession session) {
         String goodsNum = wishDTO.getGoodsNum();
         wishDeleteService.execute(goodsNum, session);
+    }
+
+    @GetMapping("/members/wish/home")
+    public List<WishGoodsDTO> myWish(HttpSession session) {
+        List<WishGoodsDTO> dto = wishMyHomeService.execute(session);
+        return dto;
     }
 }

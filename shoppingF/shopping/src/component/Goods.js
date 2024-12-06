@@ -2,18 +2,10 @@ import React, { useEffect, useState } from "react";
 import goodsApi from "../apis/GoodsAPI";
 
 function Goods({
-  key,
   goodsName,
   goodsPrice,
-  goodsImage,
   goodsMainStoreImage,
-  goodsDetailImage,
-  goodsDetailStoreImage,
-  visitCount,
   goodsContents,
-  onDetailClick,
-  goodsNum,
-  wishForItem,
 }) {
   const [img, setImg] = useState();
 

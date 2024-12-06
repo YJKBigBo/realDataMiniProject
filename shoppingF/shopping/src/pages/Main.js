@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Goods from "../component/Goods.js";
 import Carousel from "../component/Carousel.js";
 import GoodsAPI from "../apis/GoodsAPI.js";
+import WishAPI from "../apis/WishAPI.js";
 
 import "../static/styles.css";
 
@@ -11,12 +12,23 @@ function Main() {
   const [gridColumns, setGridColumns] = useState("repeat(3, 1fr)");
   const [activeCategory, setActiveCategory] = useState("topSelling");
   const [topSellingGoods, setTopSellingGoods] = useState([]);
+  const [wishGoods, setWishGoods] = useState([]);
 
   const goodsCount = async () => {
     try {
       const response = await GoodsAPI.goodsCount();
-      setTopSellingGoods(response.data);
       console.log(response.data);
+      setTopSellingGoods(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const myWish = async () => {
+    try {
+      const response = await WishAPI.fetchMyWish();
+      const fillteredGoods = response.data.map((item) => item.goodsDTO);
+      setWishGoods(fillteredGoods);
     } catch (error) {
       console.log(error);
     }
@@ -24,16 +36,13 @@ function Main() {
 
   useEffect(() => {
     goodsCount();
+    myWish();
   }, []);
 
-  // 샘플 데이터
-  const wishlistProducts = [6, 7, 8, 9, 10];
-
-  // 활성화된 카테고리의 상품들 (최대 3개로 제한)
   const displayedProducts =
     activeCategory === "topSelling"
       ? topSellingGoods.slice(0, 3)
-      : wishlistProducts.slice(0, 3);
+      : wishGoods.slice(0, 3);
 
   useEffect(() => {
     const handleResize = () => {
