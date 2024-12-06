@@ -2,9 +2,11 @@ package mini.shoppingb.controller.all;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.domain.all.InquireDTO;
+import mini.shoppingb.service.all.inquire.InquireDetailService;
 import mini.shoppingb.service.all.inquire.InquireListService;
 import mini.shoppingb.service.all.inquire.InquireRegistService;
 import mini.shoppingb.service.all.inquire.InquireUpdateService;
+import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,12 @@ public class InquireController {
     @Autowired
     InquireListService inquireListService;
 
+    @Autowired
+    EmployeesAuthService employeesAuthService;
+
+    @Autowired
+    InquireDetailService inquireDetailService;
+
     @PostMapping("/members/mypage/inquire/update")
     @ResponseBody
     public void inquireUpdate(@RequestBody InquireDTO inquireDTO){
@@ -38,8 +46,24 @@ public class InquireController {
 
     @GetMapping("/employees/home/inquire/list")
     @ResponseBody
-    public List<InquireDTO> inquireList(){
-        List<InquireDTO> dto = inquireListService.execute();
+    public List<InquireDTO> inquireList(Model model){
+        int i = 0;
+        List<InquireDTO> dto = inquireListService.execute(model, i);
         return dto;
+    }
+
+    @GetMapping("/employees/inquire/list")
+    public String inquireList(Model model, HttpSession session){
+        int i = 1;
+        employeesAuthService.execute(session, model);
+        inquireListService.execute(model, i);
+        return "thymeleaf/inquire/inquireList";
+    }
+
+    @GetMapping("/employees/inquire/detail/{inquireNum}")
+    public String inquireDetail(Model model, @PathVariable int inquireNum, HttpSession session){
+        employeesAuthService.execute(session, model);
+        inquireDetailService.execute(inquireNum, model);
+        return "thymeleaf/inquire/inquireDetail";
     }
 }

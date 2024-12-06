@@ -12,5 +12,9 @@ public interface InquireMapper {
 
     public void inquireRegist(InquireDTO inquireDTO);
 
+    public List<InquireDTO> inquireListForHome();
+
     public List<InquireDTO> inquireList();
+
+    public InquireDTO inquireDetail(int inquireNum);
 }
