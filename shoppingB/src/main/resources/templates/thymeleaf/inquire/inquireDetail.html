@@ -94,7 +94,7 @@
            cursor: pointer;
            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
            transition: background-color 0.3s, transform 0.3s;"
-                               th:href="'/employees/product/answer/'+${inquireDTO.inquireNum}"
+                               th:href="'/employees/inquire/answer/'+${inquireDTO.inquireNum}"
                                th:if="${inquireDTO.inquireAnswer == null}">
                                 답변하기
                             </a>
@@ -113,7 +113,7 @@
            cursor: pointer;
            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
            transition: background-color 0.3s, transform 0.3s;"
-                               th:href="'/employees/product/update/'+${inquireDTO.inquireNum}"
+                               th:href="'/employees/inquire/answer/'+${inquireDTO.inquireNum}"
                                th:if="${inquireDTO.inquireAnswer != null}">
                                 수정하기
                             </a>

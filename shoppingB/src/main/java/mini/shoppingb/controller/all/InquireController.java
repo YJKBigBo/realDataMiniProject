@@ -2,10 +2,7 @@ package mini.shoppingb.controller.all;
 
 import jakarta.servlet.http.HttpSession;
 import mini.shoppingb.domain.all.InquireDTO;
-import mini.shoppingb.service.all.inquire.InquireDetailService;
-import mini.shoppingb.service.all.inquire.InquireListService;
-import mini.shoppingb.service.all.inquire.InquireRegistService;
-import mini.shoppingb.service.all.inquire.InquireUpdateService;
+import mini.shoppingb.service.all.inquire.*;
 import mini.shoppingb.service.employees.employees.EmployeesAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +28,9 @@ public class InquireController {
 
     @Autowired
     InquireDetailService inquireDetailService;
+
+    @Autowired
+    InquireAnswerService inquireAnswerService;
 
     @PostMapping("/members/mypage/inquire/update")
     @ResponseBody
@@ -65,5 +65,20 @@ public class InquireController {
         employeesAuthService.execute(session, model);
         inquireDetailService.execute(inquireNum, model);
         return "thymeleaf/inquire/inquireDetail";
+    }
+
+    @GetMapping("/employees/inquire/answer/{inquireNum}")
+    public String inquireAnswer(Model model, @PathVariable int inquireNum, HttpSession session){
+        employeesAuthService.execute(session, model);
+        inquireDetailService.execute(inquireNum, model);
+        return "thymeleaf/inquire/inquireAnswer";
+    }
+
+    @PostMapping("/employees/inquire/answer")
+    public String inquireAnswer(InquireDTO inquireDTO, HttpSession session, Model model){
+        System.out.println(inquireDTO);
+        employeesAuthService.execute(session, model);
+        inquireAnswerService.execute(inquireDTO, session);
+        return "redirect:/employees/inquire/list";
     }
 }

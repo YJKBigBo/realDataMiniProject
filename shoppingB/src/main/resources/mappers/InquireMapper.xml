@@ -35,4 +35,8 @@
     <select id="inquireDetail" parameterType="integer" resultType="inquire">
         select * from inquire where inquire_num=#{inquireNum}
     </select>
+
+    <update id="inquireAnswer" parameterType="inquire">
+        update inquire set inquire_answer=#{inquireAnswer}, inquire_answer_date=sysdate(), emp_num=#{memberNum} where inquire_num=#{inquireNum}
+    </update>
 </mapper>

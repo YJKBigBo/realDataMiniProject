@@ -56,16 +56,16 @@
                 <td style="padding: 10px;" th:text="${inquireList.memberNum}"></td>
                 <td style="padding: 10px;" th:text="${inquireList.inquireSubject}"></td>
                 <td style="padding: 10px;" th:text="${inquireList.inquireKind}"></td>
-                <td style="padding: 10px;" th:text="${inquireList.inquireAnswer != null ? inquireList.inquireAnswer : '답변대기중'}"></td>
+                <td style="padding: 10px;" th:text="${inquireList.inquireAnswer != null ? '답변완료' : '답변대기중'}"></td>
 
               </tr>
               <tr th:each="findeInquireList:${findeInquireList}">
-                <td style="padding: 10px;"> <a th:href="'/employees/inquire/detail/' + ${inquireList.inquireNum}" style="text-decoration: none; color: inherit;" th:text="${inquireList.inquireNum}"></a></td>
-                <td style="padding: 10px;" th:text="${inquireList.goodsNum}"></td>
-                <td style="padding: 10px;" th:text="${inquireList.memberNum}"></td>
-                <td style="padding: 10px;" th:text="${inquireList.inquireSubject}"></td>
-                <td style="padding: 10px;" th:text="${inquireList.inquireKind}"></td>
-                <td style="padding: 10px;" th:text="${inquireList.inquireAnswer != null ? inquireList.inquireAnswer : '답변대기중'}"></td>
+                <td style="padding: 10px;"> <a th:href="'/employees/inquire/detail/' + ${findeInquireList.inquireNum}" style="text-decoration: none; color: inherit;" th:text="${findeInquireList.inquireNum}"></a></td>
+                <td style="padding: 10px;" th:text="${findeInquireList.goodsNum}"></td>
+                <td style="padding: 10px;" th:text="${findeInquireList.memberNum}"></td>
+                <td style="padding: 10px;" th:text="${findeInquireList.inquireSubject}"></td>
+                <td style="padding: 10px;" th:text="${findeInquireList.inquireKind}"></td>
+                <td style="padding: 10px;" th:text="${findeInquireList.inquireAnswer != null ? '답변완료' : '답변대기중'}"></td>
               </tr>
               </tbody>
             </table>

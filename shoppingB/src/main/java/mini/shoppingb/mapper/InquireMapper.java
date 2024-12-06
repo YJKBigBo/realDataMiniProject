@@ -17,4 +17,6 @@ public interface InquireMapper {
     public List<InquireDTO> inquireList();
 
     public InquireDTO inquireDetail(int inquireNum);
+
+    public void inquireAnswer(InquireDTO inquireDTO);
 }
