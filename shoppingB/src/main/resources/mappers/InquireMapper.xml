@@ -19,4 +19,12 @@
                     values
                             (#{inquireNum}, #{memberNum}, #{goodsNum}, #{inquireSubject}, #{inquireContents}, #{inquireKind}, sysdate())
     </insert>
+
+    <select id="inquireList" parameterType="inquire">
+        SELECT *
+        FROM inquire
+        WHERE INQUIRE_ANSWER IS NULL
+        ORDER BY INQUIRE_DATE DESC
+            LIMIT 10;
+    </select>
 </mapper>

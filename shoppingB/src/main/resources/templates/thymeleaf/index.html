@@ -10,9 +10,43 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../../static/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            function fetchAndRenderTable() {
+                const inquiriesTableBody = $("#datatablesSimple tbody");
+
+                $.ajax({
+                    type: "GET",
+                    url: "/employees/home/inquire/list",
+                    success: function(data) {
+
+                        data.forEach(item => {
+                            const row = `
+                            <tr>
+                                <td>${item.inquireNum}</td>
+                                <td>${item.memberNum}</td>
+                                <td>${item.goodsNum}</td>
+                                <td>${item.inquireSubject}</td>
+                                <td>${item.inquireKind}</td>
+                                <td>${new Date(item.inquireDate).toLocaleDateString()}</td>
+                                <td>${item.inquireAnswer || "답변대기중"}</td>
+                            </tr>
+                        `;
+                            inquiriesTableBody.append(row);
+                        });
+                    },
+                    error: function(error) {
+                        console.error("오류 : ", error);
+                    }
+                });
+            }
+            fetchAndRenderTable();
+        });
+    </script>
 </head>
 <body class="sb-nav-fixed">
-    <th:block th:insert="~{thymeleaf/component/topbar  :: topbar}"></th:block>
+<th:block th:insert="~{thymeleaf/component/topbar  :: topbar}"></th:block>
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
         <th:block th:insert="~{thymeleaf/component/sidebar  :: sidebar}"></th:block>
@@ -42,50 +76,27 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        DataTable Example
+                        최근 문의
                     </div>
                     <div class="card-body">
                         <table id="datatablesSimple">
                             <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">문의번호</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">질문자번호</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">상품번호</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">제목</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">유형</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">문의날짜</th>
+                                <th style="background-color: #f4f4f4; font-weight: bold; border: 1px solid #ddd; padding-left: 60px; padding-right: 60px;">답변상태</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                            </tr>
-                            <tr>
-                                <td>Garrett Winters</td>
-                                <td>Accountant</td>
-                                <td>Tokyo</td>
-                                <td>63</td>
-                                <td>2011/07/25</td>
-                                <td>$170,750</td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -112,6 +123,5 @@
 <script src="../../static/assets/demo/chart-area-demo.js"></script>
 <script src="../../static/assets/demo/chart-bar-demo.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="js/datatables-simple-demo.js"></script>
 </body>
 </html>
