@@ -154,7 +154,7 @@ const CartInfo = ({ isOpen, toggleCart }) => {
         purchaseDTO: purchaseData,
       };
 
-      await PurchaseAPI.cartPurchase(purchaseCartDTO);
+      const response = await PurchaseAPI.cartPurchase(purchaseCartDTO);
 
       setCartItems((prevItems) =>
         prevItems.filter(
@@ -165,11 +165,13 @@ const CartInfo = ({ isOpen, toggleCart }) => {
       setCheckedItems([]);
       setShowAddressModal(false);
 
-      alert("주문이 완료되었습니다.");
+      alert(response.data);
+      window.location.reload();
     } catch (error) {
       console.error(error);
       alert("주문이 실패했습니다.");
     }
+
   };
 
   return (

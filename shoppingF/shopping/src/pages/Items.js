@@ -88,8 +88,9 @@ function Items() {
     };
 
     try {
-      await PurchaseAPI.deliveryInfo(purchaseData);
-      alert("주문이 완료되었습니다.");
+      const response = await PurchaseAPI.deliveryInfo(purchaseData);
+      console.log(response);
+      alert(response.data);
       setShowAddressModal(false);
     } catch (error) {
       console.error(error);

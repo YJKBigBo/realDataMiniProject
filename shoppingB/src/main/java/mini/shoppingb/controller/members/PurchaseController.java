@@ -25,12 +25,14 @@ public class PurchaseController {
     PurchaseCartService purchaseCartService;
 
     @PostMapping("/members/purchase/delivery")
-    public void purchaseDelivery(@RequestBody PurchaseCommand purchaseCommand , HttpSession session) {
-        purchaseDeliveryService.execute(purchaseCommand, session);
+    public String purchaseDelivery(@RequestBody PurchaseCommand purchaseCommand , HttpSession session) {
+        String re = purchaseDeliveryService.execute(purchaseCommand, session);
+        return re;
     }
 
     @PostMapping("/members/cart/purchase")
-    public void purchase(@RequestBody PurchaseCartDTO purchaseCartDTO, HttpSession session) {
-        purchaseCartService.execute(purchaseCartDTO ,session);
+    public String purchase(@RequestBody PurchaseCartDTO purchaseCartDTO, HttpSession session) {
+        String re = purchaseCartService.execute(purchaseCartDTO ,session);
+        return re;
     }
 }
