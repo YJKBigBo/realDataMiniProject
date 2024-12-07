@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.shoppingb.mapper.PointMapper">
+    <insert id="paymentInsert" parameterType="payment">
+        insert into payment(PURCHASE_NUM,CONFIRMNUMBER,CARDNUM,TID,TOTALPRICE,RESULTMASSAGE,PAYMATHOD
+                           ,APPLDATE,APPTIME)
+        values(#{purchaseNum},#{confirmnumber},#{cardnum},#{tid},#{totalprice},#{resultmassage}
+              ,#{paymathod},#{appldate},#{appltime})
+    </insert>
+
+    <update id="pointUpdate">
+        update members
+        set member_point = member_point + #{point}
+        where member_num = #{memberNum}
+    </update>
+</mapper>

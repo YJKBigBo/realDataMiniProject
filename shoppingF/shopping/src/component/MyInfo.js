@@ -6,6 +6,7 @@ import ReviewModal from "../component/ReviewModal";
 import InquireModal from "../component/InquireModal";
 import DeliveryModal from "./DeliveryModal";
 import DeliveryAPI from "../apis/DeliveryAPI";
+import PointModal from "./PointModal";
 
 const MyInfo = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -19,6 +20,11 @@ const MyInfo = () => {
   const [deliveryDetail, setDeliveryDetail] = useState(null);
   const [deliveryModal, setDeliveryModal] = useState(false);
   const [selectedDelivery, setSelectedDelivery] = useState(null);
+  const [pointModal, setPointModal] = useState(false);
+
+  const togglePointModal = () => {
+    setPointModal((prev) => !prev);
+  };
 
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
@@ -120,6 +126,23 @@ const MyInfo = () => {
         fontFamily: "Arial, sans-serif",
       }}
     >
+      <button
+        onClick={togglePointModal}
+        style={{
+          position: "absolute",
+          top: "70px",
+          right: "20px",
+          padding: "0.5rem 1rem",
+          backgroundColor: "#333",
+          color: "#fff",
+          border: "none",
+          cursor: "pointer",
+          borderRadius: "5px",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        }}
+      >
+        포인트충전
+      </button>
       <button
         onClick={toggleCart}
         style={{
@@ -437,6 +460,7 @@ const MyInfo = () => {
         deliveryDetailInfo={deliveryDetail}
         onClose={() => setDeliveryModal(false)}
       />
+      <PointModal isOpen={pointModal} onClose={togglePointModal} />
     </div>
   );
 };
