@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface MembersMapper {
     public int membersRegist(MembersDTO membersDTO);
     public MembersDTO membersLogin(@Param("memId")String memId, @Param("memPw")String memPw);
+    void membersUpdate(MembersDTO membersDTO);
 }

@@ -15,4 +15,9 @@
                          , GENDER, MEMBER_PHONE1, MEMBER_PHONE2, MEMBER_EMAIL, MEMBER_BIRTH, MEMBER_POINT, MEMBER_EMAIL_CONF
         from members where member_id=#{memId} and member_pw=#{memPw}
     </select>
+
+    <update id="membersUpdate" parameterType="member">
+        update members set member_name=#{memberName}, member_email=#{memberEmail}, member_Addr=#{memberAddr}, member_addr_detail=#{memberAddrDetail}, member_post=#{memberPost}, MEMBER_PHONE1=#{memberPhone1}
+        where member_num=#{memberNum}
+    </update>
 </mapper>
